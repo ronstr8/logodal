@@ -178,6 +178,10 @@ sub add_word ($word) {
     # Needs to be at least 2 chars
     return if length($word) < 2;
 
+    # Skip abbreviations: no vowels (y counts as a vowel — preserves rhythm, crypt, glyph, etc.)
+    # Legitimate no-vowel words (cwm, nth, mm, brr, shh, hmm, psst) go in insertions.txt
+    return if $word !~ /[aeiouy]/;
+
     $WORDS{lc($word)}++;
 }
 

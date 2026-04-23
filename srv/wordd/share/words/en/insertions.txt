@@ -46,6 +46,15 @@ YA
 YO
 ZA
 ZO
+# No-vowel words (filtered by lexicon builder; added back here as legitimate)
+MM
+HMM
+BRR
+SHH
+NTH
+CWM
+CWMS
+PSST
 # 3-letter Scrabble specials
 QAT
 ZAX
