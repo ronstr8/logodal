@@ -96,6 +96,17 @@ postgresql:
       repository: busybox
       tag: 1.36.1
 
+auth:
+  sessionSecret: "change-me-to-a-long-random-secret"
+  google:
+    clientId: ""
+    clientSecret: ""
+  discord:
+    clientId: ""
+    clientSecret: ""
+  notifications:
+    discordWebhook: ""
+
 ollama:
   enabled: false
   image:

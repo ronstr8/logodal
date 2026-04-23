@@ -53,7 +53,7 @@ sub google_callback ($self) {
             path => '/',
             expires => $expires->epoch,
             httponly => 1,
-            secure => 0,
+            secure => $self->req->is_secure ? 1 : 0,
             samesite => 'Lax',
         });
         
@@ -108,7 +108,7 @@ sub discord_callback ($self) {
             path => '/',
             expires => $expires->epoch,
             httponly => 1,
-            secure => 0,
+            secure => $self->req->is_secure ? 1 : 0,
             samesite => 'Lax',
         });
         
@@ -133,7 +133,7 @@ sub _create_session ($self, $player) {
         path => '/',
         expires => $expires->epoch,
         httponly => 1,
-        secure => 0,
+        secure => $self->req->is_secure ? 1 : 0,
         samesite => 'Lax',
     });
     

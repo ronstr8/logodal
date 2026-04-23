@@ -60,6 +60,11 @@ spec:
                 secretKeyRef:
                   name: db-secrets
                   key: admin-discord-webhook
+            - name: SESSION_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: db-secrets
+                  key: session-secret
             - name: ADMIN_SMS_EMAIL
               value: {{ .Values.env.ADMIN_SMS_EMAIL | default "" | quote }}
             - name: MOJO_LISTEN

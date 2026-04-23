@@ -2,6 +2,7 @@ package Wordwonk::Web::Game;
 use Mojo::Base 'Mojolicious::Controller', -signatures;
 use v5.36;
 use utf8;
+use DateTime;
 use Mojo::JSON qw(encode_json decode_json);
 use Mojo::Util;
 use UUID::Tiny qw(:std);
@@ -17,19 +18,24 @@ sub websocket ($self) {
     $self->reseed_prng();
     $self->inactivity_timeout(3600);
 
-    # Always use UUID for player IDs
-    my $player_id = $self->param('id') || create_uuid_as_string(UUID_V4);
-    my $schema    = $self->app->schema;
-    my $app       = $self->app;
+    my $schema = $self->app->schema;
+    my $app    = $self->app;
 
-    my $lang = $self->param('lang') || $self->req->headers->header('Accept-Language') || 'en';
+    # Authenticate via session cookie — reject unauthenticated connections
+    my $session_id = $self->cookie('ww_session');
+    unless ($session_id) {
+        $self->send({json => { type => 'error', payload => { code => 'unauthenticated', message => 'No session' } }});
+        return $self->finish(4401, 'Unauthenticated');
+    }
 
-    # 1. Identity & Database Setup
-    my $player = $schema->resultset('Player')->find_or_create({
-        id       => $player_id,
-        nickname => generate_procedural_name($player_id),
-        language => $lang,
-    });
+    my $session = $schema->resultset('Session')->find($session_id);
+    unless ($session && $session->expires_at > DateTime->now) {
+        $self->send({json => { type => 'error', payload => { code => 'session_expired', message => 'Session expired' } }});
+        return $self->finish(4401, 'Session expired');
+    }
+
+    my $player = $session->player;
+    my $lang   = $self->param('lang') || $self->req->headers->header('Accept-Language') || 'en';
 
     # Send identity immediately
     $self->send({json => {
@@ -49,6 +55,7 @@ sub websocket ($self) {
 
     # 2. Connection Tracking
     my $client_id = "$self"; # Unique stringified controller
+    my $player_id = $player->id;
     $app->log->debug("Player $player_id connected via $client_id");
 
     $self->on(message => sub ($c, $msg) {

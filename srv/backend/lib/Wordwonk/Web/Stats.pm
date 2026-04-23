@@ -52,17 +52,17 @@ sub leaderboard ($self) {
         )->first;
         if ($last_play) {
             $leaders[0]{last_word}       = $last_play->word;
-            $leaders[0]{last_word_score} = int($last_play->score);
+            $leaders[0]{last_word_score} = int($last_play->final_score // $last_play->score);
             $leaders[0]{last_word_at}    = $last_play->created_at->iso8601 . 'Z';
         }
 
         my $best_play = $schema->resultset('Play')->search(
             { player_id => $top_id },
-            { order_by => { -desc => 'score' }, rows => 1 }
+            { order_by => { -desc => \['COALESCE(final_score, score)'] }, rows => 1 }
         )->first;
         if ($best_play) {
             $leaders[0]{best_word}  = $best_play->word;
-            $leaders[0]{best_score} = int($best_play->score);
+            $leaders[0]{best_score} = int($best_play->final_score // $best_play->score);
         }
     }
 
@@ -102,11 +102,11 @@ sub leaderboard ($self) {
 
             my $best_play = $schema->resultset('Play')->search(
                 { player_id => $player_id },
-                { order_by => { -desc => 'score' }, rows => 1 }
+                { order_by => { -desc => \['COALESCE(final_score, score)'] }, rows => 1 }
             )->first;
             if ($best_play) {
                 $personal->{best_word}  = $best_play->word;
-                $personal->{best_score} = int($best_play->score);
+                $personal->{best_score} = int($best_play->final_score // $best_play->score);
             }
         }
     }

@@ -51,7 +51,7 @@ const MessageList = ({ messages }) => {
                             <td className="col-player">{r.nickname || r.player || 'Anonymous'}</td>
                             <td className="col-word">{r.word || '???'}</td>
                             <td className={`col-score ${r.is_dupe ? 'is-dupe' : ''}`}>
-                                {r.is_dupe ? t('results.duplicate_penalty') || 'Duplicate!' : r.score}
+                                {r.is_dupe ? '🦜' : r.score}
                             </td>
                         </tr>
                     ))}

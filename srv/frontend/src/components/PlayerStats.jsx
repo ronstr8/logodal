@@ -36,12 +36,6 @@ const WordwonkBanner = ({ leader }) => {
         <div className="wordwonk-banner">
             <div className="wordwonk-intro">{t('stats.the_wordwonk_is')}</div>
             <div className="wordwonk-name">{leader.name}</div>
-            {leader.best_word && (
-                <div className="wordwonk-best-play">
-                    <span className="wordwonk-word">{leader.best_word}</span>
-                    <span className="wordwonk-ago">({leader.best_score})</span>
-                </div>
-            )}
             {leader.last_word && (
                 <div className="wordwonk-last-word">
                     <span className="wordwonk-word">{leader.last_word}</span>

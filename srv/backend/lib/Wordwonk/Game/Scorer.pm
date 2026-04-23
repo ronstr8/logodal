@@ -120,6 +120,10 @@ sub generate_tile_values ($self, $lang) {
     return \%values;
 }
 
+sub mutable_tile_values ($self, $lang) {
+    return { %{ $self->generate_tile_values($lang) } };
+}
+
 sub tile_counts ($self, $lang) {
     return $self->_get_tile_config($lang)->{tiles};
 }

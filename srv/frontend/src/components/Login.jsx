@@ -90,7 +90,7 @@ const Login = ({ onLoginSuccess }) => {
     return (
         <div className="login-overlay">
             <div className="login-card">
-                <h1>wordw<span className="splat">💥</span>nk</h1>
+                <h1>Wordwonk</h1>
                 <p className="login-subtitle">{t('auth.welcome_back')}</p>
 
                 {lastMethod && (

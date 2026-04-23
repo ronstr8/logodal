@@ -48,7 +48,7 @@ export default function useGameSocket({
         const startConnection = () => {
             if (socket && (socket.readyState === WebSocket.OPEN || socket.readyState === WebSocket.CONNECTING)) return;
 
-            socket = new WebSocket(`${protocol}//${wsHost}/ws?id=${playerId}`);
+            socket = new WebSocket(`${protocol}//${wsHost}/ws`);
 
             socket.onopen = () => {
                 setWs(socket);

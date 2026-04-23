@@ -28,7 +28,7 @@ const GameHeader = ({
             <div className="header-left">
                 <button className="mobile-menu-btn" onClick={onOpenSidebar}>☰</button>
                 <div className="header-content">
-                    <h1 style={{ whiteSpace: 'nowrap' }}>wordw<span className="splat">💥</span>nk</h1>
+                    <h1 style={{ whiteSpace: 'nowrap' }}>Wordwonk</h1>
                     {nickname && <div className="user-nickname">{t('app.playing_as')}: <strong>{nickname}</strong></div>}
                 </div>
             </div>

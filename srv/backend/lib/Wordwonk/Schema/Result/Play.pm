@@ -33,6 +33,10 @@ __PACKAGE__->add_columns(
     created_at => {
         data_type => 'timestamp with time zone',
         set_on_create => 1,
+    },
+    final_score => {
+        data_type   => 'integer',
+        is_nullable => 1,
     }
 );
 

@@ -190,19 +190,20 @@ sub _perform_play ($self, $controller, $player, $payload, $word, $game_data, $ga
             # Word is valid!
             my $score = $app->scorer->calculate_score($word, $game_record->letter_values);
 
-            # Persist the play
-            my $play = $app->schema->resultset('Play')->create({
-                game_id   => $game_record->id,
-                player_id => $player->id,
-                word      => $word,
-                score     => $score,
-            });
-            $app->log->debug("Recorded play for player " . $player->id . " in game " . $game_record->id . ": $word ($score pts)");
-            
-            # Calculate achievement emojis
+            # Calculate length bonus before persisting so we can store a provisional final_score
             my $actual_rack_size = (ref($game_record->rack) eq 'ARRAY' ? scalar(@{$game_record->rack}) : 0);
             my $len_bonus = $app->scorer->get_length_bonus($word, $actual_rack_size);
             my $total_points = $score + $len_bonus;
+
+            # Persist the play; final_score is provisional (raw + len_bonus) and overwritten at game end
+            my $play = $app->schema->resultset('Play')->create({
+                game_id     => $game_record->id,
+                player_id   => $player->id,
+                word        => $word,
+                score       => $score,
+                final_score => $total_points,
+            });
+            $app->log->debug("Recorded play for player " . $player->id . " in game " . $game_record->id . ": $word ($score pts)");
 
             my $emoji_prefix = $self->_get_achievement_emojis($game_record, $word, $len_bonus);
 
@@ -344,18 +345,25 @@ sub end_game ($self, $game, $results_args = {}) {
 
     $app->log->debug("Ending game $game_id - Found " . scalar(@plays) . " plays. Solo: " . ($solo_game ? "YES" : "NO"));
 
+    # Write final (bonus-inclusive) scores back to the correct play records
+    my %is_ai = map { $_ => 1 } @ai_pids;
+    for my $result (@$results) {
+        my $play = $schema->resultset('Play')->search({
+            game_id   => $game->id,
+            player_id => $result->{player_id},
+            word      => $result->{word},
+        }, { rows => 1 })->first;
+        $play->update({ final_score => $result->{score} }) if $play;
+    }
+
     # Update player cumulative scores in database (skip for solo games)
     if (!$solo_game) {
         for my $result (@$results) {
+            next if $is_ai{ $result->{player_id} };
             my $player = $schema->resultset('Player')->find($result->{player_id});
             if ($player) {
-                # Skip AI player updates
-                my %is_ai = map { $_ => 1 } @ai_pids;
-                next if $is_ai{$player->id};
-
                 my $old_score = $player->lifetime_score || 0;
-                my $new_score = $old_score + $result->{score};
-                $player->update({ lifetime_score => $new_score });
+                $player->update({ lifetime_score => $old_score + $result->{score} });
             }
         }
     }

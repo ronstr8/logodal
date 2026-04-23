@@ -68,7 +68,7 @@ sub get_or_create_game ($self, $player, $invite_gid = undef) {
             $app->log->debug("Starting pending $lang game $gid");
             my %updates = ( started_at => DateTime->now );
             unless ($active_game->mutant_letter) {
-                my $vals = $active_game->letter_values;
+                my $vals = { %{ $active_game->letter_values } }; # copy — mutant may modify
                 my $mutant = $self->_pick_mutant_letter($schema, $active_game->rack, $vals);
                 if ($mutant) {
                     $vals->{$mutant} = 10;
@@ -85,7 +85,7 @@ sub get_or_create_game ($self, $player, $invite_gid = undef) {
             # Fallback: Create and start immediately
             $app->log->debug("No pending game found, creating emergency $lang game");
             my $rack = $app->scorer->get_random_rack($lang);
-            my $vals = $app->scorer->generate_tile_values($lang);
+            my $vals = $app->scorer->mutable_tile_values($lang);
             my $mutant = $self->_pick_mutant_letter($schema, $rack, $vals);
             if ($mutant) {
                 $vals->{$mutant} = 10;
