@@ -13,7 +13,7 @@ export default function useGameController({
         setGameId, setFeedback, setGuess, setLetterValue, setTileConfig,
         setPlayerNames, playerNamesRef, setSupportedLangs,
         setMessages, logSystemMessage, showChatToast, playerId, setNickname,
-        setMutantLetter
+        setMutantLetter, setRackSize
     } = state;
 
     const onChatMessage = useCallback((data) => {
@@ -94,13 +94,15 @@ export default function useGameController({
         setLetterValue(tile_values || {});
         setTileConfig({ tiles: tile_counts || {}, unicorns: unicorns || {} });
         setResults(null);
-        setGuess(Array(rack_size || newRackLetters.length).fill(null));
+        const resolvedRackSize = rack_size || newRackLetters.length;
+        setRackSize(resolvedRackSize);
+        setGuess(Array(resolvedRackSize).fill(null));
         setIsLocked(false);
         setFeedback({ text: '', type: '' });
         setMutantLetter(mutant_letter || null);
         startAmbience();
         fetchLeaderboard();
-    }, [setGameId, setRack, setTimeLeft, setTotalTime, setLetterValue, setTileConfig, setResults, setGuess, setIsLocked, setFeedback, setMutantLetter, startAmbience, fetchLeaderboard]);
+    }, [setGameId, setRack, setTimeLeft, setTotalTime, setLetterValue, setTileConfig, setResults, setGuess, setIsLocked, setFeedback, setMutantLetter, setRackSize, startAmbience, fetchLeaderboard]);
 
     const onTimer = useCallback((data) => {
         if (data.payload && data.payload.time_left !== undefined) {

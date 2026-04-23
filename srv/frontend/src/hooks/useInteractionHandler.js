@@ -10,7 +10,8 @@ export default function useInteractionHandler({
         rack, setRack, rackRef,
         guess, setGuess, guessRef,
         isLocked, timeLeft,
-        setBlankChoice, results
+        setBlankChoice, results,
+        rackSize
     } = state;
 
     const returnToRack = useCallback((slotIndex) => {
@@ -94,8 +95,8 @@ export default function useInteractionHandler({
     const clearGuess = useCallback(() => {
         if (isLocked || timeLeft === 0) return;
         setRack(prev => prev.map(tile => ({ ...tile, isUsed: false })));
-        setGuess(Array(8).fill(null));
-    }, [isLocked, timeLeft, setRack, setGuess]);
+        setGuess(Array(rackSize).fill(null));
+    }, [isLocked, timeLeft, rackSize, setRack, setGuess]);
 
     const handleGlobalKeyDown = useCallback((e) => {
         if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable || e.target.closest('.chat-input-area')) return;

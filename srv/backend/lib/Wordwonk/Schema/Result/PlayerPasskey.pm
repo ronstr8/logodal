@@ -15,11 +15,11 @@ __PACKAGE__->add_columns(
         is_foreign_key => 1,
     },
     credential_id => {
-        data_type => 'bytea',
+        data_type => 'text',
         is_nullable => 0,
     },
     public_key => {
-        data_type => 'bytea',
+        data_type => 'text',
         is_nullable => 0,
     },
     sign_count => {

@@ -115,10 +115,10 @@ sub join_player ($self, $controller, $player, $payload = undef) {
         }
     }, $gid, [$player->id]);
 
-    # Send chat history to the new player
+    # Send this game's chat history to the new player
     $controller->send({json => {
         type    => 'chat_history',
-        payload => $app->chat_history
+        payload => $app->games->{$gid}{chat_history} // []
     }});
 }
 
@@ -161,6 +161,10 @@ sub handle_play ($self, $controller, $player, $payload) {
         $self->_perform_play($controller, $player, $payload, $word, $game_data, $game_record);
     };
     if ($@) {
+        if ($@ =~ /unique constraint|duplicate key/i) {
+            $app->log->debug("Player " . $player->id . " duplicate play rejected by DB constraint");
+            return;
+        }
         $app->log->error("CRASH in handle_play for " . $player->id . ": $@");
         $controller->send({json => {
             type    => 'error',

@@ -140,12 +140,11 @@ sub _create_session ($self, $player) {
     $player->update({ last_login_at => DateTime->now });
 }
 
-# WebAuthn Ceremoy
 sub passkey_challenge ($self) {
     my $wa = Authen::WebAuthn->new(
         rp_id   => $self->req->url->to_abs->host,
         rp_name => "Wordwonk",
-        origin  => $self->req->url->to_abs->base->to_string,
+        origin  => $self->_wa_origin,
     );
 
     my $challenge = Mojo::Util::b64_encode(Crypt::URandom::urandom(32), "");
@@ -176,60 +175,91 @@ sub passkey_challenge ($self) {
     });
 }
 
+sub _wa_origin ($self) {
+    my $proto = $self->req->headers->header('X-Forwarded-Proto') || ($self->req->is_secure ? 'https' : 'http');
+    my $host  = $self->req->url->to_abs->host;
+    return "$proto://$host";
+}
+
 sub passkey_verify ($self) {
-    my $data = $self->req->json;
+    my $data      = $self->req->json;
     my $challenge = $self->session('wa_challenge');
-    
+
+    unless ($challenge) {
+        return $self->render(json => { error => "No active challenge" }, status => 400);
+    }
+
     my $wa = Authen::WebAuthn->new(
         rp_id   => $self->req->url->to_abs->host,
         rp_name => "Wordwonk",
-        origin  => $self->req->url->to_abs->base->to_string,
+        origin  => $self->_wa_origin,
     );
 
-    # This is a bit complex in Authen::WebAuthn, usually involves
-    # validating the response from the browser.
-    
-    # Registration Flow (Attestation)
+    # Registration flow (Attestation) — requires an active session
     if ($data->{type} eq 'registration') {
-        my $schema = $self->app->schema;
+        my $schema     = $self->app->schema;
         my $session_id = $self->cookie('ww_session');
-        
-        # Verify user is logged in
-        if (!$session_id) {
+
+        unless ($session_id) {
             return $self->render(json => { error => "Authentication required to register passkey" }, status => 401);
         }
-
         my $session = $schema->resultset('Session')->find($session_id);
-        if (!$session || $session->expires_at < DateTime->now) {
+        unless ($session && $session->expires_at > DateTime->now) {
             return $self->render(json => { error => "Session expired" }, status => 401);
         }
 
-        my $player = $session->player;
+        my $result = eval {
+            $wa->validate_registration(
+                challenge_b64          => $challenge,
+                requested_uv           => "preferred",
+                client_data_json_b64   => $data->{response}{clientDataJSON},
+                attestation_object_b64 => $data->{response}{attestationObject},
+                token_binding_id_b64   => undef,
+            );
+        };
+        if ($@) {
+            $self->app->log->warn("Passkey registration failed: $@");
+            return $self->render(json => { error => "Registration verification failed" }, status => 400);
+        }
 
-        # ... verification logic ...
-        # For this implementation/task, we'll assume the client-provided data is signed/verified correctly
-        
-        $player->create_related('passkeys', {
-            credential_id => $data->{id},
-            public_key    => $data->{publicKey}, # Assume client provides this for demo
-            sign_count    => 0,
+        $session->player->create_related('passkeys', {
+            credential_id => $result->{credential_id},
+            public_key    => $result->{cred_pubkey_b64},
+            sign_count    => $result->{sign_count} // 0,
         });
 
+        $self->session(wa_challenge => undef);
         return $self->render(json => { success => 1 });
-    } 
-    # Login Flow (Assertion)
+    }
+
+    # Authentication flow (Assertion)
     else {
-        my $cred_id = $data->{id};
-        my $passkey = $self->app->schema->resultset('PlayerPasskey')->find({ credential_id => $cred_id });
-        
-        if (!$passkey) {
+        my $passkey = $self->app->schema->resultset('PlayerPasskey')->find({ credential_id => $data->{id} });
+
+        unless ($passkey) {
             return $self->render(json => { error => "Credential not found" }, status => 401);
         }
 
-        # Verify signature using $wa->validate_assertion(...)
-        # For this demo/task implementation, we'll simulate success 
-        # but in prod you MUST use the library's verification.
-        
+        my $result = eval {
+            $wa->validate_assertion(
+                challenge_b64          => $challenge,
+                credential_pubkey_b64  => $passkey->public_key,
+                stored_sign_count      => $passkey->sign_count,
+                requested_uv           => "preferred",
+                client_data_json_b64   => $data->{response}{clientDataJSON},
+                authenticator_data_b64 => $data->{response}{authenticatorData},
+                signature_b64          => $data->{response}{signature},
+                token_binding_id_b64   => undef,
+                user_handle_b64        => undef,
+            );
+        };
+        if ($@) {
+            $self->app->log->warn("Passkey assertion failed for credential " . $data->{id} . ": $@");
+            return $self->render(json => { error => "Authentication verification failed" }, status => 401);
+        }
+
+        $passkey->update({ sign_count => $result->{sign_count} });
+        $self->session(wa_challenge => undef);
         $self->_create_session($passkey->player);
         return $self->render(json => { success => 1 });
     }
