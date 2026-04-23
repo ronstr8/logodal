@@ -202,7 +202,6 @@ sub startup ($self) {
     $auth->get('/discord/callback')->to('auth#discord_callback')->name('discord_callback');
     $auth->get('/me')->to('auth#me');
     $auth->post('/logout')->to('auth#logout');
-    $auth->post('/anonymous')->to('auth#anonymous_login');
     $auth->get('/passkey/challenge')->to('auth#passkey_challenge');
     $auth->post('/passkey/verify')->to('auth#passkey_verify');
 

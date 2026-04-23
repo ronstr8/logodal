@@ -64,7 +64,8 @@ function App() {
 
     // 4. Game Controller (Event Dispatcher)
     const controller = useGameController({
-        state, t, i18n, play, startAmbience, fetchLeaderboard
+        state: { ...state, playerId: auth.playerId, setNickname: auth.setNickname },
+        t, i18n, play, startAmbience, fetchLeaderboard
     })
 
     // 5. Socket Hook
