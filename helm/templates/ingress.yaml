@@ -16,13 +16,6 @@ spec:
     - host: {{ .Values.ingress.host }}
       http:
         paths:
-          - path: /tm
-            pathType: Prefix
-            backend:
-              service:
-                name: backend
-                port:
-                  number: 3000
           - path: /ws
             pathType: Prefix
             backend:
@@ -38,13 +31,6 @@ spec:
                 port:
                   number: 3000
           - path: /auth
-            pathType: Prefix
-            backend:
-              service:
-                name: backend
-                port:
-                  number: 3000
-          - path: /payment
             pathType: Prefix
             backend:
               service:

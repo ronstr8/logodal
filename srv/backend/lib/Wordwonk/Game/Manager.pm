@@ -412,14 +412,7 @@ sub end_game ($self, $game, $results_args = {}) {
         if ($suggested_res && $suggested_res->is_success) {
             $suggested_word = uc(Mojo::Util::trim($suggested_res->body));
         }
-
-        if ($winner_word) {
-            $app->wordd->define($winner_word, $winner_lang, sub ($def_res = undef) {
-                $wrap_send->($def_res && $def_res->is_success ? $def_res->body : undef, $suggested_word);
-            });
-        } else {
-            $wrap_send->(undef, $suggested_word);
-        }
+        $wrap_send->(undef, $suggested_word);
     };
 
     my $clean_rack = join('', grep { /[A-Z]/ } @{$game->rack});

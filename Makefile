@@ -106,8 +106,5 @@ clean:
 	rm -rf srv/frontend/dist
 	rm -rf srv/frontend/node_modules
 	rm -rf srv/wordd/target
-	rm -rf srv/playerd/target
-	rm -f srv/gatewayd/gatewayd
 	find . -name "*.exe" -delete
-	find . -name "tilemasters" -type f -not -path "./srv/tilemasters/cmd/tilemasters/*" -delete
 
