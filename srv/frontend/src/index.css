@@ -43,14 +43,18 @@ h1 {
   letter-spacing: -2px;
 }
 
-.user-nickname {
+.user-identity {
   font-family: 'Fredoka', sans-serif;
   color: #bdc3c7;
-  font-size: 1.1rem;
-  margin-top: -1rem;
-  margin-bottom: 1.5rem;
-  text-transform: uppercase;
-  letter-spacing: 1px;
+  font-size: 0.95rem;
+  white-space: nowrap;
+  letter-spacing: 0.5px;
+}
+
+.user-identity.is-wordwonk {
+  color: #f1c40f;
+  font-weight: 600;
+  text-shadow: 0 0 8px rgba(241, 196, 15, 0.4);
 }
 
 .user-nickname strong {

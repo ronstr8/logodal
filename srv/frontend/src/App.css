@@ -15,11 +15,10 @@ header {
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.header-content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+header h1 {
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    margin: 0;
+    letter-spacing: -1px;
 }
 
 .header-toggles {
@@ -1010,10 +1009,6 @@ header {
 
     header h1 {
         font-size: 1.5rem;
-    }
-
-    .user-nickname {
-        font-size: 0.8rem;
     }
 
     .main-game-layout {

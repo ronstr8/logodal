@@ -1,7 +1,8 @@
 {
     "app": {
         "title": "palabrawonk",
-        "playing_as": "Jugando como",
+        "you_are": "Eres",
+        "you_are_wordwonk": "Eres el Wordwonk",
         "player_joined": "{{name}} se unió al duelo.",
         "players_starting": "{{players}} y tú empezáis a jugar palabras.",
         "players_starting_you": "Empiezas a jugar palabras.",

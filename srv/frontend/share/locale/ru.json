@@ -1,7 +1,8 @@
 {
     "app": {
         "title": "wordwonk",
-        "playing_as": "Вы играете как",
+        "you_are": "Вы",
+        "you_are_wordwonk": "Вы — Wordwonk",
         "player_joined": "{{name}} присоединился к дуэли.",
         "players_starting": "{{players}} и вы начинаете играть словами.",
         "players_starting_you": "Вы начинаете играть словами.",

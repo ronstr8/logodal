@@ -123,6 +123,8 @@ function App() {
         return <Login onLoginSuccess={() => auth.checkAuth()} />
     }
 
+    const isWordwonk = statsData?.leaders?.[0]?.name === auth.nickname
+
     const joinGame = () => {
         state.setResults(null)
         sendMessage('join', {})
@@ -173,8 +175,9 @@ function App() {
             />
 
             {!isFocusMode && (
-                <GameHeader 
+                <GameHeader
                     nickname={auth.nickname}
+                    isWordwonk={isWordwonk}
                     onOpenSidebar={() => setSidebarOpen(true)}
                     messagesVisible={messagesVisible}
                     setMessagesVisible={setMessagesVisible}

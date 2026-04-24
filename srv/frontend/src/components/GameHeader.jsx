@@ -1,36 +1,40 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-const GameHeader = ({ 
-    nickname, 
-    onOpenSidebar, 
-    messagesVisible, 
-    setMessagesVisible, 
-    showRules, 
-    setShowRules, 
-    handleInvite, 
-    gameId, 
-    statsVisible, 
-    setStatsVisible, 
-    handleLogout, 
-    isMuted, 
-    toggleMute, 
-    isAmbienceEnabled, 
-    toggleAmbience, 
-    language, 
-    supportedLangs, 
-    onLanguageChange 
+const GameHeader = ({
+    nickname,
+    isWordwonk,
+    onOpenSidebar,
+    messagesVisible,
+    setMessagesVisible,
+    showRules,
+    setShowRules,
+    handleInvite,
+    gameId,
+    statsVisible,
+    setStatsVisible,
+    handleLogout,
+    isMuted,
+    toggleMute,
+    isAmbienceEnabled,
+    toggleAmbience,
+    language,
+    supportedLangs,
+    onLanguageChange
 }) => {
     const { t } = useTranslation();
+
+    const identityLabel = isWordwonk
+        ? t('app.you_are_wordwonk', 'You are the Wordwonk')
+        : nickname
+            ? `${t('app.you_are', 'You are')} ${nickname}`
+            : null;
 
     return (
         <header>
             <div className="header-left">
                 <button className="mobile-menu-btn" onClick={onOpenSidebar}>☰</button>
-                <div className="header-content">
-                    <h1 style={{ whiteSpace: 'nowrap' }}>Wordwonk</h1>
-                    {nickname && <div className="user-nickname">{t('app.playing_as')}: <strong>{nickname}</strong></div>}
-                </div>
+                <h1 style={{ whiteSpace: 'nowrap' }}>Wordwonk</h1>
             </div>
 
             <div className="header-toggles desktop-only">
@@ -40,6 +44,11 @@ const GameHeader = ({
             </div>
 
             <div className="header-actions desktop-only">
+                {identityLabel && (
+                    <div className={`user-identity${isWordwonk ? ' is-wordwonk' : ''}`}>
+                        {identityLabel}
+                    </div>
+                )}
                 <div className="button-group">
                     <button className="header-btn wtf-btn" onClick={() => setShowRules(!showRules)} title={t('app.rules_title')}>{t('app.help_label')}</button>
                     <button className="header-btn" onClick={handleInvite} title={t('app.invite_friend')} disabled={!gameId}>🔗</button>
