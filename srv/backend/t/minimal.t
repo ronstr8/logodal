@@ -10,8 +10,8 @@ use Mojo::Transaction::HTTP;
 $ENV{DATABASE_URL} = 'dbi:SQLite:dbname=:memory:';
 
 use lib 'lib';
-require Wordwonk;
-my $t = Test::Mojo->new('Wordwonk');
+require Logodal;
+my $t = Test::Mojo->new('Logodal');
 $t->app->schema->deploy;
 
 # Mock ua

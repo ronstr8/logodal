@@ -45,9 +45,9 @@ $mock->mock('get', sub {
     return { success => 0, status => 404 };
 });
 
-use Wordwonk::Game::Scorer;
+use Logodal::Game::Scorer;
 
-my $scorer = Wordwonk::Game::Scorer->new;
+my $scorer = Logodal::Game::Scorer->new;
 
 # Mock environment
 $ENV{RACK_SIZE} = 7;

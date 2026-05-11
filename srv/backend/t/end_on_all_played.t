@@ -3,13 +3,13 @@ use Test::More;
 use Test::Mojo;
 use Data::Dumper;
 use DateTime;
-use Wordwonk::Schema;
+use Logodal::Schema;
 
 # Mock environment
 $ENV{END_ON_ALL_PLAYED} = 'true';
 $ENV{DATABASE_URL} = 'dbi:SQLite:dbname=:memory:';
 
-my $t = Test::Mojo->new('Wordwonk');
+my $t = Test::Mojo->new('Logodal');
 my $app = $t->app;
 
 # Mock Wordd validation to be synchronous for unit testing
@@ -22,11 +22,11 @@ package MockResponse {
     sub json { shift->{json} }
 }
 
-require Wordwonk::Service::Wordd;
+require Logodal::Service::Wordd;
 {
     no strict 'refs';
     no warnings 'redefine';
-    *Wordwonk::Service::Wordd::validate = sub {
+    *Logodal::Service::Wordd::validate = sub {
         my ($self, $word, $lang, $cb) = @_;
         $cb->(MockResponse->new(1, {
             is_valid => 1,

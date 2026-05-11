@@ -37,11 +37,11 @@ sub get_test_mojo {
     # Mock out background tasks that might interfere with tests before app creation
     {
         no warnings 'redefine';
-        require Wordwonk;
-        *Wordwonk::prepopulate_games = sub { 1 };
+        require Logodal;
+        *Logodal::prepopulate_games = sub { 1 };
     }
 
-    $singleton_t = Test::Mojo->new('Wordwonk');
+    $singleton_t = Test::Mojo->new('Logodal');
     
     # Deploy the schema to SQLite automatically from DBIx::Class Result classes
     eval {
@@ -165,21 +165,21 @@ sub wait_for_message {
 sub _apply_mocks {
     {
         no warnings 'redefine';
-        use Wordwonk::Game::AI;
-        use Wordwonk::Service::Wordd;
-        use Wordwonk::Game::Scorer;
+        use Logodal::Game::AI;
+        use Logodal::Service::Wordd;
+        use Logodal::Game::Scorer;
         use Mojo::Message::Response;
 
         # AI mocks
-        *Wordwonk::Game::AI::_request_candidates = sub { 
+        *Logodal::Game::AI::_request_candidates = sub { 
             my ($self, $url, $letters) = @_;
             $self->app->log->debug("AI " . $self->nickname . " MOCKED candidate fetch");
             return undef;
-        } unless defined &Wordwonk::Game::AI::_request_candidates_MOCKED;
-        *Wordwonk::Game::AI::_request_candidates_MOCKED = sub { 1 };
+        } unless defined &Logodal::Game::AI::_request_candidates_MOCKED;
+        *Logodal::Game::AI::_request_candidates_MOCKED = sub { 1 };
 
         # Wordd Service mocks (prevent actual network calls)
-        *Wordwonk::Service::Wordd::validate = sub {
+        *Logodal::Service::Wordd::validate = sub {
             my ($self, $word, $lang, $cb) = @_;
             $self->app->log->debug("MOCKED Wordd::validate for '$word'");
             # Support testing invalid words via magic string
@@ -188,26 +188,26 @@ sub _apply_mocks {
                 valid => $valid,
                 definition => $valid ? "Mocked definition for $word" : undef,
             })));
-        } unless defined &Wordwonk::Service::Wordd::validate_MOCKED;
-        *Wordwonk::Service::Wordd::validate_MOCKED = sub { 1 };
+        } unless defined &Logodal::Service::Wordd::validate_MOCKED;
+        *Logodal::Service::Wordd::validate_MOCKED = sub { 1 };
 
-        *Wordwonk::Service::Wordd::define = sub {
+        *Logodal::Service::Wordd::define = sub {
             my ($self, $word, $lang, $cb) = @_;
             $cb->(Mojo::Message::Response->new(code => 404));
-        } unless defined &Wordwonk::Service::Wordd::define_MOCKED;
-        *Wordwonk::Service::Wordd::define_MOCKED = sub { 1 };
+        } unless defined &Logodal::Service::Wordd::define_MOCKED;
+        *Logodal::Service::Wordd::define_MOCKED = sub { 1 };
 
-        *Wordwonk::Service::Wordd::suggest = sub {
+        *Logodal::Service::Wordd::suggest = sub {
             my ($self, $letters, $lang, $cb) = @_;
             $cb->(Mojo::Message::Response->new(code => 404));
-        } unless defined &Wordwonk::Service::Wordd::suggest_MOCKED;
-        *Wordwonk::Service::Wordd::suggest_MOCKED = sub { 1 };
+        } unless defined &Logodal::Service::Wordd::suggest_MOCKED;
+        *Logodal::Service::Wordd::suggest_MOCKED = sub { 1 };
 
         # Scorer mocks
-        *Wordwonk::Game::Scorer::_fetch_tile_config_from_service = sub {
+        *Logodal::Game::Scorer::_fetch_tile_config_from_service = sub {
             return { success => 0 };
-        } unless defined &Wordwonk::Game::Scorer::_fetch_tile_config_from_service_MOCKED;
-        *Wordwonk::Game::Scorer::_fetch_tile_config_from_service_MOCKED = sub { 1 };
+        } unless defined &Logodal::Game::Scorer::_fetch_tile_config_from_service_MOCKED;
+        *Logodal::Game::Scorer::_fetch_tile_config_from_service_MOCKED = sub { 1 };
     }
 }
 

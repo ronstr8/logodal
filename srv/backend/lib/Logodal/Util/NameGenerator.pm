@@ -1,4 +1,4 @@
-package Wordwonk::Util::NameGenerator;
+package Logodal::Util::NameGenerator;
 
 use List::Util qw(any);
 use Mojo::Base -base, -signatures;

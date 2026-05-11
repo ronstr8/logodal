@@ -10,7 +10,7 @@ Use this checklist when finalizing a batch of features or preparing for a releas
 
 - [ ] **Frontend**: Ensure `en.json`, `es.json`, and `fr.json` in `srv/frontend/src/locales/` have identical keys.
   - Check for interpolation syntax: Use `{{variable}}` for frontend i18next.
-- [ ] **Backend**: Update the `translations` helper in `srv/backend/lib/Wordwonk.pm`.
+- [ ] **Backend**: Update the `translations` helper in `srv/backend/lib/Logodal.pm`.
   - Check for interpolation syntax: Use `{variable}` for manual regex replacement or `%s` for `sprintf`.
 
 ## 2. 📝 Update Changelog

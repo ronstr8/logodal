@@ -1,4 +1,4 @@
-package Wordwonk::Game::Scorer;
+package Logodal::Game::Scorer;
 use Moose;
 use v5.36;
 use utf8;

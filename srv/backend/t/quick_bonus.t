@@ -3,13 +3,13 @@ use Test::More;
 use Test::Mojo;
 use Data::Dumper;
 use DateTime;
-use Wordwonk::Schema;
+use Logodal::Schema;
 
 # Mock environment
 $ENV{DATABASE_URL} = 'dbi:SQLite:dbname=:memory:';
 $ENV{QUICK_BONUS_SECONDS} = 5;
 
-my $t = Test::Mojo->new('Wordwonk');
+my $t = Test::Mojo->new('Logodal');
 my $app = $t->app;
 my $schema = $app->schema;
 $schema->deploy;

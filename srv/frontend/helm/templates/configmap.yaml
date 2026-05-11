@@ -5,12 +5,12 @@ metadata:
   namespace: {{ .Values.global.namespace }}
 data:
   runtime-config.js: |
-    window.Wordwonk_CONFIG = {
+    window.LOGODAL_CONFIG = {
       LOG_LEVEL: {{ .Values.global.logLevel | default .Values.logLevel | quote }},
       KOFI_ID: {{ .Values.global.kofiId | default .Values.kofiId | quote }},
       KOFI_ENABLED: {{ .Values.global.kofiEnabled | default .Values.kofiEnabled | default true }},
       PAYPAL_ENABLED: {{ .Values.global.paypalEnabled | default .Values.paypalEnabled | default true }},
       PAYPAL_EMAIL: {{ .Values.global.paypalEmail | default .Values.paypalEmail | quote }},
-      PROJECT_CODE_LINK: {{ .Values.global.projectCodeLink | default .Values.projectCodeLink | default "https://github.com/ronstr8/Wordwonk" | quote }}
+      PROJECT_CODE_LINK: {{ .Values.global.projectCodeLink | default .Values.projectCodeLink | default "https://github.com/ronstr8/Logodal" | quote }}
     };
 

@@ -3,7 +3,7 @@ set -euo pipefail
 
 KUBECTL="/snap/bin/kubectl"
 SOCAT="sudo socat"
-NAMESPACE="Wordwonk"
+NAMESPACE="logodal"
 INGRESS_NAME="ingress"
 
 echo "Starting Minikube Ingress Proxy Monitor..."

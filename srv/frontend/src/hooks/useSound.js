@@ -2,12 +2,12 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 
 const useSound = () => {
     const [isMuted, setIsMuted] = useState(() => {
-        const saved = localStorage.getItem('wordwonk_muted');
+        const saved = localStorage.getItem('logodal_muted');
         return saved === 'true';
     });
 
     const [isAmbienceEnabled, setIsAmbienceEnabled] = useState(() => {
-        const saved = localStorage.getItem('wordwonk_ambience_enabled');
+        const saved = localStorage.getItem('logodal_ambience_enabled');
         return saved !== 'false'; // Default to true
     });
 
@@ -75,7 +75,7 @@ const useSound = () => {
     const toggleAmbience = useCallback(() => {
         setIsAmbienceEnabled(prev => {
             const newValue = !prev;
-            localStorage.setItem('wordwonk_ambience_enabled', newValue.toString());
+            localStorage.setItem('logodal_ambience_enabled', newValue.toString());
 
             if (newValue && !isMuted) {
                 startAmbience();
@@ -89,7 +89,7 @@ const useSound = () => {
     const toggleMute = useCallback(() => {
         setIsMuted(prev => {
             const newValue = !prev;
-            localStorage.setItem('wordwonk_muted', newValue.toString());
+            localStorage.setItem('logodal_muted', newValue.toString());
 
             // Stop/Start ambience based on master mute and current state
             if (newValue) {

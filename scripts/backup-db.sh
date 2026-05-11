@@ -1,16 +1,16 @@
 #!/bin/bash
-# Wordwonk Database Backup Script
-# This script dumps the Wordwonk database to a timestamped SQL file.
+# Logodal Database Backup Script
+# This script dumps the Logodal database to a timestamped SQL file.
 
-NAMESPACE="Wordwonk"
-DB_NAME="Wordwonk"
-DB_USER="Wordwonk_backend"
+NAMESPACE="logodal"
+DB_NAME="logodal"
+DB_USER="logodal_backend"
 BACKUP_DIR="backup"
 
 mkdir -p "$BACKUP_DIR"
 
 echo "🔍 Finding PostgreSQL pod..."
-POD_NAME=$(kubectl get pods -n $NAMESPACE -l app.kubernetes.io/instance=Wordwonk,app.kubernetes.io/name=postgresql -o jsonpath="{.items[0].metadata.name}")
+POD_NAME=$(kubectl get pods -n $NAMESPACE -l app.kubernetes.io/instance=logodal,app.kubernetes.io/name=postgresql -o jsonpath="{.items[0].metadata.name}")
 
 if [ -z "$POD_NAME" ]; then
     echo "❌ Error: Could not find PostgreSQL pod in namespace $NAMESPACE."
@@ -18,7 +18,7 @@ if [ -z "$POD_NAME" ]; then
 fi
 
 echo "🔐 Fetching database password..."
-# Fetch the 'password' key for the Wordwonk_backend user
+# Fetch the 'password' key for the logodal_backend user
 DB_PASSWORD=$(kubectl get secret postgresql -n "$NAMESPACE" -o jsonpath="{.data.password}" | base64 --decode)
 
 if [ -z "$DB_PASSWORD" ]; then
@@ -27,7 +27,7 @@ if [ -z "$DB_PASSWORD" ]; then
 fi
 
 TIMESTAMP=$(date +%Y%m%d_%H%M%S)
-BACKUP_FILE="$BACKUP_DIR/Wordwonk_${TIMESTAMP}.sql"
+BACKUP_FILE="$BACKUP_DIR/logodal_${TIMESTAMP}.sql"
 
 echo "🚀 Dumping $DB_NAME database to $BACKUP_FILE..."
 # Use pg_dump inside the pod
@@ -44,4 +44,3 @@ else
     rm -f "$BACKUP_FILE"
     exit 1
 fi
-

@@ -1,4 +1,4 @@
-package Wordwonk::Game::StateProcessor;
+package Logodal::Game::StateProcessor;
 use Moose;
 use v5.36;
 use utf8;

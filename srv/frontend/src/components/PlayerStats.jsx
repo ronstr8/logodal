@@ -28,18 +28,18 @@ function useTimeAgo(isoStr) {
     return label;
 }
 
-const WordwonkBanner = ({ leader }) => {
+const LogodalBanner = ({ leader }) => {
     const { t } = useTranslation();
     const ago = useTimeAgo(leader.last_word_at);
 
     return (
-        <div className="wordwonk-banner">
-            <div className="wordwonk-intro">{t('stats.the_wordwonk_is')}</div>
-            <div className="wordwonk-name">{leader.name}</div>
+        <div className="logodal-banner">
+            <div className="logodal-intro">{t('stats.the_daedalus_is')}</div>
+            <div className="logodal-name">{leader.name}</div>
             {leader.last_word && (
-                <div className="wordwonk-last-word">
-                    <span className="wordwonk-word">{leader.last_word}</span>
-                    <span className="wordwonk-ago">({leader.last_word_score}pts{ago ? `, ${ago} ago` : ''})</span>
+                <div className="logodal-last-word">
+                    <span className="logodal-word">{leader.last_word}</span>
+                    <span className="logodal-ago">({leader.last_word_score}pts{ago ? `, ${ago} ago` : ''})</span>
                 </div>
             )}
         </div>
@@ -51,11 +51,11 @@ const PlayerStats = ({ data }) => {
     if (!data) return <div className="loading-stats">{t('stats.loading')}</div>;
 
     const { leaders = [], personal } = data;
-    const wordwonk = leaders[0];
+    const logodal = leaders[0];
 
     return (
         <div className="stats-container">
-            {wordwonk && <WordwonkBanner leader={wordwonk} />}
+            {logodal && <LogodalBanner leader={logodal} />}
 
             {personal && (
                 <div className="personal-stats-section">

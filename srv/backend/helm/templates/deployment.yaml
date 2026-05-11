@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: {{ .Chart.Name | quote }}
-          image: "{{ .Values.global.registry }}/{{ .Values.global.projectName | default "wordwonk" }}-{{ .Chart.Name }}:{{ .Values.imageTag | default .Values.global.imageTag | default .Chart.AppVersion }}"
+          image: "{{ .Values.global.registry }}/{{ .Values.global.projectName | default "logodal" }}-{{ .Chart.Name }}:{{ .Values.imageTag | default .Values.global.imageTag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.imagePullPolicy | default .Values.global.imagePullPolicy | default "Always" }}
           ports:
             - name: http
@@ -108,7 +108,7 @@ spec:
       volumes:
         - name: locales-volume
           configMap:
-            name: wordwonk-locales
+            name: logodal-locales
 ---
 apiVersion: v1
 kind: Service

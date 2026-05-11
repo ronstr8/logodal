@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: wordwonk-db-pv
+  name: logodal-db-pv
 spec:
   capacity:
     storage: {{ .Values.postgresql.primary.persistence.size | default "10Gi" }}
@@ -10,9 +10,9 @@ spec:
   accessModes:
     - ReadWriteOnce
   persistentVolumeReclaimPolicy: Retain
-  storageClassName: {{ .Values.global.storageClass | default "wordwonk-db-local" }}
+  storageClassName: {{ .Values.global.storageClass | default "logodal-db-local" }}
   hostPath:
-    path: /mnt/k8s-volumes/wordwonk-db
+    path: /mnt/k8s-volumes/logodal-db
     type: DirectoryOrCreate
 {{- end -}}
 

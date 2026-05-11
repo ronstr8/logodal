@@ -1,4 +1,4 @@
-package Wordwonk::Web::Stats;
+package Logodal::Web::Stats;
 use Mojo::Base 'Mojolicious::Controller', -signatures;
 
 sub leaderboard ($self) {

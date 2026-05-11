@@ -20,7 +20,7 @@ Mojo::File->new($en_file)->spew(encode_json({
     }
 }));
 
-my $t = Test::Mojo->new('Wordwonk');
+my $t = Test::Mojo->new('Logodal');
 
 subtest 'Basic Translation' => sub {
     is($t->app->t('test.key', 'en', { name => 'World' }), "Hello World", "Simple interpolation");

@@ -1,4 +1,4 @@
--- Wordwonk PostgreSQL Schema
+-- Logodal PostgreSQL Schema
 -- Version: 0.2.0
 
 BEGIN;

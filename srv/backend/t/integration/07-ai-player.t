@@ -47,7 +47,7 @@ sub setup_mock_wordd_ai {
             Mojo::IOLoop->next_tick(sub { $cb->($self, $tx) });
         };
         # MOCK RACK VALIDATION IN SCORER
-        *Wordwonk::Game::Scorer::can_form_word = sub { return 1 };
+        *Logodal::Game::Scorer::can_form_word = sub { return 1 };
     }
     $t->app->ua($mock_ua);
 }

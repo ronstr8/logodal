@@ -9,7 +9,7 @@
     height: 100%;
 }
 
-.wordwonk-banner {
+.logodal-banner {
     background: linear-gradient(135deg, rgba(255, 215, 0, 0.08), rgba(255, 215, 0, 0.03));
     border: 1px solid rgba(255, 215, 0, 0.25);
     border-radius: 10px;
@@ -17,7 +17,7 @@
     position: relative;
 }
 
-.wordwonk-intro {
+.logodal-intro {
     font-size: 0.75rem;
     font-style: italic;
     color: #aaa;
@@ -25,7 +25,7 @@
     text-align: left;
 }
 
-.wordwonk-name {
+.logodal-name {
     font-size: 1.6rem;
     font-weight: bold;
     color: #ffd700;
@@ -34,7 +34,7 @@
     text-align: left;
 }
 
-.wordwonk-last-word {
+.logodal-last-word {
     position: absolute;
     bottom: 0.7rem;
     right: 0.9rem;
@@ -47,12 +47,12 @@
     text-align: right;
 }
 
-.wordwonk-word {
+.logodal-word {
     color: #ccc;
     text-transform: uppercase;
 }
 
-.wordwonk-ago {
+.logodal-ago {
     color: #888;
 }
 

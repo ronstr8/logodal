@@ -1,4 +1,4 @@
-package Wordwonk::Schema::Result::Player;
+package Logodal::Schema::Result::Player;
 use Moose;
 use MooseX::NonMoose;
 extends 'DBIx::Class::Core';
@@ -62,22 +62,22 @@ __PACKAGE__->add_unique_constraint([qw/nickname/]);
 __PACKAGE__->add_unique_constraint([qw/email/]);
 
 __PACKAGE__->has_many(
-    plays => 'Wordwonk::Schema::Result::Play',
+    plays => 'Logodal::Schema::Result::Play',
     'player_id'
 );
 
 __PACKAGE__->has_many(
-    identities => 'Wordwonk::Schema::Result::PlayerIdentity',
+    identities => 'Logodal::Schema::Result::PlayerIdentity',
     'player_id'
 );
 
 __PACKAGE__->has_many(
-    passkeys => 'Wordwonk::Schema::Result::PlayerPasskey',
+    passkeys => 'Logodal::Schema::Result::PlayerPasskey',
     'player_id'
 );
 
 __PACKAGE__->has_many(
-    sessions => 'Wordwonk::Schema::Result::Session',
+    sessions => 'Logodal::Schema::Result::Session',
     'player_id'
 );
 

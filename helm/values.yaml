@@ -1,11 +1,11 @@
 # Global settings shared across all microservices
 global:
-  domain: wordwonk.fazigu.org
+  domain: logodal.com
   # The single port for all traffic (Frontend, API, WS)
   externalPort: 80
   registry: localhost:5000
-  namespace: wordwonk
-  projectName: "wordwonk"
+  namespace: logodal
+  projectName: "logodal"
   imageTag: 2.3.0
   imagePullPolicy: Always
   maxPlayers: 13
@@ -20,14 +20,14 @@ global:
   defaultLanguage: en
   chatHistorySize: 50
   totalTiles: 100
-  kofiId: "wordwonk"
+  kofiId: "logodal"
   kofiEnabled: false
   paypalEnabled: false
   paypalEmail: "quinnfazigu@gmail.com"
-  projectCodeLink: "https://github.com/ronstr8/wordwonk"
+  projectCodeLink: "https://github.com/ronstr8/logodal"
   scoreAgainstAI: "true"
   endOnAllPlayed: "true"
-  storageClass: "wordwonk-db-local"
+  storageClass: "logodal-db-local"
   persistence:
     manualPV: true
 
@@ -35,7 +35,7 @@ global:
 # Centralized Ingress configuration
 ingress:
   enabled: true
-  host: wordwonk.fazigu.org
+  host: logodal.com
   annotations:
     kubernetes.io/ingress.class: nginx
     # Cert-manager will automatically provision SSL certificate
@@ -44,7 +44,7 @@ ingress:
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
   tls:
     enabled: true
-    secretName: wordwonk-tls
+    secretName: logodal-tls
 
 # Subchart overrides
 frontend:
@@ -58,7 +58,7 @@ wordd:
   service:
     type: ClusterIP
     port: 2345
-  langs: "en,es,fr,de,ru"
+  langs: "en,es,fr,de,ru,el"
 
 backend:
   enabled: true
@@ -68,8 +68,8 @@ backend:
     url: "http://ollama:11434"
     model: "phi3:mini"
   database:
-    url: "dbi:Pg:dbname=wordwonk;host=postgresql"
-    user: "wordwonk_backend"
+    url: "dbi:Pg:dbname=logodal;host=postgresql"
+    user: "logodal_backend"
   env:
     ADMIN_SMS_EMAIL: "17169032417@tmomail.net"
     CHAT_HISTORY_SIZE: 50
@@ -85,8 +85,8 @@ postgresql:
     repository: "bitnamilegacy/postgresql"
     tag: "16.4.0-debian-12-r0"
   auth:
-    database: "wordwonk"
-    username: "wordwonk_backend"
+    database: "logodal"
+    username: "logodal_backend"
   primary:
     initdb:
       scriptsConfigMap: db-init
@@ -102,7 +102,7 @@ postgresql:
 ollama:
   enabled: false
   image:
-    repository: localhost:5000/wordwonk-ollama
+    repository: localhost:5000/logodal-ollama
   service:
     type: ClusterIP
     port: 11434

@@ -1,4 +1,4 @@
-package Wordwonk::Schema;
+package Logodal::Schema;
 use Moose;
 use MooseX::NonMoose;
 extends 'DBIx::Class::Schema';

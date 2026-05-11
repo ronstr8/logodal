@@ -1,5 +1,5 @@
 ---
-# Wordwonk Perl Backend Configuration
+# Logodal Perl Backend Configuration
 # Currently driven primarily by Environment Variables
 hypnotoad:
   listen:

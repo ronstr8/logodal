@@ -1,4 +1,4 @@
-package Wordwonk::Game::Broadcaster;
+package Logodal::Game::Broadcaster;
 use Moose;
 use v5.36;
 

@@ -1,8 +1,8 @@
 {
     "app": {
-        "title": "palabrawonk",
+        "title": "logodal",
         "you_are": "Eres",
-        "you_are_wordwonk": "Eres el Wordwonk",
+        "you_are_daedalus": "Eres el Daedalus",
         "player_joined": "{{name}} se unió al duelo.",
         "players_starting": "{{players}} y tú empezáis a jugar palabras.",
         "players_starting_you": "Empiezas a jugar palabras.",
@@ -17,7 +17,7 @@
         "no_legends": "¡Aún no hay leyendas...!",
         "seconds_short": "s",
         "and": "y",
-        "help_label": "¿QUÉ?‽",
+        "help_label": "Ayuda",
         "select_blank": "SELECCIONA LETRA PARA COMODÍN",
         "cancel": "CANCELAR",
         "loading": "CARGANDO...",
@@ -28,7 +28,7 @@
         "accepted": "¡ACEPTADA!",
         "error_word_not_found": "No jugamos '{{word}}'.",
         "played_word": "{{player}} jugó una palabra de {{tile_count}} letras por {{raw_points}} puntos.",
-        "rules_summary": "Wordwonk es un duelo de vocabulario a alta velocidad. Usa tus fichas para formar la palabra con mayor puntuacion (o mas rara) antes de que se acabe el tiempo. Los valores de las letras se basan en su frecuencia en la bolsa: las letras comunes valen 1 punto, mientras que las mas raras pueden valer hasta 9. Las dos letras Unicornio mas raras valen 10 puntos. Una letra cada dia vale 7 puntos. La puntuacion es dinamica: busca una Palabra Unica o apunta a Bonificaciones por Longitud (+5 por 6 letras, doblando por cada letra adicional). Cuidado: duplicar una palabra te da 0 puntos, pero si alguien te copia, ganas el valor bruto completo de esa palabra por cada copia. A veces aparece una ficha verde brillante en el tablero: es la Letra Mutante, que vale 10 puntos, nacida cuando todos los jugadores de la ronda anterior obtuvieron una bonificacion. La seleccion natural en accion.",
+        "rules_summary": "Logodal es un duelo de vocabulario a alta velocidad. Usa tus fichas para formar la palabra con mayor puntuacion (o mas rara) antes de que se acabe el tiempo. Los valores de las letras se basan en su frecuencia en la bolsa: las letras comunes valen 1 punto, mientras que las mas raras pueden valer hasta 9. Las dos letras Unicornio mas raras valen 10 puntos. Una letra cada dia vale 7 puntos. La puntuacion es dinamica: busca una Palabra Unica o apunta a Bonificaciones por Longitud (+5 por 6 letras, doblando por cada letra adicional). Cuidado: duplicar una palabra te da 0 puntos, pero si alguien te copia, ganas el valor bruto completo de esa palabra por cada copia. A veces aparece una ficha verde brillante en el tablero: es la Letra Mutante, que vale 10 puntos, nacida cuando todos los jugadores de la ronda anterior obtuvieron una bonificacion. La seleccion natural en accion.",
         "tile_frequencies": "Frecuencias de Fichas",
         "donate_title": "DONACIÓN",
         "donate_desc": "¿Te gusta el juego? ¡Genial, a mí también! Hola, soy Ron \"Quinn\" Straight, y escribí esto con mis amigos artificiales. Soy un viejo hacker de la generación X con dos hijas en la universidad, y he estado desempleado por más de un año, así que cada granito ayuda. Cuando sientas que puedes. Te quiero, tío.",
@@ -42,6 +42,7 @@
         "lang_fr": "francés",
         "lang_de": "alemán",
         "lang_ru": "ruso",
+        "lang_el": "griego",
         "rules_title": "Regelas",
         "donate_button": "Donar",
         "stats_button": "Estadísticas",
@@ -82,7 +83,7 @@
         "base_score": "Puntuación Base",
         "duped_you": "te ha duplicado",
         "duplicate_penalty": "0 puntos (Duplicado)",
-        "solo_wonk": "Lamentablemente, un wonk solitario no recibe puntos.",
+        "solo_wonk": "Lamentablemente, un logodal solitario no recibe puntos.",
         "definition_link": "Definición",
         "suggested_nobody": "Nadie jugó {{word}}.",
         "suggested_missed": "Yo hubiera jugado {{word}}.",
@@ -107,7 +108,7 @@
         "passkey_registered": "¡Passkey registrado con éxito!",
         "logout": "Cerrar sesión",
         "play_anonymously": "Jugar Anónimamente",
-        "anonymous_disclaimer": "Nunca decimos quién juega, pero si quieres mantener tu rango wonk, inicia sesión con uno de los siguientes.",
+        "anonymous_disclaimer": "Nunca decimos quién juega, pero si quieres mantener tu rango logodal, inicia sesión con uno de los siguientes.",
         "continue_with_discord": "Continuar con Discord",
         "anonymous_failed": "El inicio de sesión anónimo falló."
     },
@@ -118,7 +119,7 @@
         "total_points": "Puntos Totales",
         "words_played": "Palabras Jugadas",
         "global_top_10": "Top 10 Global",
-        "the_wordwonk_is": "El Wordwonk es...",
+        "the_daedalus_is": "El Daedalus es...",
         "best_play": "Mejor Jugada"
     },
     "ai": {

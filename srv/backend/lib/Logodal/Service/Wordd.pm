@@ -1,4 +1,4 @@
-package Wordwonk::Service::Wordd;
+package Logodal::Service::Wordd;
 use Mojo::Base -base, -signatures;
 use Mojo::URL;
 

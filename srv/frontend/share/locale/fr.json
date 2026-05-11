@@ -1,8 +1,8 @@
 {
     "app": {
-        "title": "mot-wonk",
+        "title": "logodal",
         "you_are": "Vous êtes",
-        "you_are_wordwonk": "Vous êtes le Wordwonk",
+        "you_are_daedalus": "Vous êtes le Daedalus",
         "player_joined": "{{name}} a rejoint le duel.",
         "players_starting": "{{players}} et vous commencez à jouer des mots.",
         "players_starting_you": "Vous commencez à jouer des mots.",
@@ -17,7 +17,7 @@
         "no_legends": "Pas encore de légendes...",
         "seconds_short": "s",
         "and": "et",
-        "help_label": "C'EST QUOI CE BORDEL‽",
+        "help_label": "Aide",
         "select_blank": "CHOISISSEZ UNE LETTRE POUR LE JOKER",
         "cancel": "ANNULER",
         "loading": "CHARGEMENT...",
@@ -28,7 +28,7 @@
         "accepted": "ACCEPTÉ !",
         "error_word_not_found": "On ne joue pas '{{word}}'.",
         "played_word": "{{player}} a joué un mot de {{tile_count}} lettres pour {{raw_points}} points.",
-        "rules_summary": "Wordwonk est un duel de vocabulaire a grande vitesse ! Utilisez vos tuiles pour former le mot le mieux note (ou le plus etrange) avant la fin du temps. Les valeurs des lettres sont basees sur leur frequence dans le sac : les lettres courantes valent 1 point, tandis que les plus rares valent jusqu'a 9 points. Les deux lettres Licorne les plus rares valent 10 points ! Une lettre chaque jour vaut 7 points. La notation est dynamique : trouvez un Mot Unique ou visez des Bonus de Longueur (+5 pour 6 lettres, doublant pour chaque lettre supplementaire). Attention : dupliquer un mot vous donne 0 point, mais si quelqu'un vous copie, vous gagnez la valeur brute totale de ce mot par copie. Parfois, une tuile verte lumineuse apparait dans le rack : c'est la Lettre Mutante, valant 10 points, nee quand tous les joueurs de la partie precedente ont obtenu un bonus. La selection naturelle a l'oeuvre.",
+        "rules_summary": "Logodal est un duel de vocabulaire a grande vitesse ! Utilisez vos tuiles pour former le mot le mieux note (ou le plus etrange) avant la fin du temps. Les valeurs des lettres sont basees sur leur frequence dans le sac : les lettres courantes valent 1 point, tandis que les plus rares valent jusqu'a 9 points. Les deux lettres Licorne les plus rares valent 10 points ! Une lettre chaque jour vaut 7 points. La notation est dynamique : trouvez un Mot Unique ou visez des Bonus de Longueur (+5 pour 6 lettres, doublant pour chaque lettre supplementaire). Attention : dupliquer un mot vous donne 0 point, mais si quelqu'un vous copie, vous gagnez la valeur brute totale de ce mot par copie. Parfois, une tuile verte lumineuse apparait dans le rack : c'est la Lettre Mutante, valant 10 points, nee quand tous les joueurs de la partie precedente ont obtenu un bonus. La selection naturelle a l'oeuvre.",
         "tile_frequencies": "Fréquence des Lettres",
         "donate_title": "FAIRE UN DON",
         "donate_desc": "Vous aimez le jeu ? Super, moi aussi ! Salut, je suis Ron \"Quinn\" Straight, et j'ai écrit ce truc avec mes amis artificiels. Je suis un vieux hacker de la génération X avec deux filles à l'université, et je suis au chômage depuis plus d'un ans, donc chaque petit geste compte. Quand vous le sentez. Je vous aime, les gars.",
@@ -42,6 +42,7 @@
         "lang_fr": "Français",
         "lang_de": "allemand",
         "lang_ru": "russe",
+        "lang_el": "grec",
         "rules_title": "Règles",
         "donate_button": "Faire un don",
         "stats_button": "Stats",
@@ -82,7 +83,7 @@
         "base_score": "Score de Base",
         "duped_you": "vous a dupliqué",
         "duplicate_penalty": "0 point (Doublon)",
-        "solo_wonk": "Malheureusement, un wonk solitaire ne reçoit aucun point.",
+        "solo_wonk": "Malheureusement, un logodal solitaire ne reçoit aucun point.",
         "definition_link": "Définition",
         "suggested_nobody": "Personne n'a joué {{word}}.",
         "suggested_missed": "J'aurais joué {{word}}.",
@@ -107,7 +108,7 @@
         "passkey_registered": "Passkey enregistrée avec succès !",
         "logout": "Déconnexion",
         "play_anonymously": "Jouer Anonymement",
-        "anonymous_disclaimer": "On ne dit jamais qui joue, mais si vous voulez garder votre rang de wonk, connectez-vous avec l'un des ci-dessous.",
+        "anonymous_disclaimer": "On ne dit jamais qui joue, mais si vous voulez garder votre rang de logodal, connectez-vous avec l'un des ci-dessous.",
         "continue_with_discord": "Continuer avec Discord",
         "anonymous_failed": "La connexion anonyme a échoué."
     },
@@ -118,7 +119,7 @@
         "total_points": "Points Totaux",
         "words_played": "Mots Joués",
         "global_top_10": "Top 10 Global",
-        "the_wordwonk_is": "Le Wordwonk est...",
+        "the_daedalus_is": "Le Daedalus est...",
         "best_play": "Meilleur Mot"
     },
     "ai": {

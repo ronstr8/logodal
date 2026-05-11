@@ -3,6 +3,6 @@ service:
   port: 80
 
 global:
-  registry: docker.io/Wordwonk
+  registry: docker.io/Logodal
   frontendExternalPort: 8080
 

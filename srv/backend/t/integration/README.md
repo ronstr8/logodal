@@ -1,6 +1,6 @@
 # Integration Tests
 
-This directory contains integration tests for the Wordwonk game backend, focusing on WebSocket functionality, chat, and end-to-end game flows.
+This directory contains integration tests for the Logodal game backend, focusing on WebSocket functionality, chat, and end-to-end game flows.
 
 ## Overview
 
@@ -59,8 +59,8 @@ The `TestHelper::get_test_mojo()` function automatically:
 If you want to run tests against a real PostgreSQL database (for example, to test PostgreSQL-specific features), you can set environment variables before running tests:
 
 ```bash
-export DATABASE_URL="dbi:Pg:dbname=Wordwonk_test;host=localhost"
-export DB_USER="Wordwonk_test"
+export DATABASE_URL="dbi:Pg:dbname=Logodal_test;host=localhost"
+export DB_USER="Logodal_test"
 export DB_PASS="test_password"
 ```
 
@@ -155,7 +155,7 @@ WebSocket tests may hang if the server doesn't respond. Check that:
 If you see errors about missing tables or columns:
 
 - The schema is automatically generated from DBIx::Class Result classes
-- Check that all Result classes in `lib/Wordwonk/Schema/Result/` are valid
+- Check that all Result classes in `lib/Logodal/Schema/Result/` are valid
 - Verify that `DBD::SQLite` is installed
 - The schema is deployed via `$schema->deploy()` in `TestHelper::get_test_mojo()`
 - Check for errors in the test output about schema deployment
@@ -165,8 +165,8 @@ If you see errors about missing tables or columns:
 Set these environment variables before running tests:
 
 ```bash
-export DATABASE_URL="dbi:Pg:dbname=Wordwonk_test;host=localhost"
-export DB_USER="Wordwonk_test"
+export DATABASE_URL="dbi:Pg:dbname=Logodal_test;host=localhost"
+export DB_USER="Logodal_test"
 export DB_PASS="test_password"
 ```
 
@@ -191,15 +191,15 @@ That's it! No PostgreSQL container needed. If you want to test against PostgreSQ
 - name: Setup PostgreSQL
   run: |
     docker run -d -p 5432:5432 \
-      -e POSTGRES_DB=Wordwonk_test \
-      -e POSTGRES_USER=Wordwonk_test \
+      -e POSTGRES_DB=Logodal_test \
+      -e POSTGRES_USER=Logodal_test \
       -e POSTGRES_PASSWORD=test_password \
       postgres:16
 
 - name: Run Integration Tests with PostgreSQL
   env:
-    DATABASE_URL: "dbi:Pg:dbname=Wordwonk_test;host=localhost"
-    DB_USER: "Wordwonk_test"
+    DATABASE_URL: "dbi:Pg:dbname=Logodal_test;host=localhost"
+    DB_USER: "Logodal_test"
     DB_PASS: "test_password"
   run: |
     cd srv/backend

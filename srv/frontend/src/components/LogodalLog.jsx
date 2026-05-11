@@ -1,9 +1,9 @@
 import MessageList from './MessageList';
 
-const WonkLog = ({ messages }) => {
+const LogodalLog = ({ messages }) => {
     return (
         <MessageList messages={messages} />
     );
 };
 
-export default WonkLog;
+export default LogodalLog;

@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import LogodalLogo from './LogodalLogo';
 import './Login.css';
 
 const Login = ({ onLoginSuccess }) => {
     const { t } = useTranslation();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-    const [lastMethod, setLastMethod] = useState(localStorage.getItem('ww_last_login'));
+    const [lastMethod, setLastMethod] = useState(localStorage.getItem('logodal_last_login'));
 
     const handleGoogleLogin = () => {
         window.location.href = '/auth/google';
@@ -55,7 +56,7 @@ const Login = ({ onLoginSuccess }) => {
             });
 
             if (verifyResp.ok) {
-                localStorage.setItem('ww_last_login', 'passkey');
+                localStorage.setItem('logodal_last_login', 'passkey');
                 onLoginSuccess();
             } else {
                 setError(t('auth.passkey_failed'));
@@ -71,7 +72,7 @@ const Login = ({ onLoginSuccess }) => {
     return (
         <div className="login-overlay">
             <div className="login-card">
-                <h1>Wordwonk</h1>
+                <LogodalLogo height={68} style={{ margin: '0 auto 0.75rem' }} />
                 <p className="login-subtitle">{t('auth.welcome_back')}</p>
 
                 {lastMethod && (

@@ -1,4 +1,4 @@
-package Wordwonk::Schema::Result::Game;
+package Logodal::Schema::Result::Game;
 use Moose;
 use MooseX::NonMoose;
 extends 'DBIx::Class::Core';
@@ -63,7 +63,7 @@ __PACKAGE__->inflate_column('rack', {
 });
 
 __PACKAGE__->has_many(
-    plays => 'Wordwonk::Schema::Result::Play',
+    plays => 'Logodal::Schema::Result::Play',
     'game_id'
 );
 

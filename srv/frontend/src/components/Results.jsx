@@ -116,7 +116,7 @@ const Results = ({ results = [], summary = "", is_solo = false, is_early_end = f
                     </div>
                 )}
                 {is_solo && (
-                    <div className="solo-wonk-note">
+                    <div className="solo-logodal-note">
                         {t('results.solo_wonk')}
                     </div>
                 )}

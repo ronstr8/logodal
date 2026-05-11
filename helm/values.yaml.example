@@ -4,8 +4,8 @@ global:
   # The single port for all traffic (Frontend, API, WS)
   externalPort: 80
   registry: localhost:5000
-  namespace: wordwonk
-  projectName: "wordwonk"
+  namespace: logodal
+  projectName: "logodal"
   imageTag: latest
   imagePullPolicy: Always
   maxPlayers: 13
@@ -24,7 +24,7 @@ global:
   kofiEnabled: false
   paypalEnabled: false
   paypalEmail: "your-email@example.com"
-  projectCodeLink: "https://github.com/your-org/wordwonk"
+  projectCodeLink: "https://github.com/your-org/logodal"
   scoreAgainstAI: "true"
   endOnAllPlayed: "false"
   storageClass: "standard"
@@ -41,7 +41,7 @@ ingress:
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
   tls:
     enabled: false
-    secretName: wordwonk-tls
+    secretName: logodal-tls
 
 # Subchart overrides
 frontend:
@@ -65,8 +65,8 @@ backend:
     url: "http://ollama:11434"
     model: "phi3:mini"
   database:
-    url: "dbi:Pg:dbname=wordwonk;host=postgresql"
-    user: "wordwonk_backend"
+    url: "dbi:Pg:dbname=logodal;host=postgresql"
+    user: "logodal_backend"
   env:
     ADMIN_SMS_EMAIL: ""
     CHAT_HISTORY_SIZE: 50
@@ -82,8 +82,8 @@ postgresql:
     repository: "bitnamilegacy/postgresql"
     tag: "16.4.0-debian-12-r0"
   auth:
-    database: "wordwonk"
-    username: "wordwonk_backend"
+    database: "logodal"
+    username: "logodal_backend"
   primary:
     initdb:
       scriptsConfigMap: db-init
@@ -110,7 +110,7 @@ auth:
 ollama:
   enabled: false
   image:
-    repository: localhost:5000/wordwonk-ollama
+    repository: localhost:5000/logodal-ollama
   service:
     type: ClusterIP
     port: 11434

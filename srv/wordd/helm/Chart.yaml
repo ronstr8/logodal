@@ -1,6 +1,6 @@
 apiVersion: v2
 name: wordd
-description: A Rust-based microservice for Wordwonk word validation
+description: A Rust-based microservice for Logodal word validation
 type: application
 version: 0.11.0
 appVersion: "2.3.0"

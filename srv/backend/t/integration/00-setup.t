@@ -7,7 +7,7 @@ use lib 'lib', 't/lib';
 plan tests => 4;
 
 # Test 1: Can we load the main app?
-use_ok('Wordwonk');
+use_ok('Logodal');
 
 # Test 2: Can we load Test::Mojo?
 use_ok('Test::Mojo');

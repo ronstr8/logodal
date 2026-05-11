@@ -19,7 +19,7 @@ clean: ## Clean up temporary files
 	find . -name '*~' -delete
 
 run: ## Run the backend server (development mode)
-	morbo script/Wordwonk
+	morbo script/Logodal
 
 dev: deps ## Setup for development (install deps)
 	@echo "Development environment ready!"

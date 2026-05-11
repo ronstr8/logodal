@@ -30,5 +30,5 @@ EXPOSE 3000
 
 # Start with Hypnotoad for production performance
 ENV MOJO_LISTEN="http://*:3000"
-CMD ["sh", "-c", "perl -Ilib bin/migrate.pl && exec hypnotoad -f bin/wordwonk-api"]
+CMD ["sh", "-c", "perl -Ilib bin/migrate.pl && exec hypnotoad -f bin/logodal-api"]
 

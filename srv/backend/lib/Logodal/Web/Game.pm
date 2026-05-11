@@ -1,4 +1,4 @@
-package Wordwonk::Web::Game;
+package Logodal::Web::Game;
 use Mojo::Base 'Mojolicious::Controller', -signatures;
 use v5.36;
 use utf8;
@@ -6,12 +6,12 @@ use DateTime;
 use Mojo::JSON qw(encode_json decode_json);
 use Mojo::Util;
 use UUID::Tiny qw(:std);
-use Wordwonk::Util::NameGenerator;
+use Logodal::Util::NameGenerator;
 
 my $DEFAULT_LANG = $ENV{DEFAULT_LANG} || 'en';
 
 sub generate_procedural_name ($id) {
-    return Wordwonk::Util::NameGenerator->new->generate(4, 1, $id);
+    return Logodal::Util::NameGenerator->new->generate(4, 1, $id);
 }
 
 sub websocket ($self) {

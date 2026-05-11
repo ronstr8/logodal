@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: wordd
-          image: "{{ .Values.global.registry }}/{{ .Values.global.projectName | default "wordwonk" }}-{{ .Chart.Name }}:{{ .Values.imageTag | default .Values.global.imageTag | default .Chart.AppVersion }}"
+          image: "{{ .Values.global.registry }}/{{ .Values.global.projectName | default "logodal" }}-{{ .Chart.Name }}:{{ .Values.imageTag | default .Values.global.imageTag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.global.imagePullPolicy }}
           ports:
             - containerPort: 2345

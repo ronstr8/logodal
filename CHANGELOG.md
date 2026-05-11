@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to Wordwonk will be documented in this file.
+All notable changes to Logodal will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
@@ -9,8 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Added (2.0.0)
 
-- **Mutant Letter**: When every player in the most recently completed multi-player game earned at least one bonus (length, unique word, quick play, or duplicate), a randomly chosen tile in the new game's rack mutates. It glows green with a subtle throb animation and is worth 10 points — regardless of its normal value. Natural selection amongst all wordwonks, past and future.
-- **Wordwonk Banner**: The Stats panel now opens with a prominent banner identifying the current #1 player by lifetime score ("The Wordwonk is..."), along with the last word they played in a finished game and a live-updating relative timestamp (e.g. "knife (3m ago)").
+- **Mutant Letter**: When every player in the most recently completed multi-player game earned at least one bonus (length, unique word, quick play, or duplicate), a randomly chosen tile in the new game's rack mutates. It glows green with a subtle throb animation and is worth 10 points — regardless of its normal value. Natural selection amongst all logodals, past and future.
+- **Logodal Banner**: The Stats panel now opens with a prominent banner identifying the current #1 player by lifetime score ("The Logodal is..."), along with the last word they played in a finished game and a live-updating relative timestamp (e.g. "knife (3m ago)").
 
 ### Changed (2.0.0)
 
@@ -23,7 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - **Frontend Architecture Overhaul**: Refactored the monolithic `App.jsx` (~1150 lines) into a modular, hook-based architecture, reducing primary component size by 70%.
 - **Custom Hooks Ecosystem**: Introduced specialized hooks (`usePlayerAuth`, `useGameState`, `useGameSocket`, `useGameController`, `useInteractionHandler`) to cleanly separate network I/O, game state, and user interaction logic.
 - **Component Decomposition**: Extracted `GameHeader` and `GameArea` into dedicated, reusable components to improve UI maintainability.
-- **Backend Configuration Hardening**: Refactored `Wordwonk::Game::StateProcessor` to utilize Moose attributes for scoring rules, enabling dependency injection and decoupling critical game logic from environment variables.
+- **Backend Configuration Hardening**: Refactored `Logodal::Game::StateProcessor` to utilize Moose attributes for scoring rules, enabling dependency injection and decoupling critical game logic from environment variables.
 - **Rust Service Modularization**: Extracted state bootstrapping in the `wordd` service into dedicated functions, cleaning up `main.rs` and improving startup orchestration.
 
 ### Fixed (1.14.0)
@@ -82,10 +82,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ### Refactored (1.9.0)
 
 - **Backend Architecture Overhaul**: Refactored monolithic `Game.pm` into specialized modules:
-  - `Wordwonk::Game::Manager`: Handles game lifecycle and player joining.
-  - `Wordwonk::Game::StateProcessor`: Manages scoring, bonuses, and results calculation.
-  - `Wordwonk::Game::Registry`: Handles game discovery and creation logic.
-  - `Wordwonk::Service::Wordd`: Cleaned up interface for the word validation service.
+  - `Logodal::Game::Manager`: Handles game lifecycle and player joining.
+  - `Logodal::Game::StateProcessor`: Manages scoring, bonuses, and results calculation.
+  - `Logodal::Game::Registry`: Handles game discovery and creation logic.
+  - `Logodal::Service::Wordd`: Cleaned up interface for the word validation service.
 
 ### Fixed (1.9.0)
 

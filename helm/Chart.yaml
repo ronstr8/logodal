@@ -1,6 +1,6 @@
 apiVersion: v2
-name: wordwonk
-description: Umbrella chart for the wordwonk polyglot microservices stack
+name: logodal
+description: Umbrella chart for the logodal polyglot microservices stack
 type: application
 version: 0.18.0
 appVersion: "2.3.0"

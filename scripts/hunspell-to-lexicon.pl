@@ -8,7 +8,7 @@ use feature 'signatures';
 
 no warnings 'redefine';
 
-# hunspell_to_lexicon.pl - Convert Hunspell .dic files to Wordwonk Lexicon format
+# hunspell_to_lexicon.pl - Convert Hunspell .dic files to Logodal Lexicon format
 # Usage: perl hunspell_to_lexicon.pl <filenames.dic> > <output_lexicon.txt>
 
 binmode STDOUT, ":utf8";
@@ -23,19 +23,27 @@ print "$_\n" for sort keys %WORDS;
 sub get_encoding ($input_file) {
     my $aff_file = $input_file;
     $aff_file =~ s/\.dic$/.aff/;
-    
+
     if (-e $aff_file) {
         open my $fh, '<', $aff_file or return 'utf8';
         while (my $line = <$fh>) {
             if ($line =~ /^SET\s+([\w-]+)/) {
                 my $enc = $1;
                 close $fh;
-                # Hunspell often says ISO8859-1 but Perl wants iso-8859-1
                 return $enc;
             }
         }
         close $fh;
     }
+
+    # No SET directive — detect from file content
+    my $file_type = `file "\Q$input_file\E" 2>/dev/null`;
+    if ($file_type =~ /ISO-8859/) {
+        return 'iso-8859-7' if $input_file =~ /\bel\b/i;  # Greek
+        return 'iso-8859-9' if $input_file =~ /\btr\b/i;  # Turkish
+        return 'iso-8859-1';
+    }
+
     return 'utf8';
 }
 
@@ -178,9 +186,9 @@ sub add_word ($word) {
     # Needs to be at least 2 chars
     return if length($word) < 2;
 
-    # Skip abbreviations: no vowels (y counts as a vowel — preserves rhythm, crypt, glyph, etc.)
-    # Legitimate no-vowel words (cwm, nth, mm, brr, shh, hmm, psst) go in insertions.txt
-    return if $word !~ /[aeiouy]/;
+    # Skip abbreviations: no vowels
+    # Latin + Greek (αεηιουω + accented) + Cyrillic (аеёиоуыэюя)
+    return if $word !~ /[aeiouyαεηιουυωάέήίόύώϊϋΐΰаеёиоуыэюяіїє]/;
 
     $WORDS{lc($word)}++;
 }

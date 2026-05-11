@@ -1,11 +1,11 @@
 use strict;
 use warnings;
 use lib 'lib';
-use Wordwonk;
+use Logodal;
 use Test::More;
 
-warn "Attempting to create Wordwonk app...\n";
-my $app = Wordwonk->new;
+warn "Attempting to create Logodal app...\n";
+my $app = Logodal->new;
 warn "App created.\n";
 
 warn "Attempting to call startup...\n";

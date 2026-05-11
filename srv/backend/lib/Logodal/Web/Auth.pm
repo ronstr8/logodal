@@ -1,4 +1,4 @@
-package Wordwonk::Web::Auth;
+package Logodal::Web::Auth;
 use Mojo::Base 'Mojolicious::Controller', -signatures;
 use Crypt::URandom qw(urandom);
 use DateTime;
@@ -32,6 +32,7 @@ sub google_callback ($self) {
         response_type => 'code',
         redirect_uri => $redirect_uri,
     })->then(sub ($data) {
+        $self->app->log->debug("Google token exchange succeeded, access_token present: " . (defined $data->{access_token} ? 'yes' : 'no'));
         my $access_token = $data->{access_token};
         # Exchange token for user info via Google UserInfo API
         return $self->ua->get_p("https://www.googleapis.com/oauth2/v3/userinfo?access_token=$access_token");
@@ -59,7 +60,9 @@ sub google_callback ($self) {
         
         $self->redirect_to('/');
     })->catch(sub ($err) {
-        $self->app->log->error("Google Callback error: $err");
+        # Log the raw callback params to help diagnose OAuth errors
+        my $params = $self->req->params->to_hash;
+        $self->app->log->error("Google Callback error: $err | params: code=" . ($params->{code} ? 'present' : 'missing') . " error=" . ($params->{error} // 'none'));
         $self->render(text => "Auth failed: $err", status => 500);
     });
 }
@@ -143,7 +146,7 @@ sub _create_session ($self, $player) {
 sub passkey_challenge ($self) {
     my $wa = Authen::WebAuthn->new(
         rp_id   => $self->req->url->to_abs->host,
-        rp_name => "Wordwonk",
+        rp_name => "Logodal",
         origin  => $self->_wa_origin,
     );
 
@@ -168,7 +171,7 @@ sub passkey_challenge ($self) {
     $self->render(json => {
         challenge => $challenge,
         user => $user_data,
-        rp => { name => "Wordwonk", id => $self->req->url->to_abs->host },
+        rp => { name => "Logodal", id => $self->req->url->to_abs->host },
         pubKeyCredParams => [{ type => "public-key", alg => -7 }], # ES256
         timeout => 60000,
         attestation => "none",
@@ -191,7 +194,7 @@ sub passkey_verify ($self) {
 
     my $wa = Authen::WebAuthn->new(
         rp_id   => $self->req->url->to_abs->host,
-        rp_name => "Wordwonk",
+        rp_name => "Logodal",
         origin  => $self->_wa_origin,
     );
 

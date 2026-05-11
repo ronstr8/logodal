@@ -6,5 +6,5 @@ service:
   type: ClusterIP
   port: 3000
 database:
-  url: "dbi:Pg:dbname=wordwonk;host=postgresql"
-  user: "wordwonk_backend"
+  url: "dbi:Pg:dbname=logodal;host=postgresql"
+  user: "logodal_backend"

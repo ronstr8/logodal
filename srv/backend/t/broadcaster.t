@@ -1,6 +1,6 @@
 use Test::More;
 use Mojo::Base -signatures;
-use Wordwonk::Game::Broadcaster;
+use Logodal::Game::Broadcaster;
 
 # Mock App
 package MockApp {
@@ -19,7 +19,7 @@ package MockClient {
 }
 
 my $app = MockApp->new;
-my $broadcaster = Wordwonk::Game::Broadcaster->new(app => $app);
+my $broadcaster = Logodal::Game::Broadcaster->new(app => $app);
 
 # Setup a game with some clients
 my $gid = 'game-1';

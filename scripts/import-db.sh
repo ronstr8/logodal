@@ -1,14 +1,14 @@
 #!/bin/bash
-# Wordwonk Database Import Script
+# Logodal Database Import Script
 # This script imports a SQL backup into the PostgreSQL pod.
 # Usage: ./scripts/import-db.sh [backup_file.sql]
 # If no file is provided, it defaults to reading from STDIN (piped).
 
-NAMESPACE="Wordwonk"
+NAMESPACE="logodal"
 BACKUP_FILE=${1:-/dev/stdin}
 
 echo "🔍 Finding PostgreSQL pod..."
-POD_NAME=$(kubectl get pods -n $NAMESPACE -l app.kubernetes.io/instance=Wordwonk,app.kubernetes.io/name=postgresql -o jsonpath="{.items[0].metadata.name}")
+POD_NAME=$(kubectl get pods -n $NAMESPACE -l app.kubernetes.io/instance=logodal,app.kubernetes.io/name=postgresql -o jsonpath="{.items[0].metadata.name}")
 
 if [ -z "$POD_NAME" ]; then
     echo "❌ Error: Could not find PostgreSQL pod in namespace $NAMESPACE."
@@ -23,14 +23,14 @@ if [ -z "$POSTGRES_PASSWORD" ]; then
     exit 1
 fi
 
-echo "🧹 Dropping and re-creating 'Wordwonk' database..."
-kubectl exec -i -n "$NAMESPACE" "$POD_NAME" -- env PGPASSWORD="$POSTGRES_PASSWORD" psql -U postgres -d postgres -c "DROP DATABASE IF EXISTS Wordwonk WITH (FORCE);"
-kubectl exec -i -n "$NAMESPACE" "$POD_NAME" -- env PGPASSWORD="$POSTGRES_PASSWORD" psql -U postgres -d postgres -c "CREATE DATABASE Wordwonk OWNER Wordwonk_backend;"
+echo "🧹 Dropping and re-creating 'logodal' database..."
+kubectl exec -i -n "$NAMESPACE" "$POD_NAME" -- env PGPASSWORD="$POSTGRES_PASSWORD" psql -U postgres -d postgres -c "DROP DATABASE IF EXISTS logodal WITH (FORCE);"
+kubectl exec -i -n "$NAMESPACE" "$POD_NAME" -- env PGPASSWORD="$POSTGRES_PASSWORD" psql -U postgres -d postgres -c "CREATE DATABASE logodal OWNER logodal_backend;"
 
 echo "🚀 Importing data into $POD_NAME..."
-# Connect to 'Wordwonk' database for the import
+# Connect to 'logodal' database for the import
 # We use the postgres superuser to ensure permissions for role handling etc.
-cat "$BACKUP_FILE" | kubectl exec -i -n "$NAMESPACE" "$POD_NAME" -- env PGPASSWORD="$POSTGRES_PASSWORD" psql -U postgres -d Wordwonk
+cat "$BACKUP_FILE" | kubectl exec -i -n "$NAMESPACE" "$POD_NAME" -- env PGPASSWORD="$POSTGRES_PASSWORD" psql -U postgres -d logodal
 
 if [ $? -eq 0 ]; then
     echo "✅ Import successful!"
@@ -38,4 +38,3 @@ else
     echo "❌ Import failed."
     exit 1
 fi
-

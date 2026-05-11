@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: ollama
-          image: "{{ .Values.global.registry }}/{{ .Values.global.projectName | default "wordwonk" }}-ollama:{{ .Values.ollama.imageTag | default .Values.global.imageTag | default .Chart.AppVersion }}"
+          image: "{{ .Values.global.registry }}/{{ .Values.global.projectName | default "logodal" }}-ollama:{{ .Values.ollama.imageTag | default .Values.global.imageTag | default .Chart.AppVersion }}"
           ports:
             - containerPort: 11434
           resources:

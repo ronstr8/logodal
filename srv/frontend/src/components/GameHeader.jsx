@@ -1,9 +1,10 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import LogodalLogo from './LogodalLogo';
 
 const GameHeader = ({
     nickname,
-    isWordwonk,
+    isLogodal,
     onOpenSidebar,
     messagesVisible,
     setMessagesVisible,
@@ -24,8 +25,8 @@ const GameHeader = ({
 }) => {
     const { t } = useTranslation();
 
-    const identityLabel = isWordwonk
-        ? t('app.you_are_wordwonk', 'You are the Wordwonk')
+    const identityLabel = isLogodal
+        ? t('app.you_are_daedalus', 'You are the Daedalus')
         : nickname
             ? `${t('app.you_are', 'You are')} ${nickname}`
             : null;
@@ -34,7 +35,7 @@ const GameHeader = ({
         <header>
             <div className="header-left">
                 <button className="mobile-menu-btn" onClick={onOpenSidebar}>☰</button>
-                <h1 style={{ whiteSpace: 'nowrap' }}>Wordwonk</h1>
+                <LogodalLogo height={44} className="logodal-logo" />
             </div>
 
             <div className="header-toggles desktop-only">
@@ -45,7 +46,7 @@ const GameHeader = ({
 
             <div className="header-actions desktop-only">
                 {identityLabel && (
-                    <div className={`user-identity${isWordwonk ? ' is-wordwonk' : ''}`}>
+                    <div className={`user-identity${isLogodal ? ' is-logodal' : ''}`}>
                         {identityLabel}
                     </div>
                 )}

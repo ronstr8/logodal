@@ -15,11 +15,6 @@ header {
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-header h1 {
-    font-size: clamp(1.8rem, 4vw, 2.8rem);
-    margin: 0;
-    letter-spacing: -1px;
-}
 
 .header-toggles {
     display: flex;
@@ -1007,8 +1002,8 @@ header h1 {
         padding: 0.5rem 1rem;
     }
 
-    header h1 {
-        font-size: 1.5rem;
+    header .logodal-logo {
+        height: 32px;
     }
 
     .main-game-layout {
@@ -1063,7 +1058,7 @@ header h1 {
         --tile-h: clamp(38px, 12.5vw, 55px);
     }
 
-    header h1 {
-        font-size: 1.2rem;
+    header .logodal-logo {
+        height: 28px;
     }
 }

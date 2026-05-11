@@ -3,9 +3,9 @@ use warnings;
 use utf8;
 use Test::More;
 use lib 'lib';
-use Wordwonk::Game::Scorer;
+use Logodal::Game::Scorer;
 
-my $scorer = Wordwonk::Game::Scorer->new();
+my $scorer = Logodal::Game::Scorer->new();
 
 sub calculate_prefix {
     my ($word, $elapsed, $quick_bonus_seconds, $rack_size) = @_;
@@ -33,7 +33,7 @@ subtest 'Emoji Prefix Logic' => sub {
 
     # Tuesday = 'T' is the bonus char
     is(calculate_prefix('CAT', 1, $quick_bonus_seconds, 7), '⚡📅 ', 'Quick play on standard 7 with T gets lightning + calendar');
-    is(calculate_prefix('Wordwonk', 6, $quick_bonus_seconds, 8), '💯✨ ', 'Full rack (8) no T gets 100 + sparkles');
+    is(calculate_prefix('LOGODALS', 6, $quick_bonus_seconds, 8), '💯✨ ', 'Full rack (8) no T gets 100 + sparkles');
     
     # New threshold for 8 rack is 5 letters (int(8/2)+1 = 5)
     is(calculate_prefix('WONK', 6, $quick_bonus_seconds, 8), '', '4 letters on 8 rack no T gets nothing');

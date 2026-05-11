@@ -99,6 +99,7 @@ export default function useInteractionHandler({
     }, [isLocked, timeLeft, rackSize, setRack, setGuess]);
 
     const handleGlobalKeyDown = useCallback((e) => {
+        if (e.ctrlKey || e.metaKey) return;
         if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable || e.target.closest('.chat-input-area')) return;
         if (isLocked || timeLeft === 0 || results) return;
 

@@ -1,8 +1,8 @@
-package Wordwonk::Schema::ResultSet::Player;
+package Logodal::Schema::ResultSet::Player;
 use base 'DBIx::Class::ResultSet';
 use UUID::Tiny qw(:std);
 use DateTime;
-use Wordwonk::Util::NameGenerator;
+use Logodal::Util::NameGenerator;
 
 sub find_or_create_from_google {
     my ($self, $user_info) = @_;
@@ -34,7 +34,7 @@ sub find_or_create_from_google {
         
         if (!$player) {
             # New Player
-            my $gen = Wordwonk::Util::NameGenerator->new;
+            my $gen = Logodal::Util::NameGenerator->new;
             $player = $self->create({
                 id => create_uuid_as_string(UUID_V4),
                 nickname => $gen->generate(4, 1, $google_id),
@@ -84,7 +84,7 @@ sub find_or_create_from_discord {
         
         if (!$player) {
             # New Player
-            my $gen = Wordwonk::Util::NameGenerator->new;
+            my $gen = Logodal::Util::NameGenerator->new;
             $player = $self->create({
                 id => create_uuid_as_string(UUID_V4),
                 nickname => $gen->generate(4, 1, $discord_id),

@@ -1,11 +1,11 @@
-# Wordwonk 💥
+# Logodal 💥
 
-A fast-paced word game with familiar roots. You can call it any variation of wordw*nk and it will still be Wordwonk. Even wordsplat. And go ahead and register those domains, you disgusting pathetic people who squat on the piles of others.
+A fast-paced word game with familiar roots. You can call it any variation of wordw*nk and it will still be Logodal. Even wordsplat. And go ahead and register those domains, you disgusting pathetic people who squat on the piles of others.
 
-Wordwonk is a polyglot microservices platform built as an exercise in modern developer environment practices, distributed systems, and agentic coding. It combines Perl, Rust, and Nginx into a seamless, high-performance game universe.
+Logodal is a polyglot microservices platform built as an exercise in modern developer environment practices, distributed systems, and agentic coding. It combines Perl, Rust, and Nginx into a seamless, high-performance game universe.
 
 > [!NOTE]
-> The latest development version of the game is running at [Wordwonk.fazigu.org](https://Wordwonk.fazigu.org). It is sometimes stable, sometimes crashing into the abyss, and often filled with extra annoying bugs. You have been warned.
+> The latest development version of the game is running at [Logodal.fazigu.org](https://Logodal.fazigu.org). It is sometimes stable, sometimes crashing into the abyss, and often filled with extra annoying bugs. You have been warned.
 
 *Yes, AI wrote a lot of this, and I like that--even emojis and em-dashes. I'm writing these words here, and tweak the code as necessary, but with Antigravity, it's like I have several different coworkers to call upon to get the project done. It's a massive leap forward for productivity. Every hacker is now his own team.*
 
@@ -63,7 +63,7 @@ This single command:
 Build all polyglot services, push them to the local registry, and deploy the umbrella Helm chart:
 
 ```bash
-make build && make deploy && watch kubectl -n Wordwonk get pods
+make build && make deploy && watch kubectl -n Logodal get pods
 ```
 
 **Persistent Storage**: PostgreSQL uses Kind's built-in `local-path` provisioner via the `standard` StorageClass. Data survives pod restarts and helm upgrades but is scoped to the Kind cluster — deleting the cluster (`make down` in k8s-homelab) wipes all data.
@@ -71,7 +71,7 @@ make build && make deploy && watch kubectl -n Wordwonk get pods
 To reset the database without destroying the cluster:
 
 ```bash
-kubectl -n Wordwonk delete pvc --all
+kubectl -n Logodal delete pvc --all
 make deploy
 ```
 
@@ -80,10 +80,10 @@ make deploy
 With Kind's `extraPortMappings`, the ingress controller binds directly to your host's ports 80 and 443. Add a hosts entry on your client machine:
 
 ```bash
-echo "127.0.0.1 Wordwonk.fazigu.org" | sudo tee -a /etc/hosts
+echo "127.0.0.1 Logodal.fazigu.org" | sudo tee -a /etc/hosts
 ```
 
-Then navigate to `http://Wordwonk.fazigu.org` to play.
+Then navigate to `http://Logodal.fazigu.org` to play.
 
 ### 4. Setup SSL Certificates (Optional)
 
@@ -104,7 +104,7 @@ kubectl apply -f helm/resources/production/letsencrypt-issuer.yaml
 
 ### 5. External Services Setup
 
-Wordwonk integrates with several external services for authentication, notifications, and payments. Follow these steps to generate the required credentials:
+Logodal integrates with several external services for authentication, notifications, and payments. Follow these steps to generate the required credentials:
 
 #### 🔑 Google OAuth
 
@@ -112,14 +112,14 @@ Wordwonk integrates with several external services for authentication, notificat
 2. Create a new project or select an existing one.
 3. Configure the **OAuth consent screen**.
 4. Create **OAuth 2.0 Client IDs** (Web application).
-5. Add `https://Wordwonk.fazigu.org/auth/google/callback` to the **Authorized redirect URIs**.
+5. Add `https://Logodal.fazigu.org/auth/google/callback` to the **Authorized redirect URIs**.
 6. Copy the `Client ID` and `Client Secret` to `helm/secrets.yaml`.
 
 #### 🎮 Discord OAuth & Webhooks
 
 1. Go to the [Discord Developer Portal](https://discord.com/developers/applications).
 2. Create a new Application.
-3. Under **OAuth2 -> General**, add `https://Wordwonk.fazigu.org/auth/discord/callback` to the **Redirects**.
+3. Under **OAuth2 -> General**, add `https://Logodal.fazigu.org/auth/discord/callback` to the **Redirects**.
 4. In the **OAuth2 -> URL Generator**, select the following scopes:
    - `identify`
    - `email`
@@ -131,18 +131,18 @@ Wordwonk integrates with several external services for authentication, notificat
 #### ☕ Ko-fi Donations
 
 1. Go to your [Ko-fi Dashboard](https://ko-fi.com/manage/index).
-2. Note your **Ko-fi Page ID** (e.g., if your link is `ko-fi.com/Wordwonk`, your ID is `Wordwonk`).
+2. Note your **Ko-fi Page ID** (e.g., if your link is `ko-fi.com/Logodal`, your ID is `Logodal`).
 3. Set `VITE_KOFI_ID` in your frontend `.env` file or environment variables.
 
 ### 6. PLAYTIME
 
-Navigate to `https://Wordwonk.fazigu.org` (or `http://` if you skipped SSL setup) to begin.
+Navigate to `https://Logodal.fazigu.org` (or `http://` if you skipped SSL setup) to begin.
 
 *My heathen prayers reach out to you, hoping that it works the first time. It took me so long to get comfortable with hooking my development environment up to the outside world in a way that didn't seem hacky and better mirrored the production environment, but I think this finally gets it right. Over the five years at my last job, nobody there seemed to care or wanted to brainstorm/troubleshoot the issue. I wish I'd had Antigravity back then.*
 
 ### 7. Lexicons
 
-Wordwonk uses high-speed, pre-compiled lexicons for word validation. If you want to update the word lists from the latest Hunspell dictionaries:
+Logodal uses high-speed, pre-compiled lexicons for word validation. If you want to update the word lists from the latest Hunspell dictionaries:
 
 ```bash
 # Standard rebuild of all lexicons

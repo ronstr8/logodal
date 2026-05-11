@@ -1,9 +1,9 @@
-package Wordwonk::Schema::Result::PlayerPasskey;
+package Logodal::Schema::Result::PlayerIdentity;
 use Moose;
 use MooseX::NonMoose;
 extends 'DBIx::Class::Core';
 
-__PACKAGE__->table('player_passkeys');
+__PACKAGE__->table('player_identities');
 __PACKAGE__->load_components(qw/InflateColumn::DateTime TimeStamp/);
 __PACKAGE__->add_columns(
     id => {
@@ -14,17 +14,11 @@ __PACKAGE__->add_columns(
         data_type => 'uuid',
         is_foreign_key => 1,
     },
-    credential_id => {
+    provider => {
         data_type => 'text',
-        is_nullable => 0,
     },
-    public_key => {
+    provider_id => {
         data_type => 'text',
-        is_nullable => 0,
-    },
-    sign_count => {
-        data_type => 'bigint',
-        default_value => 0,
     },
     created_at => {
         data_type => 'timestamp with time zone',
@@ -33,10 +27,10 @@ __PACKAGE__->add_columns(
 );
 
 __PACKAGE__->set_primary_key('id');
-__PACKAGE__->add_unique_constraint([qw/credential_id/]);
+__PACKAGE__->add_unique_constraint([qw/provider provider_id/]);
 
 __PACKAGE__->belongs_to(
-    player => 'Wordwonk::Schema::Result::Player',
+    player => 'Logodal::Schema::Result::Player',
     'player_id'
 );
 

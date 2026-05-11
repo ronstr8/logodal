@@ -3,7 +3,7 @@ name = "wordd"
 version = "1.14.0"
 edition = "2021"
 authors = ["Ron Straight <straightre@gmail.com>"]
-description = "Word validity and lookup service for Wordwonk"
+description = "Word validity and lookup service for Logodal"
 license = "MIT"
 
 [dependencies]
