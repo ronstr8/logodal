@@ -29,7 +29,7 @@
         "reload": "RELOAD PAGE",
         "accepted": "ACCEPTED!",
         "error_word_not_found": "We don't play '{{word}}'.",
-        "played_word": "{{player}} played a {{tile_count}}-letter word for {{raw_points}} points.",
+        "played_word": "{{player}} played a {{tile_count}}-letter word for at least {{raw_points}} points.",
         "donate_title": "DONATE",
         "donate_desc": "Love the game? Great, so do I! Hi, I'm Ron \"Quinn\" Straight, and I wrote this thing with my artificial friends. I'm an old gen-X hacker with two girls in college, and I've been unemployed for over a year, so every two bits helps. Whenever you're feeling it. Love you, man.",
         "donate_or": "OR",

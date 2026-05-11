@@ -29,7 +29,7 @@
         "reload": "SEITE NEULADEN",
         "accepted": "AKZEPTIERT!",
         "error_word_not_found": "Wir spielen nicht mit '{{word}}'.",
-        "played_word": "{{player}} hat ein {{tile_count}}-Buchstaben-Wort für {{raw_points}} Punkte gespielt.",
+        "played_word": "{{player}} hat ein {{tile_count}}-Buchstaben-Wort für mindestens {{raw_points}} Punkte gespielt.",
         "donate_title": "SPENDEN",
         "donate_desc": "Liebst du das Spiel? Super, ich auch! Hi, ich bin Ron \"Quinn\" Straight, und ich habe dieses Ding mit meinen künstlichen Freunden geschrieben. Ich bin ein alter Gen-X-Hacker mit zwei Töchtern im College und seit über einem Jahr arbeitslos, also hilft jeder Cent. Wann immer du Lust hast. Hab dich lieb, Mann.",
         "donate_or": "ODER",

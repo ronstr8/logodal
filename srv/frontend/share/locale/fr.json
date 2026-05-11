@@ -27,7 +27,7 @@
         "reload": "RECHARGER LA PAGE",
         "accepted": "ACCEPTÉ !",
         "error_word_not_found": "On ne joue pas '{{word}}'.",
-        "played_word": "{{player}} a joué un mot de {{tile_count}} lettres pour {{raw_points}} points.",
+        "played_word": "{{player}} a joué un mot de {{tile_count}} lettres pour au moins {{raw_points}} points.",
         "rules_summary": "Logodal est un duel de vocabulaire a grande vitesse ! Utilisez vos tuiles pour former le mot le mieux note (ou le plus etrange) avant la fin du temps. Les valeurs des lettres sont basees sur leur frequence dans le sac : les lettres courantes valent 1 point, tandis que les plus rares valent jusqu'a 9 points. Les deux lettres Licorne les plus rares valent 10 points ! Une lettre chaque jour vaut 7 points. La notation est dynamique : trouvez un Mot Unique ou visez des Bonus de Longueur (+5 pour 6 lettres, doublant pour chaque lettre supplementaire). Attention : dupliquer un mot vous donne 0 point, mais si quelqu'un vous copie, vous gagnez la valeur brute totale de ce mot par copie. Parfois, une tuile verte lumineuse apparait dans le rack : c'est la Lettre Mutante, valant 10 points, nee quand tous les joueurs de la partie precedente ont obtenu un bonus. La selection naturelle a l'oeuvre.",
         "tile_frequencies": "Fréquence des Lettres",
         "donate_title": "FAIRE UN DON",

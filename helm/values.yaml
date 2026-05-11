@@ -6,7 +6,7 @@ global:
   registry: localhost:5000
   namespace: logodal
   projectName: "logodal"
-  imageTag: 2.3.0
+  imageTag: 3.0.0
   imagePullPolicy: Always
   maxPlayers: 13
   randomLetterScoreMode: "true"

@@ -5,6 +5,27 @@ All notable changes to Logodal will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [3.0.0] - 2026-05-11
+
+### Changed (3.0.0)
+
+- **Complete Rebrand: Wordwonk → Logodal**: Renamed the project, all namespaces, Docker images, Helm charts, database names, and locale keys from Wordwonk to Logodal. Deployed to [logodal.com](https://logodal.com) with Let's Encrypt TLS via cert-manager.
+- **Logodal SVG Logo**: Replaced plain text headers with an inline SVG React component (`LogodalLogo`) featuring the amber-tiled Logodal wordmark. Used in both the game header and login screen. Fully responsive via CSS at mobile breakpoints.
+- **Leader Title**: Corrected the in-game identity label to "You are the Daedalus" (was showing an incorrect fallback string).
+- **Play Score Notification**: Word submission notifications now read "worth at least {points}" to clarify that the displayed score is the raw letter value before strategy bonuses are applied.
+- **Help Button Localization**: Renamed the "WTF" button to "Help" across all six supported locales (en, es, fr, de, ru, el).
+
+### Added (3.0.0)
+
+- **Passkey Authentication**: Full WebAuthn/passkey support via `Authen::WebAuthn`. Players can register and sign in with device-bound passkeys. Registration requires an active OAuth session; authentication is fully standalone.
+- **Greek Locale**: Added Greek (`el`) as a supported UI language.
+
+### Fixed (3.0.0)
+
+- **Ctrl+R / Ctrl+Shift+R Intercepted**: The global keyboard handler was capturing modifier-key combos, preventing browser reload. Now exits early when `Ctrl` or `Meta` is held.
+- **Messages Panel Auto-Scroll**: The chat history panel failed to scroll to new messages because `scrollRef` was attached to an inner container while the parent `.panel-body` was the actual scroll root. Fixed by wrapping `MessageList` in a `.messages-container` div, activating the existing CSS `:has()` rule that disables scroll on `.panel-body` and makes `.chat-history` the sole scroll container.
+- **AI Player Names**: Stale persistent volume data retained old AI player records (Flash, Wanko). Replaced with the correct AI opponents: Icarus and Perdix.
+
 ## [2.0.0] - 2026-04-23
 
 ### Added (2.0.0)

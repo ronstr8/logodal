@@ -61,11 +61,11 @@ const MessageList = ({ messages }) => {
     };
 
     return (
+        <div className="messages-container">
         <div
             className="panel-content chat-history"
             ref={scrollRef}
             onScroll={handleScroll}
-            style={{ overflowY: 'auto' }}
         >
             {(messages || []).map((msg, i) => {
                 if (msg.isSeparator) {
@@ -97,6 +97,7 @@ const MessageList = ({ messages }) => {
                     </div>
                 );
             })}
+        </div>
         </div>
     );
 };

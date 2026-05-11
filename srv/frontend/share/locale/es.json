@@ -27,7 +27,7 @@
         "reload": "RECARGAR PÁGINA",
         "accepted": "¡ACEPTADA!",
         "error_word_not_found": "No jugamos '{{word}}'.",
-        "played_word": "{{player}} jugó una palabra de {{tile_count}} letras por {{raw_points}} puntos.",
+        "played_word": "{{player}} jugó una palabra de {{tile_count}} letras por al menos {{raw_points}} puntos.",
         "rules_summary": "Logodal es un duelo de vocabulario a alta velocidad. Usa tus fichas para formar la palabra con mayor puntuacion (o mas rara) antes de que se acabe el tiempo. Los valores de las letras se basan en su frecuencia en la bolsa: las letras comunes valen 1 punto, mientras que las mas raras pueden valer hasta 9. Las dos letras Unicornio mas raras valen 10 puntos. Una letra cada dia vale 7 puntos. La puntuacion es dinamica: busca una Palabra Unica o apunta a Bonificaciones por Longitud (+5 por 6 letras, doblando por cada letra adicional). Cuidado: duplicar una palabra te da 0 puntos, pero si alguien te copia, ganas el valor bruto completo de esa palabra por cada copia. A veces aparece una ficha verde brillante en el tablero: es la Letra Mutante, que vale 10 puntos, nacida cuando todos los jugadores de la ronda anterior obtuvieron una bonificacion. La seleccion natural en accion.",
         "tile_frequencies": "Frecuencias de Fichas",
         "donate_title": "DONACIÓN",

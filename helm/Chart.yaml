@@ -3,7 +3,7 @@ name: logodal
 description: Umbrella chart for the logodal polyglot microservices stack
 type: application
 version: 0.18.0
-appVersion: "2.3.0"
+appVersion: "3.0.0"
 
 dependencies:
   - name: frontend

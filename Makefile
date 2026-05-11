@@ -11,7 +11,7 @@ DOMAIN = logodal.fazigu.org
 
 SERVICES = frontend backend wordd
 
-.PHONY: all build clean deploy undeploy help backup ensure-namespace $(SERVICES)
+.PHONY: all build clean deploy undeploy help backup ensure-namespace sync-version $(SERVICES)
 
 all: build
 
@@ -37,6 +37,9 @@ $(SERVICES): ensure-namespace
 	else \
 		echo "⚠️  deployment/$@ not found in namespace $(NAMESPACE). Run 'make deploy' first."; \
 	fi
+
+sync-version: ## Propagate VERSION to package.json, Chart.yaml appVersions, and imageTag
+	node scripts/sync-version.js
 
 migrate: ## Run pending database migrations inside the cluster
 	kubectl exec -n $(NAMESPACE) -it deploy/backend -- perl -Ilib bin/migrate.pl
