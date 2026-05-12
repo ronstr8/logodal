@@ -48,6 +48,11 @@ __PACKAGE__->add_columns(
     brain => {
         data_type => 'jsonb',
         is_nullable => 1,
+    },
+    is_anonymous => {
+        data_type => 'boolean',
+        is_nullable => 0,
+        default_value => 0,
     }
 );
 

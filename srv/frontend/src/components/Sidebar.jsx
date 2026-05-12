@@ -1,5 +1,4 @@
 import { useTranslation } from 'react-i18next';
-import { CONFIG } from '../config';
 import './Sidebar.css';
 
 const Sidebar = ({
@@ -144,9 +143,6 @@ const Sidebar = ({
                             <span className="sidebar-icon">🚪</span>
                             {t('auth.logout')}
                         </button>
-                        <div className="sidebar-version">
-                            v{__APP_VERSION__} · {__BUILD_DATE__} · <a href={CONFIG.PROJECT_CODE_LINK} target="_blank" rel="noopener noreferrer">{CONFIG.PROJECT_CODE_LINK}</a>
-                        </div>
                     </div>
                 </div>
             </div>

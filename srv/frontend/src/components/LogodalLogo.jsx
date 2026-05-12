@@ -41,8 +41,8 @@ const LogodalLogo = ({ height = 50, className, style }) => (
               fill="#2C1000" fontFamily={FONT}>?</text>
 
         {/* Wordmark */}
-        <text x="214" y="103" fontSize="96" fontWeight="500" fill="#CC904C"
-              fontFamily={FONT}>Logodal</text>
+        <text x="214" y="104" fontSize="82" fontWeight="700" fill="#CC904C"
+              fontFamily={FONT}>LOGODAL</text>
     </svg>
 );
 

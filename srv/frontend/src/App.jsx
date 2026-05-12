@@ -9,9 +9,8 @@ import useGameState from './hooks/useGameState'
 import useGameSocket from './hooks/useGameSocket'
 import useGameController from './hooks/useGameController'
 import useInteractionHandler from './hooks/useInteractionHandler'
-import Login from './components/Login'
 import PlayerStats from './components/PlayerStats'
-import PasskeySetup from './components/PasskeySetup'
+import Login from './components/Login'
 import Sidebar from './components/Sidebar'
 import GameHeader from './components/GameHeader'
 import GameArea from './components/GameArea'
@@ -144,8 +143,7 @@ function App() {
 
     return (
         <div className={`game-container ${isFocusMode ? 'focus-mode' : ''}`}>
-            <div className="version-stamp">v{__APP_VERSION__} · {__BUILD_DATE__} · <a href={CONFIG.PROJECT_CODE_LINK} target="_blank" rel="noopener noreferrer">{CONFIG.PROJECT_CODE_LINK}</a></div>
-            
+
             <Sidebar
                 isOpen={sidebarOpen}
                 onClose={() => setSidebarOpen(false)}
@@ -254,6 +252,9 @@ function App() {
                                     </div>
                                 ))}
                             </div>
+                        </div>
+                        <div className="rules-footer">
+                            v{__APP_VERSION__} · {__BUILD_DATE__} · <a href={CONFIG.PROJECT_CODE_LINK} target="_blank" rel="noopener noreferrer">GitHub</a>
                         </div>
                     </div>
                 </DraggablePanel>

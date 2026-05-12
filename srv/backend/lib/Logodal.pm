@@ -202,8 +202,7 @@ sub startup ($self) {
     $auth->get('/discord/callback')->to('auth#discord_callback')->name('discord_callback');
     $auth->get('/me')->to('auth#me');
     $auth->post('/logout')->to('auth#logout');
-    $auth->get('/passkey/challenge')->to('auth#passkey_challenge');
-    $auth->post('/passkey/verify')->to('auth#passkey_verify');
+    $auth->post('/anonymous')->to('auth#anonymous');
 
     # WebSocket for game
     $r->websocket('/ws')->to('game#websocket');
@@ -333,6 +332,24 @@ sub startup ($self) {
         $self->reseed_prng();
         $self->prepopulate_games();
     });
+
+    $self->helper(cleanup_anonymous_players => sub ($c) {
+        my $schema = $c->app->schema;
+        return unless $schema;
+        eval {
+            my $cutoff  = DateTime->now->subtract(years => 1);
+            my $deleted = $schema->resultset('Player')->search({
+                is_anonymous  => 1,
+                last_login_at => { '<', $schema->storage->datetime_parser->format_datetime($cutoff) },
+            })->delete;
+            $c->app->log->info("Purged $deleted stale anonymous players") if $deleted > 0;
+        };
+        $c->app->log->warn("Anonymous cleanup failed: $@") if $@;
+    });
+
+    # Clean up at startup, then once a day
+    Mojo::IOLoop->next_tick(sub { $self->cleanup_anonymous_players() });
+    Mojo::IOLoop->recurring(86400 => sub { $self->cleanup_anonymous_players() });
 }
 
 1;

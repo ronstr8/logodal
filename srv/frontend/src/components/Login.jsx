@@ -17,52 +17,18 @@ const Login = ({ onLoginSuccess }) => {
         window.location.href = '/auth/discord';
     };
 
-    const handlePasskeyLogin = async () => {
+    const handleAnonymousLogin = async () => {
         setLoading(true);
         setError(null);
         try {
-            const resp = await fetch('/auth/passkey/challenge');
-            const options = await resp.json();
-
-            // Convert challenge and user.id from base64 to ArrayBuffer
-            options.challenge = Uint8Array.from(atob(options.challenge), c => c.charCodeAt(0)).buffer;
-            if (options.user && options.user.id) {
-                options.user.id = Uint8Array.from(options.user.id, c => c.charCodeAt(0)).buffer;
-            }
-
-            const credential = await navigator.credentials.get({
-                publicKey: {
-                    challenge: options.challenge,
-                    rpId: options.rp.id,
-                    userVerification: 'preferred',
-                }
-            });
-
-            // Send back to server
-            const verifyResp = await fetch('/auth/passkey/verify', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    id: credential.id,
-                    type: 'assertion',
-                    rawId: btoa(String.fromCharCode(...new Uint8Array(credential.rawId))),
-                    response: {
-                        authenticatorData: btoa(String.fromCharCode(...new Uint8Array(credential.response.authenticatorData))),
-                        clientDataJSON: btoa(String.fromCharCode(...new Uint8Array(credential.response.clientDataJSON))),
-                        signature: btoa(String.fromCharCode(...new Uint8Array(credential.response.signature))),
-                        userHandle: credential.response.userHandle ? btoa(String.fromCharCode(...new Uint8Array(credential.response.userHandle))) : null,
-                    }
-                })
-            });
-
-            if (verifyResp.ok) {
-                localStorage.setItem('logodal_last_login', 'passkey');
+            const resp = await fetch('/auth/anonymous', { method: 'POST' });
+            if (resp.ok) {
+                localStorage.setItem('logodal_last_login', 'anonymous');
                 onLoginSuccess();
             } else {
-                setError(t('auth.passkey_failed'));
+                setError(t('auth.anonymous_failed', 'Could not start anonymous session'));
             }
         } catch (err) {
-            console.error(err);
             setError(err.message);
         } finally {
             setLoading(false);
@@ -92,9 +58,9 @@ const Login = ({ onLoginSuccess }) => {
                         {t('auth.continue_with_discord', 'Continue with Discord')}
                     </button>
 
-                    <button className="auth-btn passkey" onClick={handlePasskeyLogin} disabled={loading}>
-                        <span className="icon">🔑</span>
-                        {t('auth.sign_in_with_passkey')}
+                    <button className="auth-btn anonymous" onClick={handleAnonymousLogin} disabled={loading}>
+                        <span className="icon">👤</span>
+                        {t('auth.play_anonymously', 'Play Anonymously')}
                     </button>
                 </div>
 
