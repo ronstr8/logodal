@@ -67,15 +67,13 @@ sub get_or_create_game ($self, $player, $invite_gid = undef) {
             my $gid = $active_game->id;
             $app->log->debug("Starting pending $lang game $gid");
             my %updates = ( started_at => DateTime->now );
-            unless ($active_game->mutant_letter) {
-                my $vals = { %{ $active_game->letter_values } }; # copy — mutant may modify
-                my $mutant = $self->_pick_mutant_letter($schema, $active_game->rack, $vals);
-                if ($mutant) {
-                    $vals->{$mutant} = 10;
-                    $updates{letter_values} = $vals;
-                    $updates{mutant_letter} = $mutant;
-                    $app->log->info("Mutant letter for pending game $gid: $mutant");
-                }
+            my $vals = { %{ $active_game->letter_values } }; # copy — mutant may modify
+            my $mutant = $self->_pick_mutant_letter($active_game->rack, $vals);
+            if ($mutant) {
+                $vals->{$mutant} = 10;
+                $updates{letter_values} = $vals;
+                $updates{mutant_letter} = $mutant;
+                $app->log->info("Mutant letter for pending game $gid: $mutant");
             }
             $active_game->update(\%updates);
             $self->_init_in_memory_game($gid, $active_game, $lang);
@@ -86,7 +84,7 @@ sub get_or_create_game ($self, $player, $invite_gid = undef) {
             $app->log->debug("No pending game found, creating emergency $lang game");
             my $rack = $app->scorer->get_random_rack($lang);
             my $vals = $app->scorer->mutable_tile_values($lang);
-            my $mutant = $self->_pick_mutant_letter($schema, $rack, $vals);
+            my $mutant = $self->_pick_mutant_letter($rack, $vals);
             if ($mutant) {
                 $vals->{$mutant} = 10;
                 $app->log->info("Mutant letter for new game: $mutant");
@@ -144,72 +142,9 @@ sub _init_in_memory_game ($self, $gid, $game_record, $lang, $time_left = undef) 
     };
 }
 
-sub _pick_mutant_letter ($self, $schema, $rack, $vals) {
-    # Find the most recently finished game with more than one unique player
-    my $last_game = $schema->resultset('Game')->search(
-        { finished_at => { '!=' => undef } },
-        { order_by => { -desc => 'finished_at' }, rows => 1 }
-    )->first;
-
-    return undef unless $last_game;
-
-    my @plays = $schema->resultset('Play')->search(
-        { game_id => $last_game->id },
-        { order_by => { -asc => 'created_at' } }
-    )->all;
-
-    my %seen_players = map { $_->player_id => 1 } @plays;
-    return undef if scalar(keys %seen_players) < 2;  # solo game doesn't count
-
-    # Check whether every player received at least one bonus
-    my %word_players;  # word => [ player_ids in order ]
-    for my $p (@plays) {
-        push @{ $word_players{ $p->word } }, $p->player_id;
-    }
-
-    my $rack_size = scalar(@$rack);
-    my $min_bonus_len = int($rack_size / 2) + 1;
-    my $quick_secs = $ENV{QUICK_BONUS_SECONDS} || 5;
-
-    my %player_has_bonus;
-    for my $p (@plays) {
-        my $pid  = $p->player_id;
-        my $word = $p->word;
-
-        # Length bonus
-        if (length($word) >= $min_bonus_len) {
-            $player_has_bonus{$pid} = 1;
-            next;
-        }
-        # Unique word bonus (only player with that word)
-        if (scalar(@{ $word_players{$word} }) == 1) {
-            $player_has_bonus{$pid} = 1;
-            next;
-        }
-        # Duplicate bonus (first player with that word, others copied them)
-        if ($word_players{$word}[0] eq $pid && scalar(@{ $word_players{$word} }) > 1) {
-            $player_has_bonus{$pid} = 1;
-            next;
-        }
-        # Quick bonus
-        if ($last_game->started_at) {
-            my $elapsed = $p->created_at->epoch - $last_game->started_at->epoch;
-            if ($elapsed <= $quick_secs) {
-                $player_has_bonus{$pid} = 1;
-                next;
-            }
-        }
-    }
-
-    # All players must have received a bonus
-    for my $pid (keys %seen_players) {
-        return undef unless $player_has_bonus{$pid};
-    }
-
-    # Pick a random rack letter that isn't blank and isn't already worth 10+
+sub _pick_mutant_letter ($self, $rack, $vals) {
     my @candidates = grep { $_ ne '_' && ($vals->{$_} // 0) < 10 } @$rack;
     return undef unless @candidates;
-
     return $candidates[ int(rand(@candidates)) ];
 }
 
