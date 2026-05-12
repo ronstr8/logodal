@@ -147,7 +147,7 @@ sub _init_in_memory_game ($self, $gid, $game_record, $lang, $time_left = undef) 
     }
     # Priority 3: Fallback random AI if still no one
     else {
-        my $random_ai = $app->schema->resultset('Player')->search({ brain => { '!=', undef } }, { order_by => 'random()', rows => 1 })->single;
+        my $random_ai = $app->schema->resultset('Player')->search({ brain => { '!=', undef } }, { order_by => \['random()'], rows => 1 })->single;
         push @ais, Logodal::Game::AI->new_from_player($app, $gid, $random_ai, $lang) if $random_ai;
     }
 
