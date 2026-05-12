@@ -132,24 +132,9 @@ sub get_or_create_game ($self, $player, $invite_gid = undef) {
 sub _init_in_memory_game ($self, $gid, $game_record, $lang, $time_left = undef) {
     my $app = $self->app;
     require Logodal::Game::AI;
-    
-    my ($scheduled, $extra) = $app->schema->resultset('Player')->find_active_ais();
-    my @ais;
-    
-    # Priority 1: Pick ONE random AI from scheduled ones
-    if (@$scheduled) {
-        my $ai = $scheduled->[int(rand(@$scheduled))];
-        push @ais, Logodal::Game::AI->new_from_player($app, $gid, $ai, $lang);
-    } 
-    # Priority 2: Pick the extra jump-in AI if no one is scheduled
-    elsif ($extra) {
-        push @ais, Logodal::Game::AI->new_from_player($app, $gid, $extra, $lang);
-    }
-    # Priority 3: Fallback random AI if still no one
-    else {
-        my $random_ai = $app->schema->resultset('Player')->search({ brain => { '!=', undef } }, { order_by => \['random()'], rows => 1 })->single;
-        push @ais, Logodal::Game::AI->new_from_player($app, $gid, $random_ai, $lang) if $random_ai;
-    }
+
+    my @all_ais = $app->schema->resultset('Player')->search({ brain => { '!=', undef } })->all;
+    my @ais = map { Logodal::Game::AI->new_from_player($app, $gid, $_, $lang) } @all_ais;
 
     $app->games->{$gid} = {
         clients   => {},
