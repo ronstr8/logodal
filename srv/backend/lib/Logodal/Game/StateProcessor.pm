@@ -119,11 +119,22 @@ sub calculate_results ($self, $plays, $game_lang, $game_started_at = undef, $rac
     }
     
     # Convert to sorted array
-    my @results = sort { 
-        $b->{score} <=> $a->{score} 
-        || $a->{created_at} cmp $b->{created_at} 
+    my @results = sort {
+        $b->{score} <=> $a->{score}
+        || $a->{created_at} cmp $b->{created_at}
     } values %player_total_scores;
-    
+
+    # Winner doesn't get the unique word bonus — no need to rub it in
+    if (@results > 1) {
+        my $winner = $results[0];
+        my $unique = $player_bonuses{ $winner->{player_id} }{unique} || 0;
+        if ($unique > 0) {
+            $winner->{score} -= $unique;
+            $winner->{bonuses} = [ grep { !exists $_->{'Unique Word'} } @{$winner->{bonuses}} ];
+            @results = sort { $b->{score} <=> $a->{score} || $a->{created_at} cmp $b->{created_at} } @results;
+        }
+    }
+
     return \@results;
 }
 
