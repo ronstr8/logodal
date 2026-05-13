@@ -2,7 +2,7 @@
     "app": {
         "title": "logodal",
         "you_are": "You are",
-        "you_are_daedalus": "You are the Daedalus",
+        "you_are_daedalus": "You are the apex logodal!",
         "player_joined": "{{name}} joined the duel.",
         "players_starting": "{{players}} and you start playing words.",
         "players_starting_you": "You start playing words.",
@@ -28,7 +28,7 @@
         "connection_error": "CONNECTION ERROR",
         "reload": "RELOAD PAGE",
         "accepted": "ACCEPTED!",
-        "error_word_not_found": "We don't play '{{word}}'.",
+        "error_word_not_found": "{{word}} ⁉️",
         "played_word": "{{player}} played a {{tile_count}}-letter word for at least {{raw_points}} points.",
         "donate_title": "DONATE",
         "donate_desc": "Love the game? Great, so do I! Hi, I'm Ron \"Quinn\" Straight, and I wrote this thing with my artificial friends. I'm an old gen-X hacker with two girls in college, and I've been unemployed for over a year, so every two bits helps. Whenever you're feeling it. Love you, man.",

@@ -26,7 +26,7 @@ const GameHeader = ({
     const { t } = useTranslation();
 
     const identityLabel = isLogodal
-        ? t('app.you_are_daedalus', 'You are the Daedalus')
+        ? t('app.you_are_daedalus', 'You are the apex logodal!')
         : nickname
             ? `${t('app.you_are', 'You are')} ${nickname}`
             : null;
