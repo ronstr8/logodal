@@ -38,7 +38,6 @@
 
 .tile-front {
     background: #d2b48c;
-    /* Tan/Wooden color */
     background-image: linear-gradient(45deg, #d2b48c 25%, #c19a6b 25%, #c19a6b 50%, #d2b48c 50%, #d2b48c 75%, #c19a6b 75%, #c19a6b 100%);
     background-size: 20px 20px;
     border: 4px solid #8b4513;

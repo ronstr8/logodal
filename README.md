@@ -5,7 +5,7 @@ A fast-paced word game with familiar roots. You can call it any variation of wor
 Logodal is a polyglot microservices platform built as an exercise in modern developer environment practices, distributed systems, and agentic coding. It combines Perl, Rust, and Nginx into a seamless, high-performance game universe.
 
 > [!NOTE]
-> The latest development version of the game is running at [Logodal.fazigu.org](https://Logodal.fazigu.org). It is sometimes stable, sometimes crashing into the abyss, and often filled with extra annoying bugs. You have been warned.
+> The latest development version of the game is running at [logodal.com](https://logodal.com). It is sometimes stable, sometimes crashing into the abyss, and often filled with extra annoying bugs. You have been warned.
 
 *Yes, AI wrote a lot of this, and I like that--even emojis and em-dashes. I'm writing these words here, and tweak the code as necessary, but with Antigravity, it's like I have several different coworkers to call upon to get the project done. It's a massive leap forward for productivity. Every hacker is now his own team.*
 
@@ -80,10 +80,10 @@ make deploy
 With Kind's `extraPortMappings`, the ingress controller binds directly to your host's ports 80 and 443. Add a hosts entry on your client machine:
 
 ```bash
-echo "127.0.0.1 Logodal.fazigu.org" | sudo tee -a /etc/hosts
+echo "127.0.0.1 logodal.com" | sudo tee -a /etc/hosts
 ```
 
-Then navigate to `http://Logodal.fazigu.org` to play.
+Then navigate to `http://logodal.com` to play.
 
 ### 4. Setup SSL Certificates (Optional)
 
@@ -112,14 +112,14 @@ Logodal integrates with several external services for authentication, notificati
 2. Create a new project or select an existing one.
 3. Configure the **OAuth consent screen**.
 4. Create **OAuth 2.0 Client IDs** (Web application).
-5. Add `https://Logodal.fazigu.org/auth/google/callback` to the **Authorized redirect URIs**.
+5. Add `https://logodal.com/auth/google/callback` to the **Authorized redirect URIs**.
 6. Copy the `Client ID` and `Client Secret` to `helm/secrets.yaml`.
 
 #### 🎮 Discord OAuth & Webhooks
 
 1. Go to the [Discord Developer Portal](https://discord.com/developers/applications).
 2. Create a new Application.
-3. Under **OAuth2 -> General**, add `https://Logodal.fazigu.org/auth/discord/callback` to the **Redirects**.
+3. Under **OAuth2 -> General**, add `https://logodal.com/auth/discord/callback` to the **Redirects**.
 4. In the **OAuth2 -> URL Generator**, select the following scopes:
    - `identify`
    - `email`
@@ -136,7 +136,7 @@ Logodal integrates with several external services for authentication, notificati
 
 ### 6. PLAYTIME
 
-Navigate to `https://Logodal.fazigu.org` (or `http://` if you skipped SSL setup) to begin.
+Navigate to `https://logodal.com` (or `http://` if you skipped SSL setup) to begin.
 
 *My heathen prayers reach out to you, hoping that it works the first time. It took me so long to get comfortable with hooking my development environment up to the outside world in a way that didn't seem hacky and better mirrored the production environment, but I think this finally gets it right. Over the five years at my last job, nobody there seemed to care or wanted to brainstorm/troubleshoot the issue. I wish I'd had Antigravity back then.*
 

@@ -253,7 +253,7 @@ sub startup ($self) {
         if (my $sms_email = $ENV{ADMIN_SMS_EMAIL}) {
              require Email::Stuffer;
              eval {
-                 Email::Stuffer->from($ENV{MAIL_FROM} || 'noreply@logodal.fazigu.org')
+                 Email::Stuffer->from($ENV{MAIL_FROM} || 'noreply@logodal.com')
                               ->to($sms_email)
                               ->subject('Logodal Alert')
                               ->text_body($message)

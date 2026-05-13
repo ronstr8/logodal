@@ -3,33 +3,35 @@
     flex-direction: column;
     gap: 1.5rem;
     padding: 0.5rem;
-    color: #eee;
-    font-family: inherit;
+    color: #e8d8c0;
+    font-family: 'Crimson Pro', Georgia, serif;
+    font-size: 1rem;
     overflow-y: auto;
     height: 100%;
 }
 
 .logodal-banner {
-    background: linear-gradient(135deg, rgba(255, 215, 0, 0.08), rgba(255, 215, 0, 0.03));
-    border: 1px solid rgba(255, 215, 0, 0.25);
-    border-radius: 10px;
+    background: linear-gradient(135deg, rgba(201, 168, 76, 0.07), rgba(201, 168, 76, 0.03));
+    border: 1px solid rgba(201, 168, 76, 0.22);
+    border-radius: 6px;
     padding: 0.9rem 1rem 2rem;
     position: relative;
 }
 
 .logodal-intro {
-    font-size: 0.75rem;
+    font-size: 0.9rem;
     font-style: italic;
-    color: #aaa;
+    color: #8a7a64;
     margin-bottom: 0.15rem;
     text-align: left;
 }
 
 .logodal-name {
-    font-size: 1.6rem;
-    font-weight: bold;
-    color: #ffd700;
-    text-shadow: 0 0 12px rgba(255, 215, 0, 0.4);
+    font-size: 1.5rem;
+    font-family: 'Cinzel', Georgia, serif;
+    font-weight: 700;
+    color: #c9a84c;
+    text-shadow: 0 0 12px rgba(201, 168, 76, 0.3);
     line-height: 1.1;
     text-align: left;
 }
@@ -41,30 +43,32 @@
     display: flex;
     align-items: baseline;
     gap: 0.3rem;
-    font-size: 0.75rem;
+    font-size: 0.9rem;
     font-style: italic;
-    color: #aaa;
+    color: #8a7a64;
     text-align: right;
 }
 
 .logodal-word {
-    color: #ccc;
+    color: #c0b09a;
     text-transform: uppercase;
 }
 
 .logodal-ago {
-    color: #888;
+    color: #7a6a50;
 }
 
 .personal-stats-section h3,
 .leaderboard-section h3 {
     font-size: 0.9rem;
+    font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: #888;
+    letter-spacing: 0.08em;
+    color: #7a6a50;
     margin-bottom: 0.8rem;
-    border-bottom: 1px solid #333;
+    border-bottom: 1px solid rgba(201, 168, 76, 0.1);
     padding-bottom: 0.3rem;
+    font-family: 'Cinzel', Georgia, serif;
 }
 
 .personal-stats-grid {
@@ -74,13 +78,13 @@
 }
 
 .stat-card {
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(201, 168, 76, 0.04);
     padding: 0.8rem;
-    border-radius: 8px;
+    border-radius: 4px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(201, 168, 76, 0.1);
 }
 
 .stat-card-best {
@@ -88,29 +92,32 @@
 }
 
 .stat-value-word {
-    font-size: 1.2rem;
-    letter-spacing: 0.05em;
+    font-size: 1.1rem;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
+    font-family: 'Cinzel', Georgia, serif;
 }
 
 .stat-value-score {
-    font-size: 0.95rem;
-    opacity: 0.75;
+    font-size: 0.9rem;
+    opacity: 0.7;
 }
 
 .stat-value {
     font-size: 1.5rem;
     font-weight: bold;
-    color: #ffd700;
-    /* Gold */
-    text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+    font-family: 'Cinzel', Georgia, serif;
+    color: #c9a84c;
+    text-shadow: 0 0 10px rgba(201, 168, 76, 0.25);
 }
 
 .stat-label {
-    font-size: 0.7rem;
-    color: #aaa;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #7a6a50;
     text-transform: uppercase;
     margin-top: 0.2rem;
+    letter-spacing: 0.05em;
 }
 
 .leaderboard-list {
@@ -122,16 +129,18 @@
 .leader-entry {
     display: flex;
     align-items: center;
-    background: rgba(255, 255, 255, 0.03);
+    background: rgba(255, 255, 255, 0.02);
     padding: 0.5rem 0.8rem;
-    border-radius: 4px;
+    border-radius: 3px;
     font-size: 0.9rem;
+    border-bottom: 1px solid rgba(201, 168, 76, 0.05);
 }
 
 .leader-rank {
     width: 2rem;
-    color: #888;
+    color: #7a6a50;
     font-weight: bold;
+    font-family: 'Cinzel', Georgia, serif;
 }
 
 .leader-name {
@@ -143,14 +152,13 @@
 
 .leader-score {
     font-weight: bold;
-    color: #4facfe;
-    /* Blue */
+    color: #6b8fb5;
 }
 
 .empty-msg,
 .loading-stats {
     text-align: center;
-    color: #666;
+    color: #7a6a50;
     font-style: italic;
     padding: 1rem;
 }

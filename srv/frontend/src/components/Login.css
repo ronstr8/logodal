@@ -4,7 +4,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: radial-gradient(circle at center, rgba(30, 0, 40, 0.95), rgba(10, 0, 20, 1));
+    background: radial-gradient(ellipse at center, rgba(30, 18, 8, 0.97), rgba(6, 3, 2, 1));
     display: flex;
     align-items: center;
     justify-content: center;
@@ -13,14 +13,14 @@
 }
 
 .login-card {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 24px;
+    background: rgba(201, 168, 76, 0.04);
+    border: 1px solid rgba(201, 168, 76, 0.18);
+    border-radius: 8px;
     padding: 3rem;
     width: 100%;
     max-width: 440px;
     text-align: center;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6), 0 0 60px rgba(201, 168, 76, 0.05);
     animation: slideUp 0.6s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
@@ -36,10 +36,9 @@
     }
 }
 
-
 .splat {
     display: inline-block;
-    filter: drop-shadow(0 0 10px rgba(255, 100, 0, 0.8));
+    filter: drop-shadow(0 0 10px rgba(139, 38, 53, 0.7));
     animation: pulse 2s infinite;
 }
 
@@ -56,19 +55,23 @@
 }
 
 .login-subtitle {
-    color: rgba(255, 255, 255, 0.6);
+    color: rgba(232, 216, 192, 0.55);
     margin-bottom: 2rem;
-    font-size: 1.1rem;
+    font-size: 1rem;
+    font-family: 'IM Fell English', Georgia, serif;
+    font-style: italic;
 }
 
 .last-login-hint {
-    background: rgba(100, 200, 255, 0.1);
-    color: #64c8ff;
+    background: rgba(107, 143, 181, 0.1);
+    color: #6b8fb5;
     padding: 0.5rem 1rem;
     border-radius: 99px;
     font-size: 0.85rem;
     margin-bottom: 2rem;
     display: inline-block;
+    font-family: 'IM Fell English', Georgia, serif;
+    font-style: italic;
 }
 
 .auth-buttons {
@@ -83,7 +86,7 @@
     justify-content: center;
     gap: 1rem;
     padding: 1rem;
-    border-radius: 12px;
+    border-radius: 6px;
     font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
@@ -92,12 +95,12 @@
 }
 
 .auth-btn.google {
-    background: #fff;
-    color: #1a1a1a;
+    background: #f0ebe3;
+    color: #1a0f0a;
 }
 
 .auth-btn.google:hover {
-    background: #f0f0f0;
+    background: #e8e0d4;
     transform: translateY(-2px);
 }
 
@@ -113,7 +116,7 @@
 .auth-btn.discord:hover {
     background: #4752c4;
     transform: translateY(-2px);
-    box-shadow: 0 10px 15px -3px rgba(88, 101, 242, 0.4);
+    box-shadow: 0 10px 15px -3px rgba(88, 101, 242, 0.3);
 }
 
 .auth-btn.passkey {
@@ -124,7 +127,7 @@
 .auth-btn.passkey:hover {
     background: #4338ca;
     transform: translateY(-2px);
-    box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.4);
+    box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.3);
 }
 
 .auth-btn:disabled {
@@ -133,18 +136,21 @@
     transform: none !important;
 }
 
-
 .auth-error {
     margin-top: 1.5rem;
-    color: #ff4d4d;
+    color: #8b2635;
     font-size: 0.9rem;
-    background: rgba(255, 77, 77, 0.1);
+    background: rgba(139, 38, 53, 0.1);
     padding: 0.75rem;
-    border-radius: 8px;
+    border-radius: 4px;
+    font-family: 'IM Fell English', Georgia, serif;
+    font-style: italic;
 }
 
 .auth-footer {
     margin-top: 2rem;
     font-size: 0.8rem;
-    color: rgba(255, 255, 255, 0.4);
+    color: rgba(232, 216, 192, 0.35);
+    font-family: 'IM Fell English', Georgia, serif;
+    font-style: italic;
 }

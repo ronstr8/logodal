@@ -8,25 +8,26 @@
 }
 
 .timer-bar-bg {
-    height: 8px;
+    height: 6px;
     flex: 1;
-    background: rgba(52, 73, 94, 0.5);
-    border-radius: 4px;
+    background: rgba(30, 18, 8, 0.6);
+    border-radius: 3px;
     position: relative;
     overflow: hidden;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(201, 168, 76, 0.1);
 }
 
 .timer-bar-fill {
     height: 100%;
-    background: linear-gradient(to right, #e74c3c, #f1c40f);
+    background: linear-gradient(to right, #8b2635, #c9a84c);
     position: absolute;
     left: 0;
-    border-radius: 4px;
+    border-radius: 3px;
 }
 
 .timer-value {
-    font-family: 'Fredoka', sans-serif;
+    font-family: 'Cinzel', Georgia, serif;
     font-weight: bold;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
+    color: #c9a84c;
 }

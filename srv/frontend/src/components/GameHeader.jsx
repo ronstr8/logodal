@@ -38,12 +38,6 @@ const GameHeader = ({
                 <LogodalLogo height={44} className="logodal-logo" />
             </div>
 
-            <div className="header-toggles desktop-only">
-                <button className={`panel-toggle ${messagesVisible ? 'active' : ''}`} onClick={() => setMessagesVisible(!messagesVisible)}>
-                    {t('app.messages_title', 'Messages')}
-                </button>
-            </div>
-
             <div className="header-actions desktop-only">
                 {identityLabel && (
                     <div className={`user-identity${isLogodal ? ' is-logodal' : ''}`}>
@@ -52,6 +46,7 @@ const GameHeader = ({
                 )}
                 <div className="button-group">
                     <button className="header-btn wtf-btn" onClick={() => setShowRules(!showRules)} title={t('app.rules_title')}>{t('app.help_label')}</button>
+                    <button className={`header-btn${messagesVisible ? ' active' : ''}`} onClick={() => setMessagesVisible(!messagesVisible)} title={t('app.messages_title', 'Messages')}>💬</button>
                     <button className="header-btn" onClick={handleInvite} title={t('app.invite_friend')} disabled={!gameId}>🔗</button>
                     <button className="header-btn" onClick={() => setStatsVisible(!statsVisible)} title={t('app.stats_button')}>🏆</button>
                     <button className="header-btn logout" onClick={handleLogout} title={t('auth.logout')}>🚪</button>

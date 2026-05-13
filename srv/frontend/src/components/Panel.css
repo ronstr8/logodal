@@ -1,23 +1,24 @@
 .panel-draggable {
-    background: rgba(44, 62, 80, 0.9);
-    border-radius: 12px;
-    border: 2px solid #34495e;
+    background: rgba(14, 9, 6, 0.93);
+    border-radius: 6px;
+    border: 1px solid rgba(201, 168, 76, 0.18);
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.55);
     pointer-events: auto;
 }
 
 .panel-header {
-    background: #34495e;
+    background: #2a1808;
     padding: 10px 15px;
-    font-family: 'Luckiest Guy', cursive;
-    font-size: 1.1rem;
-    color: #f1c40f;
+    font-family: 'Cinzel', Georgia, serif;
+    font-size: 1rem;
+    letter-spacing: 0.5px;
+    color: #c9a84c;
     cursor: move;
     user-select: none;
-    border-bottom: 2px solid #2c3e50;
+    border-bottom: 1px solid rgba(201, 168, 76, 0.15);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -26,7 +27,7 @@
 .panel-close-btn {
     background: none;
     border: none;
-    color: #e74c3c;
+    color: #8b2635;
     font-size: 1.5rem;
     cursor: pointer;
     padding: 0;
@@ -64,22 +65,21 @@
     border-collapse: collapse;
     margin: 10px 0;
     font-size: 0.9em;
-    background: rgba(255, 255, 255, 0.03);
+    background: rgba(255, 255, 255, 0.02);
     border-radius: 4px;
     overflow: hidden;
 }
 
 .results-table td {
     padding: 6px 10px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(201, 168, 76, 0.1);
     color: var(--text-color);
     font-style: normal;
-    /* Override system-msg italics */
 }
 
 .results-table .col-player {
     font-weight: 600;
-    color: var(--primary-color, #4a90e2);
+    color: var(--primary-color, #6b8fb5);
 }
 
 .results-table .col-word {
@@ -95,7 +95,7 @@
 }
 
 .results-table .col-score.is-dupe {
-    color: #ff4d4d;
+    color: #8b2635;
     font-size: 0.85em;
 }
 
@@ -106,7 +106,6 @@
     display: flex;
     flex-direction: column;
     min-height: 0;
-    /* Critical for flex child scrolling */
 }
 
 /* Specific override for the messages panel to prevent double scrollbars */
@@ -125,15 +124,17 @@
 .resize-handle-br {
     right: 0;
     cursor: nwse-resize;
-    background: linear-gradient(135deg, transparent 50%, #f1c40f 50%);
-    border-radius: 0 0 10px 0;
+    background: linear-gradient(135deg, transparent 50%, #c9a84c 50%);
+    border-radius: 0 0 6px 0;
+    opacity: 0.5;
 }
 
 .resize-handle-bl {
     left: 0;
     cursor: nesw-resize;
-    background: linear-gradient(225deg, transparent 50%, #f1c40f 50%);
-    border-radius: 0 0 0 10px;
+    background: linear-gradient(225deg, transparent 50%, #c9a84c 50%);
+    border-radius: 0 0 0 6px;
+    opacity: 0.5;
 }
 
 /* Leaderboard Specific */
@@ -141,23 +142,24 @@
     display: flex;
     justify-content: space-between;
     padding: 5px 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    font-family: 'Fredoka', sans-serif;
+    border-bottom: 1px solid rgba(201, 168, 76, 0.06);
+    font-family: 'Crimson Pro', Georgia, serif;
+    font-size: 1rem;
 }
 
 .leader-rank {
-    color: #f1c40f;
+    color: #c9a84c;
     font-weight: bold;
     width: 30px;
 }
 
 .leader-name {
     flex: 1;
-    color: #ecf0f1;
+    color: #e8d8c0;
 }
 
 .leader-score {
-    color: #2ecc71;
+    color: #4a7c59;
     font-weight: bold;
 }
 
@@ -167,7 +169,8 @@
     flex-direction: column;
     gap: 10px;
     text-align: left;
-    font-family: 'Fredoka', sans-serif;
+    font-family: 'Crimson Pro', Georgia, serif;
+    font-size: 1rem;
     min-height: 0;
 }
 
@@ -188,14 +191,14 @@
 }
 
 .play-entry {
-    font-size: 0.9rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 1rem;
+    border-bottom: 1px solid rgba(201, 168, 76, 0.08);
     padding-bottom: 5px;
 }
 
 .play-entry.separator {
     text-align: center;
-    border-bottom: 1px dashed rgba(255, 255, 255, 0.2);
+    border-bottom: 1px dashed rgba(201, 168, 76, 0.15);
     margin: 10px 0;
     padding-top: 5px;
     opacity: 0.8;
@@ -203,19 +206,20 @@
 
 .new-game-marker {
     font-weight: bold;
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     letter-spacing: 1px;
-    color: #f1c40f;
+    color: #c9a84c;
     text-transform: uppercase;
+    font-family: 'Cinzel', Georgia, serif;
 }
 
 .timestamp {
-    color: #95a5a6;
+    color: #7a6a50;
     margin-right: 8px;
 }
 
 .chat-msg {
-    font-size: 0.95rem;
+    font-size: 1rem;
     display: flex;
     align-items: flex-start;
     gap: 4px;
@@ -229,20 +233,21 @@
 
 .chat-separator hr {
     border: none;
-    border-top: 3px solid #f1c40f;
+    border-top: 2px solid rgba(201, 168, 76, 0.3);
     opacity: 0.8;
 }
 
 .chat-sender {
     font-weight: bold;
-    color: #3498db;
+    color: #6b8fb5;
     margin-right: 5px;
 }
 
 .system-msg {
+    font-family: 'IM Fell English', Georgia, serif;
     font-style: italic;
     opacity: 0.9;
-    color: #bdc3c7;
+    color: #c0b09a;
 }
 
 .chat-icon {
@@ -254,32 +259,39 @@
 .chat-input-area {
     display: flex;
     padding: 10px;
-    background: #2c3e50;
+    background: #1a0e06;
     gap: 5px;
 }
 
 .chat-input-area input {
     flex: 1;
     padding: 8px;
-    border-radius: 5px;
-    border: 1px solid #34495e;
-    background: #1a1a1a;
-    color: white;
+    border-radius: 4px;
+    border: 1px solid #2a1c0c;
+    background: #0e0806;
+    color: #e8d8c0;
+    font-family: 'Crimson Pro', Georgia, serif;
+    font-size: 1rem;
 }
 
 .chat-input-area button {
-    background: #3498db;
-    color: white;
+    background: #6b8fb5;
+    color: #e8d8c0;
     border: none;
     padding: 0 15px;
-    border-radius: 5px;
+    border-radius: 4px;
     cursor: pointer;
-    font-family: 'Luckiest Guy', cursive;
+    font-family: 'Cinzel', Georgia, serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
 }
 
 .empty-msg {
-    color: #7f8c8d;
+    color: #7a6a50;
     font-style: italic;
     text-align: center;
     margin-top: 20px;
+    font-family: 'Crimson Pro', Georgia, serif;
+    font-size: 1rem;
 }

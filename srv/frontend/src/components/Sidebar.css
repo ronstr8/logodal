@@ -4,7 +4,7 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.55);
     backdrop-filter: blur(5px);
     z-index: 5000;
     opacity: 0;
@@ -23,12 +23,13 @@
     left: -300px;
     width: 300px;
     height: 100vh;
-    background: #1a252f;
+    background: #160e06;
     z-index: 5001;
     transition: left 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     display: flex;
     flex-direction: column;
-    box-shadow: 10px 0 30px rgba(0, 0, 0, 0.5);
+    box-shadow: 10px 0 40px rgba(0, 0, 0, 0.7);
+    border-right: 1px solid rgba(201, 168, 76, 0.15);
 }
 
 .sidebar.open {
@@ -40,21 +41,28 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(201, 168, 76, 0.12);
 }
 
 .sidebar-header h2 {
-    font-family: 'Luckiest Guy', cursive;
-    color: #f1c40f;
+    font-family: 'Cinzel Decorative', Georgia, serif;
+    color: #c9a84c;
     margin: 0;
+    font-size: 1.2rem;
+    letter-spacing: 1px;
 }
 
 .sidebar-close {
     background: none;
     border: none;
-    color: #fff;
+    color: #8a7a64;
     font-size: 2rem;
     cursor: pointer;
+    transition: color 0.2s;
+}
+
+.sidebar-close:hover {
+    color: #8b2635;
 }
 
 .sidebar-content {
@@ -67,21 +75,24 @@
 }
 
 .sidebar-user {
-    background: rgba(0, 0, 0, 0.3);
+    background: rgba(201, 168, 76, 0.04);
     padding: 1rem;
-    border-radius: 12px;
+    border-radius: 4px;
+    border: 1px solid rgba(201, 168, 76, 0.1);
     display: flex;
     flex-direction: column;
     gap: 0.2rem;
 }
 
 .sidebar-user span {
-    font-size: 0.5rem;
-    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.7rem;
+    color: rgba(232, 216, 192, 0.4);
+    font-family: 'IM Fell English', Georgia, serif;
+    font-style: italic;
 }
 
 .sidebar-user strong {
-    color: #fff;
+    color: #e8d8c0;
     font-size: 1.1rem;
 }
 
@@ -92,39 +103,39 @@
 }
 
 .sidebar-section h3 {
-    font-family: 'Fredoka', sans-serif;
-    font-size: 0.85rem;
+    font-family: 'Cinzel', Georgia, serif;
+    font-size: 0.75rem;
     text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.3);
-    letter-spacing: 1px;
+    color: rgba(232, 216, 192, 0.35);
+    letter-spacing: 2px;
     margin-bottom: 0.5rem;
 }
 
 .sidebar-btn {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 10px;
+    background: rgba(201, 168, 76, 0.04);
+    border: 1px solid rgba(201, 168, 76, 0.1);
+    border-radius: 4px;
     padding: 0.75rem 1rem;
-    color: #fff;
+    color: #e8d8c0;
     display: flex;
     align-items: center;
     gap: 1rem;
     cursor: pointer;
     transition: all 0.2s ease;
     text-align: left;
-    font-family: 'Fredoka', sans-serif;
+    font-family: 'IM Fell English', Georgia, serif;
     font-size: 1rem;
 }
 
 .sidebar-btn:hover {
-    background: rgba(255, 255, 255, 0.1);
-    border-color: rgba(241, 196, 15, 0.3);
+    background: rgba(201, 168, 76, 0.1);
+    border-color: rgba(201, 168, 76, 0.3);
 }
 
 .sidebar-btn.active {
-    background: rgba(241, 196, 15, 0.2);
-    border-color: #f1c40f;
-    color: #f1c40f;
+    background: rgba(201, 168, 76, 0.15);
+    border-color: #c9a84c;
+    color: #c9a84c;
 }
 
 .sidebar-icon {
@@ -135,12 +146,13 @@
 
 .sidebar-btn.logout {
     margin-top: auto;
-    border-color: rgba(231, 76, 60, 0.3);
+    border-color: rgba(139, 38, 53, 0.25);
 }
 
 .sidebar-btn.logout:hover {
-    background: rgba(231, 76, 60, 0.2);
-    border-color: #e74c3c;
+    background: rgba(139, 38, 53, 0.15);
+    border-color: #8b2635;
+    color: #8b2635;
 }
 
 .sidebar-lang-picker {
@@ -150,41 +162,43 @@
 }
 
 .sidebar-lang-picker button {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 8px;
+    background: rgba(201, 168, 76, 0.04);
+    border: 1px solid rgba(201, 168, 76, 0.12);
+    border-radius: 4px;
     padding: 0.5rem;
-    color: #fff;
+    color: #e8d8c0;
     cursor: pointer;
-    font-family: 'Luckiest Guy', cursive;
+    font-family: 'Cinzel', Georgia, serif;
+    font-size: 0.75rem;
+    transition: all 0.2s;
 }
 
 .sidebar-lang-picker button.active {
-    background: #f1c40f;
-    color: #2c3e50;
-    border-color: #f1c40f;
+    background: rgba(201, 168, 76, 0.85);
+    color: #1e1208;
+    border-color: #c9a84c;
+    font-weight: 700;
 }
 
 .lang-count {
     display: block;
     font-size: 0.6rem;
-    color: rgba(255, 255, 255, 0.5);
-    font-family: 'Fredoka', sans-serif;
+    color: rgba(232, 216, 192, 0.4);
+    font-family: 'IM Fell English', Georgia, serif;
     margin-top: 2px;
 }
 
 .sidebar-lang-picker button.active .lang-count {
-    color: #2c3e50;
-    opacity: 0.8;
+    color: #1e1208;
+    opacity: 0.7;
 }
-
 
 .sidebar-footer {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
     padding-top: 1rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-top: 1px solid rgba(201, 168, 76, 0.1);
 }
 
 @media (max-width: 400px) {

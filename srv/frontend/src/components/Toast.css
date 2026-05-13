@@ -27,8 +27,8 @@
 }
 
 .toast.splat {
-    border-color: #e74c3c;
-    background: rgba(231, 76, 60, 0.2);
+    border-color: #8b2635;
+    background: rgba(139, 38, 53, 0.2);
 }
 
 /* Chat Toast Container (Left Side) */
@@ -45,13 +45,13 @@
 }
 
 .chat-toast {
-    background: rgba(59, 130, 246, 0.15);
+    background: rgba(107, 143, 181, 0.13);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    color: white;
+    color: #e8d8c0;
     padding: 12px 16px;
-    border-radius: 20px;
-    border: 1px solid rgba(59, 130, 246, 0.3);
+    border-radius: 6px;
+    border: 1px solid rgba(107, 143, 181, 0.25);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
     font-size: 0.85rem;
     display: flex;
@@ -62,8 +62,9 @@
 
 .chat-toast-sender {
     font-weight: 600;
-    color: rgba(147, 197, 253, 1);
+    color: #6b8fb5;
     font-size: 0.8rem;
+    font-family: 'Cinzel', Georgia, serif;
 }
 
 .chat-toast-text {
