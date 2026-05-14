@@ -132,6 +132,11 @@
             "Nice one, {{player}}!",
             "You beat me, {{player}}!",
             "Wow, {{player}}, good play!"
+        ],
+        "played": [
+            "{{word}} for {{score}}. Not bad.",
+            "{{word}}! That's mine.",
+            "Ooh, {{word}}. I'll take it."
         ]
     }
 }

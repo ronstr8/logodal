@@ -132,6 +132,11 @@
             "¡Buena esa, {{player}}!",
             "¡Me ganaste, {{player}}!",
             "¡Guau, {{player}}, buena jugada!"
+        ],
+        "played": [
+            "¡{{word}} por {{score}}! No está mal.",
+            "¡{{word}}! Eso es mío.",
+            "Hehe, {{word}}. Me gusta."
         ]
     }
 }

@@ -63,7 +63,7 @@ sub _init_schedule ($self) {
     $self->play_time($self->wait_seconds_base + int(rand($range)));
     
     # 1-2 thinking chats
-    my $chats = 0; # SILENCE 1 + int(rand(2));
+    my $chats = 1 + int(rand(2));
     my @thinking;
     for (1 .. $chats) {
         push @thinking, 2 + int(rand($self->play_time - 2)) if $self->play_time > 3;
@@ -145,12 +145,13 @@ sub generate_speech ($self, $event_type, $args = {}) {
         $event_desc = "You are currently thinking of your next word using your tiles ($rack).";
     } elsif ($event_type eq 'beaten') {
         $event_desc = "Your last play was beaten by player '" . ($args->{player} // 'someone') . "'.";
+    } elsif ($event_type eq 'played') {
+        $event_desc = "You just played the word '" . ($args->{word} // 'a word') . "' for " . ($args->{score} // 0) . " points.";
     }
 
     my $full_prompt = $preamble . "Character Profile: $prompt\n\nTask: Say something brief (max 15 words) about this situation: $event_desc\nDon't use quotes in your response.";
 
-    # 15-second timeout for AI speech to avoid blocking the game flow
-    my $ua = Mojo::UserAgent->new->request_timeout(15);
+    my $ua = Mojo::UserAgent->new->request_timeout(30);
     $ua->post($ollama_url . "/api/generate" => json => {
         model => $ENV{OLLAMA_MODEL} // 'phi3:mini',
         prompt => $full_prompt,
@@ -168,6 +169,7 @@ sub generate_speech ($self, $event_type, $args = {}) {
             $self->app->log->error("Ollama speech generation failed ($event_type): $err_msg");
             my $fallback_key = "ai.$event_type";
             $fallback_key = "ai.reaction_beaten" if $event_type eq 'beaten';
+            $fallback_key = "ai.played"          if $event_type eq 'played';
             $self->chat($fallback_key, $args);
         }
     });
@@ -229,6 +231,7 @@ sub play_best_word ($self) {
         $self->played(1);
         $self->last_score($chosen->{score});
         $self->_execute_play($chosen->{word}, $chosen->{score}, $game_record);
+        $self->generate_speech('played', { word => $chosen->{word}, score => $chosen->{score} });
     } else {
         $self->app->log->debug("AI " . $self->nickname . " found NO valid plays this round (candidates: " . scalar(@$words) . ")");
     }

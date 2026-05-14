@@ -7,7 +7,7 @@ ENV OLLAMA_HOST=0.0.0.0
 # The models are stored in /root/.ollama
 RUN (ollama serve &) && \
     sleep 10 && \
-    ollama pull phi3:mini && \
+    ollama pull tinyllama:1.1b && \
     pkill ollama
 
 # Ensure the model directory exists and has correct permissions 

@@ -132,6 +132,11 @@
             "Gut gemacht, {{player}}!",
             "Du hast mich geschlagen, {{player}}!",
             "Wow, {{player}}, guter Zug!"
+        ],
+        "played": [
+            "{{word}} für {{score}} Punkte. Nicht schlecht.",
+            "{{word}}! Das gehört mir.",
+            "Na ja, {{word}}. Ich nehme es."
         ]
     }
 }

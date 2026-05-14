@@ -64,7 +64,7 @@ backend:
     port: 3000
   ollama:
     url: "http://ollama:11434"
-    model: "phi3:mini"
+    model: "tinyllama:1.1b"
   database:
     url: "dbi:Pg:dbname=logodal;host=postgresql"
     user: "logodal_backend"
@@ -72,7 +72,7 @@ backend:
     ADMIN_SMS_EMAIL: ""
     CHAT_HISTORY_SIZE: 50
     OLLAMA_URL: "http://ollama:11434"
-    OLLAMA_MODEL: "phi3:mini"
+    OLLAMA_MODEL: "tinyllama:1.1b"
 
 # PostgreSQL dependency configuration
 postgresql:
