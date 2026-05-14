@@ -45,8 +45,10 @@ sub join_player ($self, $controller, $player, $payload = undef) {
     my $gid = $active_game->id;
     $app->log->debug("Joining game $gid (Action: $action)");
 
-    # Store client in app state
+    # Store client in app state and subscribe this replica to the relevant Redis channels
     $app->games->{$gid}{clients}{$player->id} = $controller;
+    $app->broadcaster->subscribe_player($player->id);
+    $app->broadcaster->subscribe_game($gid);
     
     # Get list of other players in this game
     my @other_nicknames;
@@ -435,6 +437,9 @@ sub handle_disconnect ($self, $player_id) {
                 }, $game_id, [$player_id]);
             }
             delete $game->{clients}{$player_id};
+            $app->broadcaster->unsubscribe_player($player_id);
+            $app->broadcaster->unsubscribe_game($game_id)
+                unless keys %{$game->{clients}};
         }
     }
 }
@@ -539,6 +544,7 @@ sub _broadcast_endgame_results ($self, $args) {
     
     $app->log->debug("Finished broadcasting game_end for $game_id. Deleting game from memory.");
     delete $app->games->{$game_id};
+    $app->broadcaster->unsubscribe_game($game_id);
 }
 
 sub _get_achievement_emojis ($self, $game_record, $word, $len_bonus) {

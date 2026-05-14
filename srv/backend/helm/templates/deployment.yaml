@@ -101,6 +101,8 @@ spec:
               value: {{ .Values.global.endOnAllPlayed | default "false" | quote }}
             - name: SCORE_AGAINST_AI
               value: {{ .Values.global.scoreAgainstAI | default "false" | quote }}
+            - name: REDIS_URL
+              value: {{ .Values.global.redisUrl | default "redis://redis-master:6379" | quote }}
 
           volumeMounts:
             - name: locales-volume

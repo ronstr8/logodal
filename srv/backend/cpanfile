@@ -18,6 +18,7 @@ requires 'Crypt::URandom';
 requires 'Crypt::JWT';
 requires 'DBIx::Class::TimeStamp';
 requires 'Email::Stuffer';
+requires 'Mojo::Redis', '3.0';
 
 on 'test' => sub {
     requires 'Test::More', '0.98';

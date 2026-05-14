@@ -27,6 +27,7 @@ global:
   projectCodeLink: "https://github.com/your-org/logodal"
   scoreAgainstAI: "true"
   endOnAllPlayed: "false"
+  redisUrl: "redis://redis-master:6379"
   storageClass: "standard"
   persistence:
     manualPV: false
@@ -95,6 +96,13 @@ postgresql:
     image:
       repository: busybox
       tag: 1.36.1
+
+redis:
+  enabled: true
+  fullnameOverride: redis
+  architecture: standalone
+  auth:
+    enabled: false
 
 auth:
   sessionSecret: "change-me-to-a-long-random-secret"
