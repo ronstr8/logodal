@@ -225,13 +225,13 @@ sub startup ($self) {
 
     # Scoped Broadcast Helper (broadcasts to a specific game and records history)
     $self->helper(broadcast_to_game => sub ($c, $msg, $game_id, $exclude_list = []) {
-        # Store chat in per-game history so players only see their game's messages
         if ($msg->{type} eq 'chat') {
             my $games   = $c->app->games;
             my $limit   = $ENV{CHAT_HISTORY_SIZE} || 50;
             my $history = $games->{$game_id}{chat_history} //= [];
             push @$history, $msg;
             shift @$history while @$history > $limit;
+            $c->app->broadcaster->store_chat($game_id, $msg);
         }
         $c->app->broadcaster->announce_to_game($msg, $game_id, $exclude_list);
     });

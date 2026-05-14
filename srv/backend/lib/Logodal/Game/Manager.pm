@@ -49,15 +49,32 @@ sub join_player ($self, $controller, $player, $payload = undef) {
     $app->games->{$gid}{clients}{$player->id} = $controller;
     $app->broadcaster->subscribe_player($player->id);
     $app->broadcaster->subscribe_game($gid);
+    $app->broadcaster->add_member($gid, $player->id);
     
-    # Get list of other players in this game
-    my @other_nicknames;
+    # Build player list from local clients + DB plays (cross-replica) + DB AIs.
+    # Using a %seen hash deduplicates across sources.
     my $game_clients = $app->games->{$gid}{clients} // {};
+    my %seen         = ($player->id => 1);
+    my @other_nicknames;
+
     for my $pid (keys %$game_clients) {
-        next if $pid eq $player->id;
+        next if $seen{$pid}++;
         my $p = $schema->resultset('Player')->find($pid);
-        push @other_nicknames, $p->nickname if $p;
+        push @other_nicknames, $p->nickname if $p && !$p->brain;
     }
+
+    for my $row ($schema->resultset('Play')->search(
+        { game_id => $gid },
+        { columns => ['player_id'], distinct => 1 }
+    )->all) {
+        my $pid = $row->player_id;
+        next if $seen{$pid}++;
+        my $p = $schema->resultset('Player')->find($pid);
+        push @other_nicknames, $p->nickname if $p && !$p->brain;
+    }
+
+    my @ai_names = map { $_->nickname }
+        $schema->resultset('Player')->search({ brain => { '!=' => undef } })->all;
 
     # Send game_start with accurate time_left and language-specific configs
     my $game_lang = $active_game->language // $DEFAULT_LANG;
@@ -72,7 +89,7 @@ sub join_player ($self, $controller, $player, $payload = undef) {
             tile_counts   => $app->scorer->tile_counts($game_lang),
             unicorns      => $app->scorer->unicorns($game_lang),
             time_left     => $app->games->{$gid}{time_left},
-            players       => [ @other_nicknames, map { $_->nickname } @{$app->games->{$gid}{ais} // []} ],
+            players       => [ @other_nicknames, @ai_names ],
             mutant_letter => $active_game->mutant_letter,
         }
     }});
@@ -117,11 +134,14 @@ sub join_player ($self, $controller, $player, $payload = undef) {
         }
     }, $gid, [$player->id]);
 
-    # Send this game's chat history to the new player
-    $controller->send({json => {
-        type    => 'chat_history',
-        payload => $app->games->{$gid}{chat_history} // []
-    }});
+    # Send this game's chat history to the new player (async when Redis available)
+    my $local_history = $app->games->{$gid}{chat_history} // [];
+    $app->broadcaster->get_chat_history($gid, $local_history, sub ($history) {
+        $controller->send({json => {
+            type    => 'chat_history',
+            payload => $history,
+        }});
+    });
 }
 
 sub handle_chat ($self, $controller, $player, $payload) {
@@ -253,6 +273,21 @@ sub _perform_play ($self, $controller, $player, $payload, $word, $game_data, $ga
                     }
                 }});
             }
+
+            # Cross-replica: push play event to other replicas (word hidden, local clients excluded)
+            $app->broadcaster->announce_to_game({
+                type      => 'play',
+                sender    => $player->id,
+                timestamp => $timestamp,
+                payload   => {
+                    playerName   => $player->nickname,
+                    word         => undef,
+                    score        => $total_points,
+                    raw_points   => $score,
+                    length_bonus => $len_bonus,
+                    msg          => $emoji_prefix . $chat_msg,
+                }
+            }, $game_record->id, [keys %$game_clients]);
 
             # AI Reacts if beaten
             $_->check_reaction($player->nickname, $score) for @{$game_data->{ais} // []};
@@ -445,6 +480,7 @@ sub handle_disconnect ($self, $player_id) {
             }
             delete $game->{clients}{$player_id};
             $app->broadcaster->unsubscribe_player($player_id);
+            $app->broadcaster->remove_member($game_id, $player_id);
             $app->broadcaster->unsubscribe_game($game_id)
                 unless keys %{$game->{clients}};
         }
@@ -533,8 +569,11 @@ sub _broadcast_endgame_results ($self, $args) {
         }
     };
 
-    # Global Announcement
-    my @game_pids = keys %{$app->games->{$game_id}{clients} // {}};
+    # Global Announcement — exclude all players in this game (across all replicas)
+    my @game_pids = map { $_->player_id } $app->schema->resultset('Play')->search(
+        { game_id => $game_id },
+        { columns => ['player_id'], distinct => 1 }
+    )->all;
     $app->broadcaster->announce_all_but($history_msg, \@game_pids);
 
     $app->broadcast_to_game({
@@ -581,45 +620,39 @@ sub _get_achievement_emojis ($self, $game_record, $word, $len_bonus) {
 }
 
 sub _check_premature_climax ($self, $game_id) {
-    my $app = $self->app;
-    if ($ENV{END_ON_ALL_PLAYED} && $ENV{END_ON_ALL_PLAYED} eq 'true') {
-        if ($self->_check_all_played($game_id)) {
-            my $game_data = $app->games->{$game_id};
-            $app->log->info("Premature Climax! All players have played. Ending game $game_id early.");
-            $self->end_game($game_data->{state}, { is_early_end => 1 });
-            return 1;
-        }
-    }
-    return 0;
+    return unless $ENV{END_ON_ALL_PLAYED} && $ENV{END_ON_ALL_PLAYED} eq 'true';
+    $self->_check_all_played($game_id, sub ($is_done) {
+        return unless $is_done;
+        my $game_data = $self->app->games->{$game_id};
+        return unless $game_data;
+        $self->app->log->info("Premature Climax! All players have played. Ending game $game_id early.");
+        $self->end_game($game_data->{state}, { is_early_end => 1 });
+    });
 }
 
-sub _check_all_played ($self, $game_id) {
-    my $app = $self->app;
+sub _check_all_played ($self, $game_id, $cb) {
+    my $app       = $self->app;
     my $game_data = $app->games->{$game_id};
-    return 0 unless $game_data;
+    return $cb->(0) unless $game_data;
 
-    # Count connected humans
-    my $human_count = scalar(keys %{$game_data->{clients} // {}});
-    
-    # Count active AIs
-    my $ai_count = scalar(@{$game_data->{ais} // []});
-    
-    my $total_target = $human_count + $ai_count;
-    $app->log->debug("Checking all_played for game $game_id. Humans: $human_count, AIs: $ai_count, Total: $total_target");
-    return 0 if $total_target == 0;
+    my $ai_count     = scalar(@{$game_data->{ais} // []});
+    my $local_humans = scalar(keys %{$game_data->{clients} // {}});
 
-    # Count unique plays in DB for this game
-    my $play_count = $app->schema->resultset('Play')->search(
-        { game_id => $game_id },
-        { select => [ 'player_id' ], distinct => 1 }
-    )->count;
+    $app->broadcaster->get_member_count($game_id, $local_humans, sub ($human_count) {
+        my $total_target = $human_count + $ai_count;
+        $app->log->debug("Checking all_played for game $game_id. Humans: $human_count, AIs: $ai_count, Total: $total_target");
+        return $cb->(0) if $total_target == 0;
 
-    $app->log->debug("Game $game_id: $play_count unique plays found in DB.");
+        my $play_count = $app->schema->resultset('Play')->search(
+            { game_id => $game_id },
+            { select => ['player_id'], distinct => 1 }
+        )->count;
 
-    my $is_done = $play_count >= $total_target;
-    $app->log->info("Game $game_id early end check: $play_count/$total_target. Result: " . ($is_done ? "FINISHED" : "CONTINUE"));
-
-    return $is_done;
+        $app->log->debug("Game $game_id: $play_count unique plays found in DB.");
+        my $is_done = $play_count >= $total_target;
+        $app->log->info("Game $game_id early end check: $play_count/$total_target. Result: " . ($is_done ? "FINISHED" : "CONTINUE"));
+        $cb->($is_done);
+    });
 }
 
 1;

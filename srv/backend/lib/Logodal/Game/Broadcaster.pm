@@ -90,6 +90,57 @@ sub announce_to_game ($self, $msg, $game_id, $exclude_list = []) {
     }
 }
 
+# --- Game membership (Redis set, used for cross-replica all_played count) ---
+
+sub add_member ($self, $gid, $pid) {
+    my $redis = $self->_redis or return;
+    my $ttl   = ($ENV{GAME_DURATION} || 30) + 120;
+    eval {
+        $redis->db->sadd_p("logodal:members:$gid", $pid)->then(sub {
+            eval { $redis->db->expire_p("logodal:members:$gid", $ttl)->catch(sub { }) };
+        })->catch(sub { });
+    };
+}
+
+sub remove_member ($self, $gid, $pid) {
+    my $redis = $self->_redis or return;
+    eval { $redis->db->srem_p("logodal:members:$gid", $pid)->catch(sub { }) };
+}
+
+# Calls $cb->($count) — async when Redis available, sync with $fallback otherwise.
+sub get_member_count ($self, $gid, $fallback, $cb) {
+    my $redis = $self->_redis or return $cb->($fallback);
+    eval {
+        $redis->db->scard_p("logodal:members:$gid")->then(sub {
+            $cb->($_[0] || $fallback);
+        })->catch(sub { $cb->($fallback) });
+    } or $cb->($fallback);
+}
+
+# --- Chat history (Redis list, falls back to caller-supplied local history) ---
+
+sub store_chat ($self, $game_id, $msg) {
+    my $redis = $self->_redis or return;
+    my $key   = "logodal:chat:$game_id";
+    my $limit = $ENV{CHAT_HISTORY_SIZE} || 50;
+    eval {
+        $redis->db->rpush_p($key, encode_json($msg))->then(sub {
+            eval { $redis->db->ltrim_p($key, -$limit, -1)->catch(sub { }) };
+        })->catch(sub { });
+    };
+}
+
+# Calls $cb->(\@messages) — async when Redis available, sync otherwise.
+sub get_chat_history ($self, $game_id, $fallback, $cb) {
+    my $redis = $self->_redis or return $cb->($fallback);
+    eval {
+        $redis->db->lrange_p("logodal:chat:$game_id", 0, -1)->then(sub {
+            my @msgs = grep { defined } map { eval { decode_json($_) } } @{$_[0]};
+            $cb->(\@msgs);
+        })->catch(sub { $cb->($fallback) });
+    } or $cb->($fallback);
+}
+
 # --- Subscription lifecycle (no-ops when Redis is not configured) ---
 
 sub subscribe_player ($self, $pid) {
