@@ -115,13 +115,15 @@ sub get_or_create_game ($self, $player, $invite_gid = undef) {
         }
     }
     else {
-        # Active game found, ensure it's in memory (Zombie Recovery)
+        # Active game found, ensure it's in memory
         my $gid = $active_game->id;
         if (!$app->games->{$gid}) {
-             my $elapsed = time - $active_game->started_at->epoch;
-             my $total_dur = $ENV{GAME_DURATION} || $DEFAULT_GAME_DURATION;
-             $self->_init_in_memory_game($gid, $active_game, $lang, $total_dur - $elapsed);
-             return { action => 'start_timer', game => $active_game };
+            my $elapsed   = time - $active_game->started_at->epoch;
+            my $total_dur = $ENV{GAME_DURATION} || $DEFAULT_GAME_DURATION;
+            # Passive init: timer and AIs run on the replica that started the game.
+            # Timer ticks arrive via Redis pub/sub. On pod restart the stale-game check
+            # above handles rotation — no timer restart needed here.
+            $self->_init_passive_game($gid, $active_game, $total_dur - $elapsed);
         }
         return { action => 'join', game => $active_game };
     }
@@ -139,6 +141,17 @@ sub _init_in_memory_game ($self, $gid, $game_record, $lang, $time_left = undef) 
         state     => $game_record,
         time_left => $time_left // ($ENV{GAME_DURATION} || $DEFAULT_GAME_DURATION),
         ais       => \@ais,
+    };
+}
+
+# Passive init for replicas that are not the game owner: clients dict only, no AIs, no timer.
+# time_left is still tracked locally so join payloads are accurate.
+sub _init_passive_game ($self, $gid, $game_record, $time_left) {
+    $self->app->games->{$gid} = {
+        clients   => {},
+        state     => $game_record,
+        time_left => $time_left,
+        ais       => [],
     };
 }
 

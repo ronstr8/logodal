@@ -14,40 +14,40 @@ has _subscribed_games => (
     default => sub { {} },
 );
 
-# Holds the Mojo::Redis instance to keep it alive (PubSub holds a weak ref to it).
+# Primary Redis handle. undef when REDIS_URL is unset or Mojo::Redis unavailable.
 has _redis => (
-    is      => 'rw',
-    default => undef,
-);
-
-# Returns a Mojo::Redis::PubSub object when REDIS_URL is configured and Mojo::Redis
-# is installed. Returns undef otherwise — all public methods fall back to local delivery.
-has _pubsub => (
     is      => 'ro',
     lazy    => 1,
     default => sub ($self) {
         my $url = $ENV{REDIS_URL} or return undef;
-
         my $redis = eval {
             require Mojo::Redis;
             Mojo::Redis->new($url);
         };
         if ($@ || !$redis) {
-            $self->app->log->error("Broadcaster: cannot initialize Redis ($url): " . ($@ || 'unknown'));
+            $self->app->log->error("Broadcaster: cannot connect to Redis ($url): " . ($@ || 'unknown'));
             return undef;
         }
+        $self->app->log->info("Broadcaster: Redis connected at $url");
+        return $redis;
+    },
+);
 
-        $self->_redis($redis);  # Keep strong reference — PubSub holds only a weak ref
+# PubSub handle derived from _redis. Sets up the global broadcast listener on first access.
+has _pubsub => (
+    is      => 'ro',
+    lazy    => 1,
+    default => sub ($self) {
+        my $redis = $self->_redis or return undef;
         my $ps = $redis->pubsub;
 
-        # Every replica listens on the global broadcast channel
         $ps->listen('logodal:broadcast' => sub ($pub, $payload) {
             my $data = eval { decode_json($payload) };
             return unless $data;
             $self->_deliver_all_local($data->{msg}, $data->{exclude} // {});
         });
 
-        $self->app->log->info("Broadcaster: Redis pub/sub active at $url");
+        $self->app->log->info("Broadcaster: Redis pub/sub active");
         return $ps;
     },
 );

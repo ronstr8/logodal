@@ -324,6 +324,13 @@ sub end_game ($self, $game, $results_args = {}) {
     my $app = $self->app;
     my $schema = $app->schema;
     my $game_id = $game->id;
+
+    $game->discard_changes;
+    if ($game->finished_at) {
+        $app->log->debug("end_game called for already-finished game $game_id — skipping");
+        return;
+    }
+
     $app->log->debug("Starting end_game for $game_id");
     $game->update({ finished_at => DateTime->now });
 
