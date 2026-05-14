@@ -81,16 +81,8 @@
 }
 
 .tile-wrapper.mutant .tile-front {
-    border-color: #00e664;
+    border-color: rgba(0, 200, 85, 0.45);
     animation: mutant-throb 2.4s ease-in-out infinite;
-}
-
-.tile-wrapper.mutant .tile-letter {
-    color: #00ff7f;
-}
-
-.tile-wrapper.mutant .tile-value {
-    color: #00ff7f;
 }
 
 /* Disabled tile (greyed out when used) */

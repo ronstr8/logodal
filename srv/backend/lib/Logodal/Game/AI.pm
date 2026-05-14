@@ -15,9 +15,11 @@ has 'language'  => 'en';
 
 # AI Config
 has 'wait_seconds_base' => 5;
+has 'max_seconds'       => 0;   # 0 = no cap; caps the latest possible play time
 has 'rnd_word_count'    => 5;
 has 'min_score_to_play' => 2;
 has 'min_score_to_win'  => 30;
+has 'min_word_length'   => 0;   # 0 = no minimum
 has 'character_prompt';
 
 # Instance state
@@ -41,9 +43,11 @@ sub new_from_player ($class, $app, $game_id, $player, $language = undef) {
         player_id         => $player->id,
         character_prompt  => $brain->{character_prompt},
         wait_seconds_base => $brain->{wait_seconds_base} // 8,
+        max_seconds       => $brain->{max_seconds} // 0,
         rnd_word_count    => $brain->{rnd_word_count} // 5,
         min_score_to_play => $brain->{min_score_to_play} // 2,
         min_score_to_win  => $brain->{min_score_to_win} // 30,
+        min_word_length   => $brain->{min_word_length} // 0,
     );
     $self->_init_schedule();
     return $self;
@@ -52,8 +56,9 @@ sub new_from_player ($class, $app, $game_id, $player, $language = undef) {
 sub _init_schedule ($self) {
     my $total_dur = $ENV{GAME_DURATION} || 30;
     
-    # Random play time between base and duration
-    my $range = $total_dur - $self->wait_seconds_base;
+    # Random play time between base and cap (or full duration if no cap)
+    my $cap   = ($self->max_seconds && $self->max_seconds < $total_dur) ? $self->max_seconds : $total_dur;
+    my $range = $cap - $self->wait_seconds_base;
     $range = 1 if $range < 1;
     $self->play_time($self->wait_seconds_base + int(rand($range)));
     
@@ -74,8 +79,9 @@ sub fetch_candidates ($self, $rack_str) {
     
     my $letters = $rack_str;
     $letters =~ s/_/?/g; # wordd uses ? for wildcards
-    
+
     my $url = "${wordd_base}rand/langs/$lang/word?letters=$letters&count=$count";
+    $url .= "&min_length=" . $self->min_word_length if $self->min_word_length > 0;
     
     $self->_request_candidates($url, $letters);
 }
@@ -197,6 +203,7 @@ sub play_best_word ($self) {
 
     # Sort DESC
     @scored = sort { $b->{score} <=> $a->{score} } @scored;
+    @scored = grep { length($_->{word}) >= $self->min_word_length } @scored if $self->min_word_length;
 
     my $chosen;
     # Filter by min score for "good" plays

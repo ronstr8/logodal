@@ -40,4 +40,5 @@ pub struct RandQuery {
     pub letters: Option<String>,
     pub min_vowels: Option<usize>,
     pub min_consonants: Option<usize>,
+    pub min_length: Option<usize>,
 }

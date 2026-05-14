@@ -417,50 +417,15 @@ sub end_game ($self, $game, $results_args = {}) {
     }
 
     my $winner = $results->[0];
-    my $winner_word = $winner ? $winner->{word} : undef;
     my $winner_lang = $game->language // $DEFAULT_LANG;
-    
-    my ($wrap_send, $timer);
-    
-    $wrap_send = sub ($def = undef, $sug = undef) {
-        return unless $timer;
-        Mojo::IOLoop->remove($timer);
-        $timer = undef;
-        $self->_broadcast_endgame_results({
-            game           => $game,
-            results_payload => $results_payload,
-            solo_game      => $solo_game,
-            winner         => $winner,
-            winner_lang    => $winner_lang,
-            definition     => $def,
-            suggested_word => $sug,
-        });
-    };
 
-    # Safety: If we're still here after 3 seconds, just send what we have
-    $timer = Mojo::IOLoop->timer(3 => sub {
-        return unless $timer;
-        $timer = undef;
-        $app->log->warn("End game broadcast safety triggered for $game_id - suggest/define took too long");
-        $self->_broadcast_endgame_results({
-            game           => $game,
-            results_payload => $results_payload,
-            solo_game      => $solo_game,
-            winner         => $winner,
-            winner_lang    => $winner_lang,
-        });
+    $self->_broadcast_endgame_results({
+        game            => $game,
+        results_payload => $results_payload,
+        solo_game       => $solo_game,
+        winner          => $winner,
+        winner_lang     => $winner_lang,
     });
-
-    my $suggest_cb = sub ($suggested_res = undef) {
-        my $suggested_word;
-        if ($suggested_res && $suggested_res->is_success) {
-            $suggested_word = uc(Mojo::Util::trim($suggested_res->body));
-        }
-        $wrap_send->(undef, $suggested_word);
-    };
-
-    my $clean_rack = join('', grep { /[A-Z]/ } @{$game->rack});
-    $app->wordd->suggest($clean_rack, $winner_lang, $suggest_cb);
 }
 
 sub handle_disconnect ($self, $player_id) {
@@ -550,7 +515,6 @@ sub _broadcast_endgame_results ($self, $args) {
     my $winner = $args->{winner};
     my $winner_lang = $args->{winner_lang};
     my $definition = $args->{definition};
-    my $suggested_word = $args->{suggested_word};
 
     my $summary = $winner 
         ? $app->t('results.winner_summary', $winner_lang, { name => $winner->{player}, score => $winner->{score}, word => $winner->{word} }) 
@@ -584,7 +548,6 @@ sub _broadcast_endgame_results ($self, $args) {
             is_solo => $solo_game,
             summary => $summary,
             definition     => $definition,
-            suggested_word => $suggested_word,
         }
     }, $game_id);
     

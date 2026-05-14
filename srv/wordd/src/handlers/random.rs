@@ -101,6 +101,7 @@ pub async fn rand_word(
         letters: query.letters.as_deref(),
         min_vowels: query.min_vowels,
         min_consonants: query.min_consonants,
+        min_length: query.min_length,
         vowels,
     };
     

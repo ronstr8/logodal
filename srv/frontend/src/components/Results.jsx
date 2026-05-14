@@ -3,7 +3,7 @@ import { motion } from 'framer-motion'
 import { useTranslation } from 'react-i18next'
 import './Results.css'
 
-const Results = ({ results = [], summary = "", is_solo = false, is_early_end = false, definition, suggested_word, onClose, playerNames = {}, isFocusMode = false }) => {
+const Results = ({ results = [], summary = "", is_solo = false, is_early_end = false, definition, onClose, playerNames = {}, isFocusMode = false }) => {
     const { t } = useTranslation();
     const safeResults = Array.isArray(results) ? results : [];
     const [activeWord, setActiveWord] = useState(null);
@@ -108,13 +108,6 @@ const Results = ({ results = [], summary = "", is_solo = false, is_early_end = f
                         ))
                     )}
                 </div>
-                {suggested_word && (
-                    <div className="suggested-word-box">
-                        <h4>{t('results.suggested_word_title', 'Missed Opportunity')}</h4>
-                        <span className="missed-word">{suggested_word}</span>
-                        <p>{t('results.suggested_word_desc', 'You could have played this!')}</p>
-                    </div>
-                )}
                 {is_solo && (
                     <div className="solo-logodal-note">
                         {t('results.solo_wonk')}

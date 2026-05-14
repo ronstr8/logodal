@@ -256,6 +256,29 @@
     min-width: 1.2em;
 }
 
+.unread-badge {
+    position: absolute;
+    bottom: 52px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #c9a84c;
+    color: #1a0e06;
+    border: none;
+    border-radius: 12px;
+    padding: 4px 14px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    font-family: 'Cinzel', Georgia, serif;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+    z-index: 10;
+}
+
+.unread-badge:hover {
+    background: #e8c85c;
+}
+
 .chat-input-area {
     display: flex;
     padding: 10px;

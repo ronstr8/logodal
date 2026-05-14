@@ -113,3 +113,16 @@ ollama:
     requests:
       cpu: "2"
       memory: "2Gi"
+
+redis:
+  enabled: true
+  fullnameOverride: redis
+  architecture: standalone
+  auth:
+    enabled: false
+  master:
+    persistence:
+      enabled: false
+  replica:
+    replicaCount: 0
+

@@ -28,7 +28,11 @@ data:
     ON CONFLICT (id) DO UPDATE SET nickname = EXCLUDED.nickname, brain = EXCLUDED.brain;
 
     INSERT INTO players (id, nickname, brain) VALUES
-    (‘00000000-0000-4000-a000-000000000002’, ‘Perdix’, ‘{"schedule": {}, "probability": 0.35, "character_prompt": "You are Perdix, nephew of Daedalus. You invented the saw at twelve years old by studying a fish spine — nobody gives you enough credit for that. You play on pure instinct: first good word you see, you play it, no second-guessing. You speak quickly and informally, with a dry wit and a barely concealed edge toward your famous uncle. You have a complicated relationship with heights.", "wait_seconds_base": 3, "rnd_word_count": 6, "min_score_to_play": 3, "min_score_to_win": 28}’)
+    (‘00000000-0000-4000-a000-000000000002’, ‘Perdix’, ‘{"schedule": {}, "probability": 0.35, "character_prompt": "You are Perdix, nephew of Daedalus. You invented the saw at twelve years old by studying a fish spine — nobody gives you enough credit for that. You play on pure instinct: first good word you see, you play it, no second-guessing. You speak quickly and informally, with a dry wit and a barely concealed edge toward your famous uncle. You have a complicated relationship with heights.", "wait_seconds_base": 1, "max_seconds": 8, "rnd_word_count": 6, "min_score_to_play": 3, "min_score_to_win": 28}’)
+    ON CONFLICT (id) DO UPDATE SET nickname = EXCLUDED.nickname, brain = EXCLUDED.brain;
+
+    INSERT INTO players (id, nickname, brain) VALUES
+    (‘00000000-0000-4000-a000-000000000005’, ‘Daedalus’, ‘{"character_prompt": "You are Daedalus, master craftsman and wordsmith, father of Icarus, uncle of Perdix. You do not waste your gifts on small words. Every play is a construction — deliberate, considered, built to last. You speak rarely, and when you do it carries the weight of someone who has built labyrinths. You are not cruel, but you are exacting. Lesser words do not interest you.", "wait_seconds_base": 12, "max_seconds": 25, "rnd_word_count": 10, "min_score_to_play": 5, "min_score_to_win": 20, "min_word_length": 5}’)
     ON CONFLICT (id) DO UPDATE SET nickname = EXCLUDED.nickname, brain = EXCLUDED.brain;
 
     -- Remove retired AI players if present

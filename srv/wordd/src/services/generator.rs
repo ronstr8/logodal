@@ -7,6 +7,7 @@ pub struct WordConstraints<'a> {
     pub letters: Option<&'a str>,
     pub min_vowels: Option<usize>,
     pub min_consonants: Option<usize>,
+    pub min_length: Option<usize>,
     pub vowels: &'a [char],
 }
 
@@ -24,9 +25,14 @@ pub fn find_matching_words(
 
     words.iter()
         .filter(|word| {
-            // 1. Length constraint (cheap)
+            // 1. Length constraints (cheap)
             if word.len > max_len {
                 return false;
+            }
+            if let Some(min_len) = constraints.min_length {
+                if word.len < min_len {
+                    return false;
+                }
             }
 
             // 2. Bitmask Filter (Super cheap)

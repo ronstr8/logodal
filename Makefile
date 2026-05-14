@@ -56,8 +56,7 @@ deploy: ensure-namespace
 	node scripts/sync-version.js
 	@mkdir -p helm/share/locale
 	@cp srv/frontend/share/locale/*.json helm/share/locale/
-	rm -rf helm/charts/*.tgz
-	helm dependency update ./helm
+	helm dependency build ./helm
 	kubectl delete configmap logodal-locales --namespace $(NAMESPACE) --ignore-not-found
 	helm upgrade --install logodal ./helm \
 		--namespace $(NAMESPACE) \

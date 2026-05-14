@@ -103,6 +103,11 @@ redis:
   architecture: standalone
   auth:
     enabled: false
+  master:
+    persistence:
+      enabled: false
+  replica:
+    replicaCount: 0
 
 auth:
   sessionSecret: "change-me-to-a-long-random-secret"
