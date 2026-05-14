@@ -1,13 +1,9 @@
-# Logodal 💥
+# Logodal
 
-A fast-paced word game with familiar roots. You can call it any variation of wordw*nk and it will still be Logodal. Even wordsplat. And go ahead and register those domains, you disgusting pathetic people who squat on the piles of others.
-
-Logodal is a polyglot microservices platform built as an exercise in modern developer environment practices, distributed systems, and agentic coding. It combines Perl, Rust, and Nginx into a seamless, high-performance game universe.
+Logodal is a fast-paced wordsmith dueling game. It combines Perl, Rust, and Nginx into a seamless, high-performance game universe.
 
 > [!NOTE]
 > The latest development version of the game is running at [logodal.com](https://logodal.com). It is sometimes stable, sometimes crashing into the abyss, and often filled with extra annoying bugs. You have been warned.
-
-*Yes, AI wrote a lot of this, and I like that--even emojis and em-dashes. I'm writing these words here, and tweak the code as necessary, but with Antigravity, it's like I have several different coworkers to call upon to get the project done. It's a massive leap forward for productivity. Every hacker is now his own team.*
 
 ---
 
@@ -128,17 +124,9 @@ Logodal integrates with several external services for authentication, notificati
    - In your Discord server, go to a channel's settings -> **Integrations** -> **Webhooks**.
    - Create a new webhook and copy the **Webhook URL** to `helm/secrets.yaml` under `admin-discord-webhook`.
 
-#### ☕ Ko-fi Donations
-
-1. Go to your [Ko-fi Dashboard](https://ko-fi.com/manage/index).
-2. Note your **Ko-fi Page ID** (e.g., if your link is `ko-fi.com/Logodal`, your ID is `Logodal`).
-3. Set `VITE_KOFI_ID` in your frontend `.env` file or environment variables.
-
 ### 6. PLAYTIME
 
 Navigate to `https://logodal.com` (or `http://` if you skipped SSL setup) to begin.
-
-*My heathen prayers reach out to you, hoping that it works the first time. It took me so long to get comfortable with hooking my development environment up to the outside world in a way that didn't seem hacky and better mirrored the production environment, but I think this finally gets it right. Over the five years at my last job, nobody there seemed to care or wanted to brainstorm/troubleshoot the issue. I wish I'd had Antigravity back then.*
 
 ### 7. Lexicons
 
@@ -176,7 +164,7 @@ make down
 - **Unique word bonus**: +1 pt for playing a word nobody else played.
 - **Quick bonus**: +5 pts for playing within the first 5 seconds.
 - **Duplicate penalty**: copying another player's word scores you 0 pts — but the original player earns the full raw letter value of that word for each copy made.
-- **Mutant Letter**: if every player in the previous completed game earned at least one bonus, a random tile in the new rack mutates (green glow, 10 pts). Born of natural selection.
+- **Mutant Letter**: Each game, tiles associated with a randomly chosen letter mutate, changing their score to 10.
 
 ---
 
