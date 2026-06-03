@@ -36,11 +36,9 @@ global:
 ingress:
   enabled: true
   host: logodal.com
+  ingressClassName: nginx
   annotations:
-    kubernetes.io/ingress.class: nginx
-    # Cert-manager will automatically provision SSL certificate
     cert-manager.io/cluster-issuer: letsencrypt-prod
-    # Redirect HTTP to HTTPS
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
   tls:
     enabled: true
@@ -93,6 +91,7 @@ postgresql:
     persistence:
       enabled: true
       size: 10Gi
+      storageClass: logodal-db-local
   volumePermissions:
     enabled: true
     image:
