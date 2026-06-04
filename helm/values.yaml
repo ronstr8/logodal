@@ -63,7 +63,7 @@ backend:
   service:
     port: 3000
   ollama:
-    url: "http://ollama:11434"
+    url: "http://ollama.ollama:11434"
     model: "tinyllama:1.1b"
   database:
     url: "dbi:Pg:dbname=logodal;host=postgresql"
@@ -71,7 +71,7 @@ backend:
   env:
     ADMIN_SMS_EMAIL: "17169032417@tmomail.net"
     CHAT_HISTORY_SIZE: 50
-    OLLAMA_URL: "http://ollama:11434"
+    OLLAMA_URL: "http://ollama.ollama:11434"
     OLLAMA_MODEL: "tinyllama:1.1b"
 
 # PostgreSQL dependency configuration
@@ -97,21 +97,6 @@ postgresql:
     image:
       repository: busybox
       tag: 1.36.1
-
-ollama:
-  enabled: true
-  image:
-    repository: localhost:5000/logodal-ollama
-  service:
-    type: ClusterIP
-    port: 11434
-  resources:
-    limits:
-      cpu: "4"
-      memory: "4Gi"
-    requests:
-      cpu: "2"
-      memory: "2Gi"
 
 redis:
   enabled: true

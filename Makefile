@@ -9,7 +9,7 @@ DOCKER_BUILD_FLAGS ?= --progress=plain
 NAMESPACE = logodal
 DOMAIN = logodal.fazigu.org
 
-SERVICES = frontend backend wordd ollama
+SERVICES = frontend backend wordd
 
 .PHONY: all build clean deploy undeploy help backup ensure-namespace sync-version $(SERVICES)
 

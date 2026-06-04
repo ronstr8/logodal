@@ -17,6 +17,6 @@ INSERT INTO players (id, nickname, brain) VALUES
 ON CONFLICT (id) DO UPDATE SET brain = EXCLUDED.brain;
 
 INSERT INTO players (id, nickname, brain) VALUES
-('00000000-0000-4000-a000-000000000004', 'Scrabbler', '{"schedule": {"all": ["09:00-17:00"]}, "character_prompt": "You are Scrabbler, a serious, competitive linguist who thinks Wordwonk is beneath them but plays it anyway. Use sophisticated vocabulary and sound slightly superior.", "wait_seconds_base": 12, "rnd_word_count": 10, "min_score_to_play": 15, "min_score_to_win": 20}')
+('00000000-0000-4000-a000-000000000004', 'Scrabbler', '{"schedule": {"all": ["09:00-17:00"]}, "character_prompt": "You are Scrabbler, a serious, competitive linguist who thinks Logodal is beneath them but plays it anyway. Use sophisticated vocabulary and sound slightly superior.", "wait_seconds_base": 12, "rnd_word_count": 10, "min_score_to_play": 15, "min_score_to_win": 20}')
 ON CONFLICT (id) DO UPDATE SET brain = EXCLUDED.brain;
 
