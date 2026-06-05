@@ -146,8 +146,23 @@ sub generate_speech ($self, $event_type, $args = {}) {
         $event_desc = "You just played '" . ($args->{word} // 'a word') . "' for " . ($args->{score} // 0) . " points.";
     }
 
+    my $chat_ctx = '';
+    my $depth = $ENV{OLLAMA_CHAT_CONTEXT_DEPTH} // 0;
+    if ($depth > 0) {
+        my $history = $self->app->games->{ $self->game_id }{chat_history} // [];
+        my @recent  = @$history;
+        @recent = @recent[ -$depth .. -1 ] if @recent > $depth;
+        if (@recent) {
+            my @lines = map {
+                ($_->{payload}{senderName} // $_->{sender} // '?') . ': ' . ($_->{payload}{text} // '')
+            } @recent;
+            $chat_ctx = "Recent game chat:\n" . join("\n", @lines) . "\n\n";
+        }
+    }
+
     my $full_prompt = "$persona\n\n"
                     . "Game context: $rules | Language: $lang | Rack: $rack\n\n"
+                    . $chat_ctx
                     . "Situation: $event_desc\n\n"
                     . "Say something brief (15 words max). No quotes.";
 

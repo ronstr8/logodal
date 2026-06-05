@@ -97,6 +97,8 @@ spec:
               value: {{ .Values.ollama.url | default "http://ollama:11434" | quote }}
             - name: OLLAMA_MODEL
               value: {{ .Values.ollama.model | default "phi3:mini" | quote }}
+            - name: OLLAMA_CHAT_CONTEXT_DEPTH
+              value: {{ .Values.ollama.chat_context_depth | default 0 | quote }}
             - name: END_ON_ALL_PLAYED
               value: {{ .Values.global.endOnAllPlayed | default "false" | quote }}
             - name: SCORE_AGAINST_AI

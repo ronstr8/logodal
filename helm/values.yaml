@@ -65,6 +65,7 @@ backend:
   ollama:
     url: "http://ollama.ollama:11434"
     model: "tinyllama:1.1b"
+    chat_context_depth: 5
   database:
     url: "dbi:Pg:dbname=logodal;host=postgresql"
     user: "logodal_backend"
