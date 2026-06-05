@@ -133,8 +133,8 @@ sub _init_in_memory_game ($self, $gid, $game_record, $lang, $time_left = undef) 
     my $app = $self->app;
     require Logodal::Game::AI;
 
-    my @all_ais = $app->schema->resultset('Player')->search({ brain => { '!=', undef } })->all;
-    my @ais = map { Logodal::Game::AI->new_from_player($app, $gid, $_, $lang) } @all_ais;
+    my @ai_players = $app->schema->resultset('Player')->find_active_ais($app);
+    my @ais = map { Logodal::Game::AI->new_from_player($app, $gid, $_, $lang) } @ai_players;
 
     $app->games->{$gid} = {
         clients   => {},

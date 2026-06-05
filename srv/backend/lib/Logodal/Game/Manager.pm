@@ -380,7 +380,18 @@ sub end_game ($self, $game, $results_args = {}) {
     )->all;
 
     my $game_lang = $game->language // $DEFAULT_LANG;
-    my @ai_pids = map { $_->player_id } @{$app->games->{$game_id}{ais} // []};
+    my @game_ais  = @{$app->games->{$game_id}{ais} // []};
+    my @ai_pids   = map { $_->player_id } @game_ais;
+
+    # Record next-eligible time for each AI based on their halflife cooldown
+    my $now_epoch = time;
+    for my $ai (@game_ais) {
+        my $halflife_secs = ($ai->playtime_halflife_minutes // 0) * 60;
+        if ($halflife_secs > 0) {
+            $app->ai_next_eligible->{ $ai->player_id } =
+                $now_epoch + $halflife_secs + int(rand($halflife_secs));
+        }
+    }
 
     my $actual_rack_size = (ref($game->rack) eq 'ARRAY' ? scalar(@{$game->rack}) : 8);
     my $results = $app->state_processor->calculate_results(\@plays, $game_lang, $game->started_at, $actual_rack_size);

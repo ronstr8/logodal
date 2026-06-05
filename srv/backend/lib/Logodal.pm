@@ -46,6 +46,9 @@ has games => sub { {} };
 # Store last X chat messages globally
 has chat_history => sub { [] };
 
+# Track when each AI player is next eligible to join a game (player_id → epoch)
+has ai_next_eligible => sub { {} };
+
 has ua => sub { Mojo::UserAgent->new };
 
 has wordd => sub ($self) { 

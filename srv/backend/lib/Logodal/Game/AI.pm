@@ -21,6 +21,7 @@ has 'min_score_to_play' => 2;
 has 'min_score_to_win'  => 30;
 has 'min_word_length'   => 0;   # 0 = no minimum
 has 'character_prompt';
+has 'playtime_halflife_minutes' => 0;
 
 # Instance state
 has 'rack'            => sub { '' }; # Current letters in hand
@@ -41,8 +42,9 @@ sub new_from_player ($class, $app, $game_id, $player, $language = undef) {
         language          => $lang,
         nickname          => $player->nickname,
         player_id         => $player->id,
-        character_prompt  => $brain->{character_prompt},
-        wait_seconds_base => $brain->{wait_seconds_base} // 8,
+        character_prompt          => $brain->{character_prompt},
+        playtime_halflife_minutes => $brain->{playtime_halflife_minutes} // 0,
+        wait_seconds_base         => $brain->{wait_seconds_base} // 8,
         max_seconds       => $brain->{max_seconds} // 0,
         rnd_word_count    => $brain->{rnd_word_count} // 5,
         min_score_to_play => $brain->{min_score_to_play} // 2,
@@ -130,26 +132,24 @@ sub generate_speech ($self, $event_type, $args = {}) {
         return;
     }
 
-    my $prompt = $self->character_prompt // "You are a competitive word game player.";
-    my $lang   = $self->language;
-    my $rules  = $self->app->t('app.rules_summary', $lang);
-    my $rack   = $self->rack;
-
-    my $preamble = "General Game Context:\n"
-                 . "Rules: $rules\n"
-                 . "Current Language: $lang\n"
-                 . "Your Current Tiles (Rack): $rack\n\n";
+    my $persona = $self->character_prompt // "You are a competitive word game player.";
+    my $lang    = $self->language;
+    my $rules   = $self->app->t('app.rules_summary', $lang);
+    my $rack    = $self->rack;
 
     my $event_desc = "";
     if ($event_type eq 'thinking') {
-        $event_desc = "You are currently thinking of your next word using your tiles ($rack).";
+        $event_desc = "You are thinking about your next word. Your rack is: $rack.";
     } elsif ($event_type eq 'beaten') {
-        $event_desc = "Your last play was beaten by player '" . ($args->{player} // 'someone') . "'.";
+        $event_desc = "Your last play was beaten by '" . ($args->{player} // 'someone') . "'.";
     } elsif ($event_type eq 'played') {
-        $event_desc = "You just played the word '" . ($args->{word} // 'a word') . "' for " . ($args->{score} // 0) . " points.";
+        $event_desc = "You just played '" . ($args->{word} // 'a word') . "' for " . ($args->{score} // 0) . " points.";
     }
 
-    my $full_prompt = $preamble . "Character Profile: $prompt\n\nTask: Say something brief (max 15 words) about this situation: $event_desc\nDon't use quotes in your response.";
+    my $full_prompt = "$persona\n\n"
+                    . "Game context: $rules | Language: $lang | Rack: $rack\n\n"
+                    . "Situation: $event_desc\n\n"
+                    . "Say something brief (15 words max). No quotes.";
 
     my $ua = Mojo::UserAgent->new->request_timeout(30);
     $ua->post($ollama_url . "/api/generate" => json => {

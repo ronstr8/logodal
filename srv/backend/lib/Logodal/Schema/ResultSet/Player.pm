@@ -115,36 +115,38 @@ sub create_session {
 }
 
 sub find_active_ais {
-    my ($self) = @_;
-    my @all_ais = $self->search({ brain => { '!=', undef } })->all;
-    my $now = DateTime->now(time_zone => 'local');
-    
-    my @scheduled;
-    my @extra_candidates;
+    my ($self, $app) = @_;
+    my $now       = DateTime->now(time_zone => 'local');
+    my $now_epoch = time;
+    my @participating;
 
-    for my $ai (@all_ais) {
+    for my $ai ($self->search({ brain => { '!=', undef } })->all) {
         my $brain = $ai->brain;
-        next unless $brain && $brain->{schedule};
-        
-        if ($self->_is_on_schedule($brain->{schedule}, $now)) {
-            push @scheduled, $ai;
+        next unless $brain;
+
+        my $on_schedule = $brain->{schedule}
+            && $self->_is_on_schedule($brain->{schedule}, $now);
+
+        # Determine join probability: 75% if on schedule, or use jump_in_probability if off-schedule
+        my $prob;
+        if ($on_schedule) {
+            $prob = 0.75;
+        } elsif ($brain->{jump_in_probability}) {
+            $prob = $brain->{jump_in_probability} + 0;
         } else {
-            push @extra_candidates, $ai;
+            next;
         }
-    }
-    
-    # Rare jump-in logic for others
-    my $extra_ai;
-    if (@extra_candidates) {
-        # Pick one at random to check probability
-        my $candidate = $extra_candidates[int(rand(@extra_candidates))];
-        my $prob = $candidate->brain->{probability} // 0.02; # 2% default
-        if (rand() < $prob) {
-            $extra_ai = $candidate;
+
+        # Halflife cooldown: skip if we set a future eligible time after their last game
+        if ($on_schedule && $app && $brain->{playtime_halflife_minutes}) {
+            my $next_eligible = $app->ai_next_eligible->{ $ai->id } // 0;
+            next if $now_epoch < $next_eligible;
         }
+
+        push @participating, $ai if rand() < $prob;
     }
 
-    return (\@scheduled, $extra_ai);
+    return @participating;
 }
 
 sub _is_on_schedule {

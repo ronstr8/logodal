@@ -30,13 +30,11 @@ sub setup_mock_ollama {
             if ($url =~ /api\/generate/) {
                 my $prompt = $args{json}{prompt} // '';
                 
-                # VERIFICATION: Check if prompt contains rules and rack
-                # "Rules:" is in the preamble
-                # "Your Current Tiles" is in the preamble
-                if ($prompt =~ /Game Rules:/ && $prompt =~ /Your Current Tiles/) {
-                    pass("Ollama prompt contains game context preamble");
+                # VERIFICATION: character persona leads the prompt; game context follows
+                if ($prompt =~ /Game context:/ && $prompt =~ /Rack:/) {
+                    pass("Ollama prompt contains character persona and game context");
                 } else {
-                    fail("Ollama prompt MISSING game context preamble");
+                    fail("Ollama prompt MISSING expected context fields");
                     diag("Prompt was: $prompt");
                 }
 
