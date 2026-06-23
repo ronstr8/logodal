@@ -11,7 +11,7 @@ DOMAIN = logodal.fazigu.org
 
 SERVICES = frontend backend wordd
 
-.PHONY: all build clean deploy undeploy help backup ensure-namespace sync-version $(SERVICES)
+.PHONY: all build clean deploy resurrect undeploy help backup ensure-namespace sync-version $(SERVICES)
 
 all: build
 
@@ -21,6 +21,7 @@ help:
 	@echo "  make build              - Build and push all microservice Docker images"
 	@echo "  make deploy             - Install/Upgrade using Helm umbrella chart"
 	@echo "  make <service>          - Build, Push, and Restart a specific service"
+	@echo "  make resurrect          - Run after bringing back up a cluster"
 
 ensure-namespace:
 	@kubectl create namespace $(NAMESPACE) --dry-run=client -o yaml | kubectl apply -f -
@@ -110,3 +111,4 @@ clean:
 	rm -rf srv/wordd/target
 	find . -name "*.exe" -delete
 
+resurrect: clean build deploy
