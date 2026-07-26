@@ -58,7 +58,8 @@
     position: absolute;
     top: 0;
     left: 1px;
-    font-family: 'Luckiest Guy', cursive;
+    font-family: 'Cinzel', Georgia, serif;
+    font-weight: 700;
     font-size: clamp(1.6rem, 3.3vw, 2.6rem);
     line-height: 1;
 }
@@ -69,9 +70,22 @@
     right: 1px;
     font-size: clamp(1.44rem, 3vw, 2.34rem);
     font-weight: bold;
-    font-family: 'Fredoka', sans-serif;
+    font-family: 'Cinzel', Georgia, serif;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
     line-height: 1;
+}
+
+/* On smaller/portrait screens the tile shrinks but the rem font floors
+   don't, so the top-left letter and bottom-right value overlap in the
+   middle. Scale the glyphs down here to open a clear gap between them. */
+@media (max-width: 900px) {
+    .tile-letter { font-size: clamp(1.3rem, 4.5vw, 1.7rem); }
+    .tile-value  { font-size: clamp(0.85rem, 2.6vw, 1.05rem); }
+}
+
+@media (max-width: 480px) {
+    .tile-letter { font-size: clamp(1.15rem, 5.2vw, 1.5rem); }
+    .tile-value  { font-size: clamp(0.75rem, 3.2vw, 0.95rem); }
 }
 
 /* Mutant tile — borne of natural selection */
