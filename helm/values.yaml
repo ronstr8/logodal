@@ -64,16 +64,21 @@ backend:
     port: 3000
   ollama:
     url: "http://ollama.ollama:11434"
-    model: "tinyllama:1.1b"
+    model: "llama3.1:8b"
     chat_context_depth: 5
+    idle_chatter: false   # canned/filler AI chatter; off = LLM-only, AIs stay silent when the LLM is unavailable
+  ai:
+    social_enabled: true        # background greetings / compliments / winner congrats
+    social_min_gap: 6           # min seconds between AI social lines in a game
+    social_max_per_game: 5      # cap on AI social lines per game
+    compliment_min_score: 20    # only compliment human plays scoring at least this
+    compliment_chance: 0.5      # probability of complimenting a qualifying play
   database:
     url: "dbi:Pg:dbname=logodal;host=postgresql"
     user: "logodal_backend"
   env:
     ADMIN_SMS_EMAIL: "17169032417@tmomail.net"
     CHAT_HISTORY_SIZE: 50
-    OLLAMA_URL: "http://ollama.ollama:11434"
-    OLLAMA_MODEL: "tinyllama:1.1b"
 
 # PostgreSQL dependency configuration
 postgresql:

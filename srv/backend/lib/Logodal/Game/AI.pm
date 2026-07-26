@@ -24,6 +24,7 @@ has 'character_prompt';
 has 'playtime_halflife_minutes' => 0;
 
 # Instance state
+has 'ua'              => sub { Mojo::UserAgent->new->request_timeout(20) }; # bounded, reused across calls
 has 'rack'            => sub { '' }; # Current letters in hand
 has 'candidates'      => sub { [] };
 has 'play_time'       => 0;
@@ -114,21 +115,26 @@ sub tick ($self, $seconds_elapsed) {
         return;
     }
 
-    # Time to think?
+    # Time to think? "Thinking" is pure filler — only when idle chatter is enabled.
     if (@{$self->thinking_times} && $seconds_elapsed >= $self->thinking_times->[0]) {
         shift @{$self->thinking_times};
-        $self->generate_speech('thinking');
+        $self->generate_speech('thinking') if $self->_idle_chatter_on;
     }
+}
+
+# IDLE_CHATTER gates all canned/filler AI talk. Default OFF: AIs speak only when
+# the LLM produces a line, and stay silent otherwise.
+sub _idle_chatter_on ($self) {
+    my $v = $ENV{IDLE_CHATTER};
+    return 0 unless defined $v;
+    return ($v eq '1' || lc($v) eq 'true') ? 1 : 0;
 }
 
 sub generate_speech ($self, $event_type, $args = {}) {
     my $ollama_url = $ENV{OLLAMA_URL};
     $self->app->log->debug("AI " . $self->nickname . " generating speech for event $event_type (Ollama: " . ($ollama_url // 'OFF') . ")");
     unless ($ollama_url) {
-        # Fallback to canned responses
-        my $key = "ai.$event_type";
-        $key = "ai.reaction_beaten" if $event_type eq 'beaten';
-        $self->chat($key, $args);
+        $self->_canned_fallback($event_type, $args);
         return;
     }
 
@@ -146,19 +152,8 @@ sub generate_speech ($self, $event_type, $args = {}) {
         $event_desc = "You just played '" . ($args->{word} // 'a word') . "' for " . ($args->{score} // 0) . " points.";
     }
 
-    my $chat_ctx = '';
-    my $depth = $ENV{OLLAMA_CHAT_CONTEXT_DEPTH} // 0;
-    if ($depth > 0) {
-        my $history = $self->app->games->{ $self->game_id }{chat_history} // [];
-        my @recent  = @$history;
-        @recent = @recent[ -$depth .. -1 ] if @recent > $depth;
-        if (@recent) {
-            my @lines = map {
-                ($_->{payload}{senderName} // $_->{sender} // '?') . ': ' . ($_->{payload}{text} // '')
-            } @recent;
-            $chat_ctx = "Recent game chat:\n" . join("\n", @lines) . "\n\n";
-        }
-    }
+    my $history  = $self->app->games->{ $self->game_id }{chat_history} // [];
+    my $chat_ctx = $self->_format_chat_context($history);
 
     my $full_prompt = "$persona\n\n"
                     . "Game context: $rules | Language: $lang | Rack: $rack\n\n"
@@ -166,28 +161,84 @@ sub generate_speech ($self, $event_type, $args = {}) {
                     . "Situation: $event_desc\n\n"
                     . "Say something brief (15 words max). No quotes.";
 
-    my $ua = Mojo::UserAgent->new->request_timeout(30);
-    $ua->post($ollama_url . "/api/generate" => json => {
-        model => $ENV{OLLAMA_MODEL} // 'phi3:mini',
-        prompt => $full_prompt,
+    my $gid = $self->game_id;
+    $self->_ollama_say($full_prompt,
+        sub ($speech) {
+            return unless length $speech;
+            return unless $self->app->games->{$gid}; # game may have ended while we waited
+            $self->_broadcast_chat($speech);
+        },
+        sub {
+            $self->app->log->error("Ollama speech generation failed ($event_type)");
+            $self->_canned_fallback($event_type, $args);
+        },
+    );
+}
+
+# Emit a canned (pre-translated) line — but only when IDLE_CHATTER is on.
+# With it off, the AI simply stays silent rather than spewing filler.
+sub _canned_fallback ($self, $event_type, $args) {
+    return unless $self->_idle_chatter_on;
+    my $key = "ai.$event_type";
+    $key = "ai.reaction_beaten" if $event_type eq 'beaten';
+    $self->chat($key, $args);
+}
+
+# Format the last N chat messages for prompt context. N = OLLAMA_CHAT_CONTEXT_DEPTH.
+sub _format_chat_context ($self, $history) {
+    my $depth = $ENV{OLLAMA_CHAT_CONTEXT_DEPTH} // 0;
+    return '' unless $depth > 0 && $history && @$history;
+    my @recent = @$history;
+    @recent = @recent[ -$depth .. -1 ] if @recent > $depth;
+    my @lines = map {
+        ($_->{payload}{senderName} // $_->{sender} // '?') . ': ' . ($_->{payload}{text} // '')
+    } @recent;
+    return @lines ? "Recent game chat:\n" . join("\n", @lines) . "\n\n" : '';
+}
+
+# Single point for talking to Ollama. Reuses a bounded per-AI UA so slow/hung
+# requests can't pile up. Calls $on_say->($text) on success, $on_err->() on failure.
+sub _ollama_say ($self, $prompt, $on_say, $on_err = undef) {
+    my $ollama_url = $ENV{OLLAMA_URL} or return;
+    $self->ua->post($ollama_url . "/api/generate" => json => {
+        model  => $ENV{OLLAMA_MODEL} // 'llama3.1:8b',
+        prompt => $prompt,
         stream => \0,
-    } => sub {
-        my ($ua, $tx) = @_;
+        # Cap generation: a chat line is ~15 words; this bounds rambling and latency.
+        options => { num_predict => $ENV{OLLAMA_NUM_PREDICT} // 60 },
+    } => sub ($ua, $tx) {
         my $res = $tx->res;
         if ($res->is_success) {
-            my $data = $res->json;
-            my $speech = $data->{response} // "";
-            $speech =~ s/^\s+|\s+$//g;
-            $self->_broadcast_chat($speech) if $speech;
+            my $speech = $self->_sanitize_speech($res->json->{response});
+            $on_say->($speech);
         } else {
             my $err_msg = $tx->error ? $tx->error->{message} : "Status " . ($res->code // 'unknown');
-            $self->app->log->error("Ollama speech generation failed ($event_type): $err_msg");
-            my $fallback_key = "ai.$event_type";
-            $fallback_key = "ai.reaction_beaten" if $event_type eq 'beaten';
-            $fallback_key = "ai.played"          if $event_type eq 'played';
-            $self->chat($fallback_key, $args);
+            $self->app->log->error("Ollama request failed: $err_msg");
+            $on_err->() if $on_err;
         }
     });
+}
+
+# Defensive clamp on whatever the model returns. Weak models (e.g. tinyllama)
+# ignore "keep it short" and continue/echo the prompt, so we never trust the raw
+# output: take the first line only, drop a leading "Name:" label and wrapping
+# quotes, and hard-cap the word count. Bounds the worst case to a short line.
+sub _sanitize_speech ($self, $raw) {
+    return '' unless defined $raw && length $raw;
+    my ($line) = grep { /\S/ } split /\r?\n/, $raw;  # first non-empty line
+    return '' unless defined $line;
+    $line =~ s/^\s+|\s+$//g;
+    my $nick = $self->nickname // '';
+    $line =~ s/^\Q$nick\E\s*:\s*//i if length $nick;          # drop self-name prefix
+    $line =~ s/^["'\x{201c}\x{201d}]+|["'\x{201c}\x{201d}]+$//g; # wrapping quotes
+    my $cap   = $ENV{AI_SPEECH_MAX_WORDS} // 25;
+    my @words = split /\s+/, $line;
+    if (@words > $cap) {
+        $line = join(' ', @words[0 .. $cap - 1]);
+        $line =~ s/[,;:\s]+$//;
+        $line .= '...';
+    }
+    return $line;
 }
 
 sub _broadcast_chat ($self, $text) {
@@ -304,6 +355,57 @@ sub _execute_play ($self, $word, $score, $game_record) {
 
     # Premature Climax check
     $app->game_manager->_check_premature_climax($self->game_id);
+}
+
+# --- Background social commentary (LLM-only; never canned) ---
+# Generate one short, in-character social line and deliver it. Chat context is
+# pulled from Redis (cross-replica) via the broadcaster, not the local array.
+sub social_say ($self, $gid, $kind, $ctx) {
+    my $app  = $self->app;
+    my $lang = $self->language;
+    my $persona = $self->character_prompt // "You are a friendly but competitive word-game player.";
+
+    my $situation;
+    if ($kind eq 'greet') {
+        $situation = "A player called '" . ($ctx->{name} // 'someone') . "' just joined the game. Greet them in one short, welcoming line.";
+    } elsif ($kind eq 'compliment') {
+        $situation = "'" . ($ctx->{name} // 'A player') . "' just played '" . ($ctx->{word} // '') . "' for " . ($ctx->{score} // 0) . " points. React with a brief, genuine compliment.";
+    } elsif ($kind eq 'congrat') {
+        $situation = "The game just ended. '" . ($ctx->{name} // 'someone') . "' won with '" . ($ctx->{word} // '') . "' (" . ($ctx->{score} // 0) . " pts). Congratulate them in one short line.";
+    } else {
+        return;
+    }
+
+    my $local = $app->games->{$gid}{chat_history} // [];
+    $app->broadcaster->get_chat_history($gid, $local, sub ($history) {
+        my $prompt = "$persona\n\n"
+                   . "You are chatting in a multiplayer word game (language: $lang). Keep it casual and human.\n\n"
+                   . $self->_format_chat_context($history)
+                   . "Situation: $situation\n\n"
+                   . "Reply with ONE short line (12 words max). No quotes.";
+        $self->_ollama_say($prompt, sub ($speech) {
+            return unless length $speech;
+            $self->_deliver_social($gid, $kind, $ctx, $speech);
+        });
+    });
+}
+
+sub _deliver_social ($self, $gid, $kind, $ctx, $text) {
+    my $app = $self->app;
+    my $msg = {
+        type    => 'chat',
+        sender  => $self->player_id,
+        payload => { text => $text, senderName => $self->nickname },
+    };
+    if ($kind eq 'congrat') {
+        # The game is already torn down by now; reach the players on their
+        # personal channels (subscriptions survive game end).
+        my $pids = $ctx->{recipient_pids} // [];
+        $app->broadcaster->announce($msg, $pids) if @$pids;
+    } else {
+        return unless $app->games->{$gid}; # game still live
+        $app->broadcast_to_game($msg, $gid);
+    }
 }
 
 sub chat ($self, $key, $args = {}) {

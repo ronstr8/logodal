@@ -5,7 +5,9 @@ use Logodal::Game::Broadcaster;
 # Mock App
 package MockApp {
     use Mojo::Base -base;
+    use Mojo::Log;
     has games => sub { {} };
+    has log => sub { Mojo::Log->new(level => 'fatal') };
 }
 
 # Mock Client

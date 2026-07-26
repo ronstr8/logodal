@@ -103,8 +103,6 @@ subtest 'English Affixes Regression' => sub {
         ok($play_found, "Word '$word' validated and broadcast");
         $ws->finish_ok;
     }
-
-    $ws->finish_ok;
 };
 
 cleanup_test_games($t);

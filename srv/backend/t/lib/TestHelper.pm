@@ -69,27 +69,27 @@ sub create_ws_client {
     
     _apply_mocks();
 
+    # Authenticate by creating a player and session
+    require DateTime;
+    my $player = $base_mojo->app->schema->resultset('Player')->create({
+        id       => create_uuid_as_string(UUID_V4),
+        nickname => $nickname,
+        language => $language,
+    });
+    my $session_token = create_uuid_as_string(UUID_V4);
+    $player->create_related('sessions', {
+        id         => $session_token,
+        expires_at => DateTime->now->add(days => 1),
+    });
+
     my $t = Test::Mojo->new($base_mojo->app);
     $t->{test_stash} = [];
 
-    # Attach listener to catch messages from the very beginning of the handshake
-    $t->ua->on(websocket => sub ($ua, $tx) {
-        warn "DEBUG: [TestHelper] UA event: websocket transaction started\n";
-        $tx->on(message => sub ($tx, $msg) {
-            warn "DEBUG: [TestHelper] RAW frame received: $msg\n";
-            my $data = eval { decode_json($msg) };
-            if (ref $data eq 'HASH') {
-                warn "DEBUG: [TestHelper] Decoded message type: " . ($data->{type} // 'unknown') . "\n";
-                push @{$t->{test_stash}}, $data;
-            } else {
-                warn "DEBUG: [TestHelper] JSON Decode FAILED for frame: $msg\n";
-            }
-        });
-    });
-
     my $ws_url = "/ws?lang=$language";
-    $t->websocket_ok($ws_url => {'Accept-Language' => $language})
-      ->status_is(101);
+    $t->websocket_ok($ws_url => {
+        'Accept-Language' => $language,
+        Cookie            => "ww_session=$session_token"
+    })->status_is(101);
 
     # Handshake Phase 1: Identity
     my $identity = wait_for_message($t, 'identity', 10);
@@ -126,6 +126,16 @@ sub wait_for_message {
     
     my $start = time;
     while (time - $start < $timeout) {
+        # Drain any new messages from Test::Mojo's internal queue into our stash
+        if (my $messages = delete $t->{messages}) {
+            for my $msg (@$messages) {
+                my $data = eval { decode_json($msg->[1]) };
+                if (ref $data eq 'HASH') {
+                    push @{$t->{test_stash}}, $data;
+                }
+            }
+        }
+
         # 1. Check stash
         my $stash = $t->{test_stash} //= [];
         for (my $i = 0; $i < @$stash; $i++) {
@@ -134,18 +144,6 @@ sub wait_for_message {
                 warn "DEBUG: [wait_for_message] Found '$type' in stash at pos $i\n";
                 my $match = splice(@$stash, $i, 1);
                 return $match->{payload};
-            }
-        }
-
-        # 2. Check Test::Mojo latest message (some frames might be here)
-        if (my $msg = $t->message) {
-            my $data = eval { decode_json($msg->[1]) };
-            if (ref $data eq 'HASH') {
-                my $m_type = $data->{type} // 'unknown';
-                if ($m_type eq $type) {
-                    warn "DEBUG: [wait_for_message] Found '$type' in T-MESSAGE buffer\n";
-                    return $data->{payload};
-                }
             }
         }
 

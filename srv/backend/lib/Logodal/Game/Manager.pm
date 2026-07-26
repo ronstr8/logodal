@@ -142,6 +142,12 @@ sub join_player ($self, $controller, $player, $payload = undef) {
             payload => $history,
         }});
     });
+
+    # Let an AI greet the new arrival (background, deduped per player)
+    $self->ai_enqueue_social($gid, 'greet', 'greet:' . $player->id, {
+        name        => $player->nickname,
+        subject_pid => $player->id,
+    });
 }
 
 sub handle_chat ($self, $controller, $player, $payload) {
@@ -292,6 +298,18 @@ sub _perform_play ($self, $controller, $player, $payload, $word, $game_data, $ga
             # AI Reacts if beaten
             $_->check_reaction($player->nickname, $score) for @{$game_data->{ais} // []};
 
+            # An AI may compliment a strong human play (deduped per word)
+            my $compliment_min = $ENV{AI_COMPLIMENT_MIN_SCORE} // 20;
+            my $compliment_chance = $ENV{AI_COMPLIMENT_CHANCE} // 0.5;
+            if ($score >= $compliment_min && rand() < $compliment_chance) {
+                $self->ai_enqueue_social($game_record->id, 'compliment', "compliment:$word", {
+                    name        => $player->nickname,
+                    word        => $word,
+                    score       => $score,
+                    subject_pid => $player->id,
+                });
+            }
+
             # Premature Climax check
             $self->_check_premature_climax($game_record->id);
         }
@@ -308,6 +326,69 @@ sub _perform_play ($self, $controller, $player, $payload, $word, $game_data, $ga
                 payload => $msg
             }});
         }
+    });
+}
+
+# --- AI social commentary queue ---------------------------------------------
+# Candidates (greet/compliment) are enqueued by event hooks and drained, one at
+# a time and gap-limited, by the game timer so the chatter feels natural and
+# unique. LLM-only: disabled entirely when Ollama isn't configured.
+
+sub _ai_social_enabled ($self) {
+    return 0 unless $ENV{OLLAMA_URL};
+    my $v = $ENV{AI_SOCIAL_ENABLED} // 'true';
+    return ($v eq '1' || lc($v) eq 'true') ? 1 : 0;
+}
+
+# Queue a deduped social candidate. $sig keys uniqueness (e.g. "greet:<pid>").
+sub ai_enqueue_social ($self, $gid, $kind, $sig, $ctx) {
+    return unless $self->_ai_social_enabled;
+    my $g = $self->app->games->{$gid} or return;
+    return unless @{ $g->{ais} // [] };
+    my $social = $g->{social} //= { said => {}, queue => [], last_spoke => 0, count => 0 };
+    return if $social->{said}{$sig}++;                       # already said or queued
+    my $cap = $ENV{AI_SOCIAL_MAX} // 5;
+    return if $social->{count} >= $cap;
+    push @{ $social->{queue} }, { kind => $kind, ctx => $ctx };
+}
+
+# Release at most one queued line per call, respecting the min gap. Picks a
+# random AI that isn't the subject of the comment.
+sub _ai_drain_social ($self, $gid) {
+    my $g = $self->app->games->{$gid} or return;
+    my $social = $g->{social} or return;
+    return unless @{ $social->{queue} // [] };
+    my $gap = $ENV{AI_SOCIAL_MIN_GAP} // 6;
+    my $now = time;
+    return if $now - $social->{last_spoke} < $gap;
+
+    my @ais = @{ $g->{ais} // [] } or return;
+    my $item    = $social->{queue}[0];
+    my $subject = $item->{ctx}{subject_pid} // '';
+    my @eligible = grep { $_->player_id ne $subject } @ais;
+    @eligible = @ais unless @eligible;
+    return unless @eligible;
+
+    shift @{ $social->{queue} };
+    $social->{last_spoke} = $now;
+    $social->{count}++;
+    my $ai = $eligible[ int(rand(@eligible)) ];
+    $ai->social_say($gid, $item->{kind}, $item->{ctx});
+}
+
+# One-shot: have a non-winner AI congratulate the winner. Fires at game end, so
+# it delivers to the players' personal channels (the game is being torn down).
+sub _ai_congratulate_winner ($self, $gid, $winner, $game_ais, $recipient_pids) {
+    return unless $self->_ai_social_enabled;
+    return unless $winner && @$game_ais && @$recipient_pids;
+    my @eligible = grep { $_->player_id ne $winner->{player_id} } @$game_ais;
+    return unless @eligible;
+    my $ai = $eligible[ int(rand(@eligible)) ];
+    $ai->social_say($gid, 'congrat', {
+        name           => $winner->{player},
+        word           => $winner->{word},
+        score          => $winner->{score},
+        recipient_pids => $recipient_pids,
     });
 }
 
@@ -340,7 +421,10 @@ sub start_game_timer ($self, $game) {
             }
             $ai->tick($elapsed);
         }
-        
+
+        # Release a queued social comment (greeting/compliment), gap-limited
+        $self->_ai_drain_social($gid);
+
         # Broadcast timer update
         $app->broadcaster->announce_to_game({
             type    => 'timer',
@@ -429,6 +513,11 @@ sub end_game ($self, $game, $results_args = {}) {
 
     my $winner = $results->[0];
     my $winner_lang = $game->language // $DEFAULT_LANG;
+
+    # Have an AI congratulate the winner. Must fire BEFORE the teardown below
+    # (which deletes the in-memory game); delivery is to player channels.
+    my @recipient_pids = grep { !$is_ai{$_} } do { my %seen; grep { !$seen{$_}++ } map { $_->{player_id} } @$results };
+    $self->_ai_congratulate_winner($game_id, $winner, \@game_ais, \@recipient_pids);
 
     $self->_broadcast_endgame_results({
         game            => $game,

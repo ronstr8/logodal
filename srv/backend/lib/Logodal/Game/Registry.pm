@@ -141,6 +141,7 @@ sub _init_in_memory_game ($self, $gid, $game_record, $lang, $time_left = undef) 
         state     => $game_record,
         time_left => $time_left // ($ENV{GAME_DURATION} || $DEFAULT_GAME_DURATION),
         ais       => \@ais,
+        social    => { said => {}, queue => [], last_spoke => 0, count => 0 },
     };
 }
 

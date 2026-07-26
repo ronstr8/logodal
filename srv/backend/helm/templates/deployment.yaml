@@ -96,9 +96,22 @@ spec:
             - name: OLLAMA_URL
               value: {{ .Values.ollama.url | default "http://ollama:11434" | quote }}
             - name: OLLAMA_MODEL
-              value: {{ .Values.ollama.model | default "phi3:mini" | quote }}
+              value: {{ .Values.ollama.model | default "llama3.1:8b" | quote }}
             - name: OLLAMA_CHAT_CONTEXT_DEPTH
               value: {{ .Values.ollama.chat_context_depth | default 0 | quote }}
+            {{- $ai := .Values.ai | default dict }}
+            - name: IDLE_CHATTER
+              value: {{ .Values.ollama.idle_chatter | default false | quote }}
+            - name: AI_SOCIAL_ENABLED
+              value: {{ $ai.social_enabled | default true | quote }}
+            - name: AI_SOCIAL_MIN_GAP
+              value: {{ $ai.social_min_gap | default 6 | quote }}
+            - name: AI_SOCIAL_MAX
+              value: {{ $ai.social_max_per_game | default 5 | quote }}
+            - name: AI_COMPLIMENT_MIN_SCORE
+              value: {{ $ai.compliment_min_score | default 20 | quote }}
+            - name: AI_COMPLIMENT_CHANCE
+              value: {{ $ai.compliment_chance | default 0.5 | quote }}
             - name: END_ON_ALL_PLAYED
               value: {{ .Values.global.endOnAllPlayed | default "false" | quote }}
             - name: SCORE_AGAINST_AI
