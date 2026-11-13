@@ -12,8 +12,10 @@ RUN rm -f target/release/deps/wordd*
 # Copy actual source code separately to avoid unnecessary rebuilds
 COPY . .
 
-# Build the binary in release mode
-RUN cargo build --release
+# Build the binary in release mode. COPY keeps the sources' original mtimes,
+# which are older than the dummy build above, so cargo would consider wordd
+# up to date and ship the empty `fn main() {}`. Touch to force a rebuild.
+RUN touch src/main.rs && cargo build --release
 
 # Runtime Stage (Debian Slim)
 FROM debian:bookworm-slim
