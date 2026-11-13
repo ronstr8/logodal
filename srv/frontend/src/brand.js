@@ -20,9 +20,10 @@ export const BRANDS = {
     },
     wordwank: {
         name: 'Wordwank',
-        themeColor: '#0e0906',
-        favicon: null,
-        fonts: null,
+        themeColor: '#2c3e50',
+        favicon: '/brands/wordwank/favicon',
+        manifest: '/brands/wordwank/site.webmanifest',
+        fonts: 'https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Luckiest+Guy&display=swap',
     },
 };
 
@@ -81,9 +82,18 @@ export function applyBrand(brand) {
 
     if (b.favicon) {
         setLink('icon', `${b.favicon}/favicon.svg`, { type: 'image/svg+xml' });
+        setLink('icon', `${b.favicon}/favicon-96x96.png`, { type: 'image/png' });
+        setLink('shortcut icon', `${b.favicon}/favicon.ico`);
         setLink('apple-touch-icon', `${b.favicon}/apple-touch-icon.png`);
     }
-    if (b.fonts) setLink('stylesheet', b.fonts);
+    if (b.manifest) setLink('manifest', b.manifest);
+    if (b.fonts) {
+        // Appended rather than replacing index.html's font sheet.
+        const el = document.createElement('link');
+        el.rel = 'stylesheet';
+        el.href = b.fonts;
+        document.head.appendChild(el);
+    }
 }
 
 export const BRAND = resolveBrand();

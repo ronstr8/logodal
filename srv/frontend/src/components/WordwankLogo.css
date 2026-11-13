@@ -1,0 +1,14 @@
+.wordwank-logo {
+    display: block;
+    flex-shrink: 0;
+    width: max-content;
+    font-family: var(--font-display);
+    line-height: 1;
+    letter-spacing: -0.04em;
+    white-space: nowrap;
+    color: var(--accent);
+    /* Shadow offsets scale with the font size (set inline from `height`). */
+    text-shadow: 0.06em 0.06em 0 var(--accent-shadow), 0.12em 0.12em 0 #d35400;
+    padding: 0 0.14em 0.14em 0;
+    user-select: none;
+}

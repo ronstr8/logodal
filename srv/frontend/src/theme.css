@@ -57,4 +57,56 @@
     --font-body:        'Crimson Pro', Georgia, serif;
     --font-flavor:      'IM Fell English', Georgia, serif;
     --font-tile:        'Cinzel', Georgia, serif;
+    --font-tile-value:  'Cinzel', Georgia, serif;
+}
+
+:root[data-brand="wordwank"] {
+    /* Wordwank: the original whimsical look — sunflower on midnight blue
+       ("Flat UI" palette), chunky Luckiest Guy headings, Fredoka body.
+       Restored from the pre-rebrand frontend (commit 4a4baf5). */
+    --accent:           #f1c40f;
+    --accent-rgb:       241, 196, 15;
+    --accent-shadow:    #e67e22;
+
+    --text:             #ecf0f1;
+    --text-rgb:         236, 240, 241;
+    --text-soft:        #bdc3c7;
+    --text-dim:         #95a5a6;
+    --text-muted:       #7f8c8d;
+
+    --panel:            #2c3e50;
+    --panel-rgb:        44, 62, 80;
+    --panel-2:          #34495e;
+    --panel-deep:       #1a252f;
+
+    --bg:               #17202a;
+    --bg-rgb:           23, 32, 42;
+    --bg-deep:          #000000;
+    --bg-deep-rgb:      0, 0, 0;
+
+    --danger:           #e74c3c;
+    --danger-rgb:       231, 76, 60;
+    --danger-dark:      #c0392b;
+
+    --success:          #2ecc71;
+    --success-rgb:      46, 204, 113;
+    --success-dark:     #27ae60;
+    --success-deep:     #1e8449;
+
+    --info:             #3498db;
+    --info-rgb:         52, 152, 219;
+
+    /* Tiles were the same wood in both eras; only the glyph fonts differ. */
+    --tile-face:        #d2b48c;
+    --tile-face-alt:    #c19a6b;
+    --tile-border:      #8b4513;
+    --tile-ink:         #3d1f05;
+    --tile-back-border: #5d2e0a;
+
+    --font-display:     'Luckiest Guy', cursive;
+    --font-deco:        'Luckiest Guy', cursive;
+    --font-body:        'Fredoka', sans-serif;
+    --font-flavor:      'Fredoka', sans-serif;
+    --font-tile:        'Luckiest Guy', cursive;
+    --font-tile-value:  'Fredoka', sans-serif;
 }
