@@ -9,8 +9,10 @@ const localeMiddleware = () => ({
   name: 'serve-locales',
   configureServer(server) {
     server.middlewares.use((req, res, next) => {
-      if (req.url.startsWith('/locales/') && req.url.endsWith('.json')) {
-        const lang = req.url.split('/').pop().split('?')[0];
+      // i18next appends ?v=<version>, so match on the path, not the raw URL.
+      const path = req.url.split('?')[0];
+      if (path.startsWith('/locales/') && path.endsWith('.json')) {
+        const lang = path.split('/').pop();
         const localePath = join(__dirname, 'share/locale', lang);
         if (existsSync(localePath)) {
           res.setHeader('Content-Type', 'application/json');
