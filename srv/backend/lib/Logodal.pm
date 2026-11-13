@@ -41,6 +41,14 @@ has scorer => sub { Logodal::Game::Scorer->new };
 # Host <-> brand mapping (logodal.com, wordwank.com, ...). See Logodal::Brand.
 has brands => sub { require Logodal::Brand; Logodal::Brand->from_env };
 
+# Per-brand bot voices from share/brands/*.json (rows are synced by migrate.pl).
+has bot_roster => sub ($self) {
+    require Logodal::BotRoster;
+    my $roster = eval { Logodal::BotRoster->load };
+    $self->log->error("Bot roster failed to load; bots will use bare personas: $@") unless $roster;
+    return $roster // Logodal::BotRoster->new;
+};
+
 has broadcaster => sub ($self) { Logodal::Game::Broadcaster->new(app => $self) };
 
 # Track connected clients by Game UUID

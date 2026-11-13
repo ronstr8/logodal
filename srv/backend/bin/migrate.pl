@@ -79,3 +79,14 @@ for my $file (@files) {
 
 $log->info("All migrations completed successfully.");
 
+# Bots are defined per brand in share/brands/*.json; sync them into players.
+# A malformed roster file is a deploy error (fail fast); a single row that
+# can't be written (e.g. nickname taken) is only logged.
+require Logodal::BotRoster;
+my $roster = eval { Logodal::BotRoster->load };
+unless ($roster) {
+    $log->error("Bot roster invalid: $@");
+    exit 1;
+}
+$roster->sync($schema, $log);
+

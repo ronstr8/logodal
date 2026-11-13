@@ -25,5 +25,22 @@
     },
     "error": {
         "missing_letters": "You can't wank letters you don't have."
+    },
+    "ai": {
+        "thinking": [
+            "Hang on, gripping my tiles...",
+            "Mmm, working it...",
+            "Nearly there, nearly there..."
+        ],
+        "reaction_beaten": [
+            "Oi, {{player}}, you absolute wanker!",
+            "Bloody hell, {{player}}, steady on!",
+            "{{player}} just out-wanked me. Rude."
+        ],
+        "played": [
+            "{{word}} for {{score}}. Get in!",
+            "{{word}}! Wanked it.",
+            "Ooh, {{word}}. That's the stuff."
+        ]
     }
 }

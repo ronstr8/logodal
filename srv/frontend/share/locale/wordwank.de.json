@@ -25,5 +25,22 @@
     },
     "error": {
         "missing_letters": "Du kannst keine Buchstaben wichsen, die du nicht hast."
+    },
+    "ai": {
+        "thinking": [
+            "Moment, ich fummel an meinen Steinen...",
+            "Mmm, ich bearbeite das...",
+            "Gleich, gleich..."
+        ],
+        "reaction_beaten": [
+            "Ey, {{player}}, du alter Wichser!",
+            "Verdammt, {{player}}, mach mal langsam!",
+            "{{player}} hat mich weggewichst. Frech."
+        ],
+        "played": [
+            "{{word}} für {{score}}. Zack!",
+            "{{word}}! Sauber gewichst.",
+            "Ooh, {{word}}. So muss das."
+        ]
     }
 }

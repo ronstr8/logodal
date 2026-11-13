@@ -25,5 +25,22 @@
     },
     "error": {
         "missing_letters": "On ne branle pas des lettres qu'on n'a pas."
+    },
+    "ai": {
+        "thinking": [
+            "Attends, je me tripote les lettres...",
+            "Mmm, je travaille la chose...",
+            "Presque, presque..."
+        ],
+        "reaction_beaten": [
+            "Oh, {{player}}, espèce de branleur !",
+            "Putain, {{player}}, doucement !",
+            "{{player}} m'a mis une branlée. Malpoli."
+        ],
+        "played": [
+            "{{word}} pour {{score}}. Et voilà !",
+            "{{word}} ! Bien branlé.",
+            "Ooh, {{word}}. C'est du bon."
+        ]
     }
 }

@@ -12,6 +12,7 @@ has 'game_id';
 has 'player_id' => sub { create_uuid_as_string(UUID_V4) };
 has 'nickname'  => sub { Logodal::Util::NameGenerator->new->generate(4, 1) };
 has 'language'  => 'en';
+has 'brand'     => 'logodal'; # bots speak in their own brand to every player
 
 # AI Config
 has 'wait_seconds_base' => 5;
@@ -43,6 +44,7 @@ sub new_from_player ($class, $app, $game_id, $player, $language = undef) {
         language          => $lang,
         nickname          => $player->nickname,
         player_id         => $player->id,
+        brand             => $brain->{brand} // 'logodal',
         character_prompt          => $brain->{character_prompt},
         playtime_halflife_minutes => $brain->{playtime_halflife_minutes} // 0,
         wait_seconds_base         => $brain->{wait_seconds_base} // 8,
@@ -138,9 +140,9 @@ sub generate_speech ($self, $event_type, $args = {}) {
         return;
     }
 
-    my $persona = $self->character_prompt // "You are a competitive word game player.";
+    my $persona = $self->_persona("You are a competitive word game player.");
     my $lang    = $self->language;
-    my $rules   = $self->app->t('app.rules_summary', $lang);
+    my $rules   = $self->app->t('app.rules_summary', $lang, {}, $self->brand);
     my $rack    = $self->rack;
 
     my $event_desc = "";
@@ -177,6 +179,14 @@ sub generate_speech ($self, $event_type, $args = {}) {
 
 # Emit a canned (pre-translated) line — but only when IDLE_CHATTER is on.
 # With it off, the AI simply stays silent rather than spewing filler.
+# Full LLM persona: the brand's house voice (share/brands/<brand>.json), then
+# the bot's own character prompt. Either may be absent.
+sub _persona ($self, $default) {
+    my $voice     = $self->app->bot_roster->voice($self->brand);
+    my $character = $self->character_prompt // $default;
+    return length $voice ? "$voice\n\n$character" : $character;
+}
+
 sub _canned_fallback ($self, $event_type, $args) {
     return unless $self->_idle_chatter_on;
     my $key = "ai.$event_type";
@@ -346,11 +356,11 @@ sub _execute_play ($self, $word, $score, $game_record) {
     my $emoji_prefix = $app->game_manager->_get_achievement_emojis($game_record, $word, $len_bonus);
 
     # Global Chat Broadcast
-    my $chat_msg = $app->t('app.played_word', $self->language, { 
-        player     => $self->nickname, 
-        tile_count => length($word), 
-        raw_points => $score 
-    });
+    my $chat_msg = $app->t('app.played_word', $self->language, {
+        player     => $self->nickname,
+        tile_count => length($word),
+        raw_points => $score
+    }, $self->brand);
     $app->broadcast_to_game({
         type    => 'chat',
         sender  => 'SYSTEM',
@@ -371,7 +381,7 @@ sub _execute_play ($self, $word, $score, $game_record) {
 sub social_say ($self, $gid, $kind, $ctx) {
     my $app  = $self->app;
     my $lang = $self->language;
-    my $persona = $self->character_prompt // "You are a friendly but competitive word-game player.";
+    my $persona = $self->_persona("You are a friendly but competitive word-game player.");
 
     my $situation;
     if ($kind eq 'greet') {
@@ -418,7 +428,7 @@ sub _deliver_social ($self, $gid, $kind, $ctx, $text) {
 
 sub chat ($self, $key, $args = {}) {
     my $lang = $self->language;
-    my $text = $self->app->t($key, $lang, $args);
+    my $text = $self->app->t($key, $lang, $args, $self->brand);
 
     $self->_broadcast_chat($text);
 }

@@ -25,5 +25,22 @@
     },
     "error": {
         "missing_letters": "No puedes pajillear letras que no tienes."
+    },
+    "ai": {
+        "thinking": [
+            "Espera, que me la estoy pensando...",
+            "Mmm, dándole al asunto...",
+            "Ya casi, ya casi..."
+        ],
+        "reaction_beaten": [
+            "¡Ay, {{player}}, menudo pajillero!",
+            "¡Joder, {{player}}, frena un poco!",
+            "{{player}} me la ha pelado. Qué grosero."
+        ],
+        "played": [
+            "{{word}} por {{score}}. ¡Toma!",
+            "¡{{word}}! Bien pajilleada.",
+            "Uf, {{word}}. Así se hace."
+        ]
     }
 }

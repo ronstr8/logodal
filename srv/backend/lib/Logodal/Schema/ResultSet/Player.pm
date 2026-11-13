@@ -123,6 +123,7 @@ sub find_active_ais {
     for my $ai ($self->search({ brain => { '!=', undef } })->all) {
         my $brain = $ai->brain;
         next unless $brain;
+        next if $brain->{retired};   # dropped from share/brands roster
 
         my $on_schedule = $brain->{schedule}
             && $self->_is_on_schedule($brain->{schedule}, $now);
