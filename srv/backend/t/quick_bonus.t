@@ -74,12 +74,19 @@ ok($flash_res, "Found result for Flash");
 my ($quick_bonus) = grep { exists $_->{"Quick Bonus"} } @{$fazigu_res->{bonuses}};
 ok($quick_bonus, "Fazigu got Quick Bonus itemized") or diag(Dumper($fazigu_res->{bonuses}));
 is($quick_bonus->{"Quick Bonus"}, 5, "Fazigu got 5 pts for Quick Bonus");
-is($fazigu_res->{score}, 5 + 5 + 2, "Fazigu total: 5 (base) + 5 (quick) + 2 (unique)");
+# Fazigu is the winner, and calculate_results strips the unique-word bonus from the
+# winner ("no need to rub it in"), so the +1 unique is awarded and then taken back.
+is($fazigu_res->{score}, 5 + 5, "Fazigu total: 5 (base) + 5 (quick), unique forfeited as winner");
+
+# ...and the itemized bonus list is stripped to match the adjusted score.
+my ($fazigu_unique) = grep { exists $_->{"Unique Word"} } @{$fazigu_res->{bonuses}};
+ok(!$fazigu_unique, "Winner's Unique Word bonus is not itemized");
 
 # Check Flash's Quick Bonus (should be 0/missing)
 my ($flash_quick) = grep { exists $_->{"Quick Bonus"} } @{$flash_res->{bonuses}};
 ok(!$flash_quick, "Flash did NOT get Quick Bonus");
-is($flash_res->{score}, 4 + 2, "Flash total: 4 (base) + 2 (unique)");
+# Flash is not the winner, so the unique-word bonus (UNIQUE_WORD_BONUS, default 1) stands.
+is($flash_res->{score}, 4 + 1, "Flash total: 4 (base) + 1 (unique)");
 
 diag("Test complete.");
 done_testing();

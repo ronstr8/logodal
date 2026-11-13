@@ -93,17 +93,28 @@ spec:
               value: "wordd"
             - name: WORDD_PORT
               value: "2345"
+            {{- /* OLLAMA_URL is the master switch for all AI speech: the backend treats
+                   an absent value as "LLM not configured" and goes silent (Manager.pm
+                   _ai_social_enabled, AI.pm _ollama_say). Emit it only when set, so
+                   `ollama.url: ""` genuinely disables AI chatter. */}}
+            {{- if .Values.ollama.url }}
             - name: OLLAMA_URL
-              value: {{ .Values.ollama.url | default "http://ollama:11434" | quote }}
+              value: {{ .Values.ollama.url | quote }}
+            {{- end }}
             - name: OLLAMA_MODEL
-              value: {{ .Values.ollama.model | default "llama3.1:8b" | quote }}
+              value: {{ .Values.ollama.model | default "gemma3:12b" | quote }}
             - name: OLLAMA_CHAT_CONTEXT_DEPTH
               value: {{ .Values.ollama.chat_context_depth | default 0 | quote }}
+            - name: OLLAMA_NUM_CTX
+              value: {{ .Values.ollama.num_ctx | default 4096 | quote }}
             {{- $ai := .Values.ai | default dict }}
+            {{- /* Booleans use `dig`, not `default`: Go templates treat `false` as empty,
+                   so `x | default true` renders "true" even when x is explicitly false —
+                   making the toggle impossible to turn off. `dig` returns the set value. */}}
             - name: IDLE_CHATTER
-              value: {{ .Values.ollama.idle_chatter | default false | quote }}
+              value: {{ dig "idle_chatter" false .Values.ollama | quote }}
             - name: AI_SOCIAL_ENABLED
-              value: {{ $ai.social_enabled | default true | quote }}
+              value: {{ dig "social_enabled" true $ai | quote }}
             - name: AI_SOCIAL_MIN_GAP
               value: {{ $ai.social_min_gap | default 6 | quote }}
             - name: AI_SOCIAL_MAX

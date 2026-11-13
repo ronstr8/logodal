@@ -201,11 +201,19 @@ sub _format_chat_context ($self, $history) {
 sub _ollama_say ($self, $prompt, $on_say, $on_err = undef) {
     my $ollama_url = $ENV{OLLAMA_URL} or return;
     $self->ua->post($ollama_url . "/api/generate" => json => {
-        model  => $ENV{OLLAMA_MODEL} // 'llama3.1:8b',
+        model  => $ENV{OLLAMA_MODEL} // 'gemma3:12b',
         prompt => $prompt,
         stream => \0,
-        # Cap generation: a chat line is ~15 words; this bounds rambling and latency.
-        options => { num_predict => $ENV{OLLAMA_NUM_PREDICT} // 60 },
+        options => {
+            # Cap generation: a chat line is ~15 words; this bounds rambling and latency.
+            num_predict => $ENV{OLLAMA_NUM_PREDICT} // 60,
+            # Cap context too. The ollama pod is shared and configured for a 64K window,
+            # but our largest prompt (persona + rules + rack + chat context) is well under
+            # 1K tokens. Inheriting 64K would burn GBs of VRAM on KV cache we never touch,
+            # which is what pushes a larger model into slow CPU offload. Set per-request so
+            # we don't constrain other users of that pod.
+            num_ctx     => $ENV{OLLAMA_NUM_CTX} // 4096,
+        },
     } => sub ($ua, $tx) {
         my $res = $tx->res;
         if ($res->is_success) {

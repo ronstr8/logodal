@@ -64,8 +64,11 @@ backend:
     port: 3000
   ollama:
     url: "http://ollama.<namespace>.svc.cluster.local:11434"
-    model: "llama3.1:8b"   # natural conversational voice, fast on a 12GB GPU. For lower TTFT: llama3.2:3b
+    model: "gemma3:12b"    # strong multilingual voice, non-reasoning (low TTFT). ~1.1s/line on a 16GB card.
+                           # Lighter: llama3.1:8b (~0.5s). Avoid reasoning models (qwen3) unless thinking is disabled.
     chat_context_depth: 5   # recent messages (human + AI + game events) fed into AI prompt; 0 = off
+    num_ctx: 4096           # per-request context. Our prompts peak ~400 tokens, but the shared ollama pod sets
+                            # OLLAMA_CONTEXT_LENGTH=65536 — inheriting that wastes GBs of f16 KV cache on a 12B.
     idle_chatter: false     # canned/filler AI chatter; off = LLM-only, AIs stay silent when the LLM is unavailable
   ai:
     social_enabled: true        # background greetings / compliments / winner congrats

@@ -35,7 +35,7 @@ npm run build    # Production build
 
 ### Root-level (Kubernetes/Helm)
 ```bash
-make build       # Build and push all Docker images (frontend, backend, wordd, ollama)
+make build       # Build and push all Docker images (frontend, backend, wordd)
 make deploy      # Install/upgrade Helm umbrella chart
 make <service>   # Build, push, and restart a single service (e.g. make backend)
 make migrate     # Run DB migrations inside the cluster

@@ -64,8 +64,9 @@ backend:
     port: 3000
   ollama:
     url: "http://ollama.ollama:11434"
-    model: "llama3.1:8b"
+    model: "gemma3:12b"
     chat_context_depth: 5
+    num_ctx: 4096           # our prompts peak ~400 tokens; the shared pod defaults to 65536
     idle_chatter: false   # canned/filler AI chatter; off = LLM-only, AIs stay silent when the LLM is unavailable
   ai:
     social_enabled: true        # background greetings / compliments / winner congrats

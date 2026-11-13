@@ -40,7 +40,8 @@ subtest 'Rack Generation' => sub {
     my $lang = 'en';
     for (1..100) {
         my $rack = $scorer->get_random_rack($lang);
-        is(scalar @$rack, $ENV{RACK_SIZE} || 7, "Rack size is correct at iteration $_");
+        # Must track the production default in Logodal::Game::Scorer (RACK_SIZE || 8).
+        is(scalar @$rack, $ENV{RACK_SIZE} || 8, "Rack size is correct at iteration $_");
         
         my $has_vowel     = grep { /[AEIOU]/ } @$rack;
         my $has_consonant = grep { !/[AEIOU_]/ } @$rack;
