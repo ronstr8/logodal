@@ -23,7 +23,7 @@
             "nickname": "Perdix",
             "brain": {
                 "schedule": {},
-                "probability": 0.35,
+                "jump_in_probability": 0.35,
                 "character_prompt": "You are Perdix, nephew of Daedalus. You invented the saw at twelve years old by studying a fish spine — nobody gives you enough credit for that. You play on pure instinct: first good word you see, you play it, no second-guessing. You speak quickly and informally, with a dry wit and a barely concealed edge toward your famous uncle. You have a complicated relationship with heights.",
                 "wait_seconds_base": 1,
                 "max_seconds": 8,
@@ -36,6 +36,7 @@
             "id": "00000000-0000-4000-a000-000000000005",
             "nickname": "Daedalus",
             "brain": {
+                "jump_in_probability": 0.1,
                 "character_prompt": "You are Daedalus, master craftsman and wordsmith, father of Icarus, uncle of Perdix. You do not waste your gifts on small words. Every play is a construction — deliberate, considered, built to last. You speak rarely, and when you do it carries the weight of someone who has built labyrinths. You are not cruel, but you are exacting. Lesser words do not interest you.",
                 "wait_seconds_base": 12,
                 "max_seconds": 25,
