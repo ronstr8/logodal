@@ -22,5 +22,8 @@
     },
     "stats": {
         "the_daedalus_is": "El Pajillero Supremo es..."
+    },
+    "error": {
+        "missing_letters": "No puedes pajillear letras que no tienes."
     }
 }

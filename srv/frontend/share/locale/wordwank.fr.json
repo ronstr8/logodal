@@ -22,5 +22,8 @@
     },
     "stats": {
         "the_daedalus_is": "Le Branleur Suprême est..."
+    },
+    "error": {
+        "missing_letters": "On ne branle pas des lettres qu'on n'a pas."
     }
 }

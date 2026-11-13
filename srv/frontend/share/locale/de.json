@@ -138,5 +138,8 @@
             "{{word}}! Das gehört mir.",
             "Na ja, {{word}}. Ich nehme es."
         ]
+    },
+    "error": {
+        "missing_letters": "Dir fehlen die Buchstaben für dieses Wort."
     }
 }

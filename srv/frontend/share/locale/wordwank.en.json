@@ -22,5 +22,8 @@
     },
     "stats": {
         "the_daedalus_is": "The Apex Wanker is..."
+    },
+    "error": {
+        "missing_letters": "You can't wank letters you don't have."
     }
 }

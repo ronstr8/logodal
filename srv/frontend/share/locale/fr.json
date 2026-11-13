@@ -138,5 +138,8 @@
             "{{word}} ! Voilà !",
             "Ah, {{word}}. Je le prends."
         ]
+    },
+    "error": {
+        "missing_letters": "Vous n'avez pas les lettres pour ce mot."
     }
 }

@@ -22,5 +22,8 @@
     },
     "stats": {
         "the_daedalus_is": "Der Oberwichser ist..."
+    },
+    "error": {
+        "missing_letters": "Du kannst keine Buchstaben wichsen, die du nicht hast."
     }
 }

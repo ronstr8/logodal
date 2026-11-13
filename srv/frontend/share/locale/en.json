@@ -138,5 +138,8 @@
             "{{word}}! That's mine.",
             "Ooh, {{word}}. I'll take it."
         ]
+    },
+    "error": {
+        "missing_letters": "You don't have the letters for that word."
     }
 }
