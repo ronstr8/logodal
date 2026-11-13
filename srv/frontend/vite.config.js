@@ -8,10 +8,10 @@ const packageJson = JSON.parse(readFileSync('./package.json', 'utf-8'))
 const localeMiddleware = () => ({
   name: 'serve-locales',
   configureServer(server) {
-    server.middleware.use((req, res, next) => {
+    server.middlewares.use((req, res, next) => {
       if (req.url.startsWith('/locales/') && req.url.endsWith('.json')) {
         const lang = req.url.split('/').pop().split('?')[0];
-        const localePath = join(__dirname, '../../helm/share/locale', lang);
+        const localePath = join(__dirname, 'share/locale', lang);
         if (existsSync(localePath)) {
           res.setHeader('Content-Type', 'application/json');
           res.end(readFileSync(localePath));
