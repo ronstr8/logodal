@@ -1,0 +1,26 @@
+{
+    "app": {
+        "title": "wordwank",
+        "help_label": "C'EST QUOI CE BORDEL‽",
+        "error_word_not_found": "On ne branle pas '{{word}}'.",
+        "donate_footer": "Merci beaucoup d'avoir choisi de branler vos mots avec nous.",
+        "played_word": "{{player}} a branlé un mot de {{tile_count}} lettres pour au moins {{raw_points}} points.",
+        "invite_notify": "{{name}} a commencé à branler des mots en {{lang}} ! Rejoignez-les sur {{url}}",
+        "players_starting": "{{players}} et vous commencez à branler des mots.",
+        "players_starting_you": "Vous commencez à branler des mots.",
+        "rules_summary": "Wordwank est un duel de vocabulaire à toute berzingue ! Utilisez vos tuiles pour former le mot le mieux noté (ou le plus étrange) avant la fin du temps. Les valeurs des lettres sont basées sur leur fréquence dans la chaussette à branlette : les lettres courantes valent 1 point, tandis que les plus rares valent jusqu'à 9 points. Les deux lettres Licorne les plus rares valent 10 points ! Une lettre chaque jour vaut 7 points. La notation est dynamique : trouvez un Mot Unique ou visez des Bonus de Longueur (+5 pour 6 lettres, doublant pour chaque lettre supplémentaire). Attention : dupliquer un mot vous donne 0 point, mais si quelqu'un VOUS copie, vous gagnez la valeur brute totale de ce mot par copie. À chaque partie, une tuile mute en Lettre Mutante : elle brille en vert et vaut 10 points. Trouvez-la vite.",
+        "you_are_daedalus": "Tu es le branleur suprême !"
+    },
+    "auth": {
+        "anonymous_disclaimer": "On ne dit jamais qui joue, mais si vous voulez garder votre rang de branleur, connectez-vous avec l'un des ci-dessous."
+    },
+    "results": {
+        "solo_wonk": "Malheureusement, un branleur solitaire ne reçoit aucun point.",
+        "suggested_missed": "J'aurais branlé {{word}}.",
+        "suggested_nobody": "Personne n'a branlé {{word}}.",
+        "title_premature": "CLIMAX PRÉMATURÉ"
+    },
+    "stats": {
+        "the_daedalus_is": "Le Branleur Suprême est..."
+    }
+}

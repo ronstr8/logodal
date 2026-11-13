@@ -105,7 +105,7 @@ sub join_player ($self, $controller, $player, $payload = undef) {
             name => $player->nickname, 
             lang => $full_lang,
             url  => $app->brands->url_for($controller->brand) // 'https://logodal.com'
-        }));
+        }, $controller->brand));
     }
 
     # Notify others of the join
@@ -211,7 +211,7 @@ sub _perform_play ($self, $controller, $player, $payload, $word, $game_data, $ga
         $app->log->debug("Word '$word' FAILED rack check");
         return $controller->send({json => {
             type    => 'error',
-            payload => $controller->t('error.missing_letters', $lang)
+            payload => $controller->t('error.missing_letters', $lang, {}, $controller->brand)
         }});
     }
 
@@ -241,11 +241,13 @@ sub _perform_play ($self, $controller, $player, $payload, $word, $game_data, $ga
 
             # Also send a chat message for the play (restricting to game scope)
             my $tile_count = length($word);
-            my $chat_msg = $controller->t('app.played_word', $lang, { 
-                player     => $player->nickname, 
+            # Narrated in the *acting* player's brand, so a Wordwank player's play
+            # reads as Wordwank to everyone at the table (bots work the same way).
+            my $chat_msg = $controller->t('app.played_word', $lang, {
+                player     => $player->nickname,
                 tile_count => $tile_count,
                 raw_points => $score
-            });
+            }, $controller->brand);
             my $timestamp = time;
             # Broadcast to everyone in the game
             $controller->broadcast_to_game({
@@ -318,7 +320,7 @@ sub _perform_play ($self, $controller, $player, $payload, $word, $game_data, $ga
             $app->log->debug("Word '$word' REJECTED by wordd. Status: $code");
             
             my $msg = ($code == 404) 
-                ? $controller->t('app.error_word_not_found', $lang, { word => $word })
+                ? $controller->t('app.error_word_not_found', $lang, { word => $word }, $controller->brand)
                 : "Fecking server error!";
 
             $controller->send({json => {

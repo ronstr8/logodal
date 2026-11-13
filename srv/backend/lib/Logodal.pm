@@ -78,6 +78,7 @@ has game_manager => sub ($self) {
 
 # Shared i18n
 has translations => sub { {} };
+has brand_translations => sub { {} };   # brand => lang => partial overlay
 has _languages_cache => sub { undef };
 
 sub startup ($self) {
@@ -123,16 +124,25 @@ sub startup ($self) {
 
     $self->helper(load_translations => sub ($c) {
         if (-d $share_dir) {
+            # Base locales are <lang>.json; brand overlays are <brand>.<lang>.json
+            # holding only the keys that brand words differently.
             my $new_translations = {};
+            my $new_overlays     = {};
             for my $file (glob("$share_dir/*.json")) {
-                my ($lang) = $file =~ /([^\\\/]+)\.json$/;
-                eval {
-                    my $content = Mojo::File->new($file)->slurp;
-                    $new_translations->{$lang} = decode_json($content);
-                };
-                $c->app->log->error("Failed to load translation $file: $@") if $@;
+                my ($name) = $file =~ /([^\\\/]+)\.json$/;
+                my $data = eval { decode_json(Mojo::File->new($file)->slurp) };
+                if ($@) {
+                    $c->app->log->error("Failed to load translation $file: $@");
+                    next;
+                }
+                if ($name =~ /^([a-z]+)\.([a-z]{2}(?:-[A-Za-z]+)?)$/) {
+                    $new_overlays->{$1}{$2} = $data;
+                } elsif ($name =~ /^[a-z]{2}(?:-[A-Za-z]+)?$/) {
+                    $new_translations->{$name} = $data;
+                }
             }
             $c->app->translations($new_translations);
+            $c->app->brand_translations($new_overlays);
             $c->app->log->debug("Translations reloaded from $share_dir");
         }
     });
@@ -164,15 +174,29 @@ sub startup ($self) {
         return \%langs;
     });
 
-    $self->helper(t => sub ($c, $key, $lang = undef, $args = {}) {
+    # t($key, $lang, \%args, $brand): $brand (optional) consults that brand's
+    # overlay first, then falls back to the shared base wording.
+    $self->helper(t => sub ($c, $key, $lang = undef, $args = {}, $brand = undef) {
         $lang ||= 'en';
-        
+
         my $translations = $c->app->translations;
-        # Traverse nested keys (e.g., 'app.error_word_not_found')
-        my $val = $translations->{$lang} // $translations->{en} // {};
-        for my $part (split /\./, $key) {
-            $val = $val->{$part} if ref $val eq 'HASH';
+        my $lookup = sub ($tree) {
+            my $v = $tree;
+            for my $part (split /\./, $key) {
+                return undef unless ref $v eq 'HASH';
+                $v = $v->{$part};
+            }
+            return $v;
+        };
+
+        my $val;
+        if ($brand) {
+            my $overlay = $c->app->brand_translations->{$brand} // {};
+            # Same language only: a missing overlay falls back to base wording in
+            # that language, never to another language's brand copy.
+            $val = $lookup->($overlay->{$lang} // {});
         }
+        $val //= $lookup->($translations->{$lang} // $translations->{en} // {});
         if (defined $val && ref $val eq 'ARRAY') {
             $val = $val->[int(rand(@$val))];
         }

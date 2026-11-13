@@ -83,7 +83,7 @@
         "base_score": "Βασική Βαθμολογία",
         "duped_you": "σε αντέγραψε",
         "duplicate_penalty": "0 πόντοι (Αντιγραφή)",
-        "solo_logodal": "Δυστυχώς, ένας μοναχικός logodal δεν παίρνει πόντους.",
+        "solo_wonk": "Δυστυχώς, ένας μοναχικός logodal δεν παίρνει πόντους.",
         "definition_link": "Ορισμός",
         "suggested_nobody": "Κανείς δεν έπαιξε {{word}}.",
         "suggested_missed": "Θα έπαιζα {{word}}.",

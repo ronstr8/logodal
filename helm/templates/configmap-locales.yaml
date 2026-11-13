@@ -1,3 +1,9 @@
+{{- /*
+  Every locale file under share/locale/: base <lang>.json plus brand overlays
+  <brand>.<lang>.json. Globbed so new languages and brands ship automatically
+  (an explicit list previously left el.json out). `make deploy` copies these
+  from srv/frontend/share/locale/, the source of truth.
+*/}}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -9,15 +15,7 @@ metadata:
     meta.helm.sh/release-name: logodal
     meta.helm.sh/release-namespace: {{ .Values.global.namespace }}
 data:
-  en.json: |-
-{{ .Files.Get "share/locale/en.json" | nindent 4 }}
-  es.json: |-
-{{ .Files.Get "share/locale/es.json" | nindent 4 }}
-  fr.json: |-
-{{ .Files.Get "share/locale/fr.json" | nindent 4 }}
-  de.json: |-
-{{ .Files.Get "share/locale/de.json" | nindent 4 }}
-  ru.json: |-
-{{ .Files.Get "share/locale/ru.json" | nindent 4 }}
-
-
+{{- range $path, $_ := .Files.Glob "share/locale/*.json" }}
+  {{ base $path }}: |-
+{{ $.Files.Get $path | nindent 4 }}
+{{- end }}

@@ -76,11 +76,7 @@ locales:
 	@kubectl delete configmap logodal-locales --namespace $(NAMESPACE) --ignore-not-found
 	@kubectl create configmap logodal-locales \
 		--namespace $(NAMESPACE) \
-		--from-file=en.json=srv/frontend/share/locale/en.json \
-		--from-file=es.json=srv/frontend/share/locale/es.json \
-		--from-file=fr.json=srv/frontend/share/locale/fr.json \
-		--from-file=de.json=srv/frontend/share/locale/de.json \
-		--from-file=ru.json=srv/frontend/share/locale/ru.json
+		--from-file=srv/frontend/share/locale/
 	@echo "✅ ConfigMap updated. Pods will pick up changes within 5 minutes."
 
 # Lexicon generation from Hunspell dictionaries

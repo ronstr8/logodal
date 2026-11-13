@@ -64,6 +64,7 @@ package MockController {
     }
     sub app { shift->{app} }
     sub t   { shift->app->t(@_) }
+    sub brand { 'logodal' }
     sub send { 1 } # No-op for testing
     sub tx   { 1 } # Mock transaction for testing
     sub broadcast_to_game { shift->app->broadcaster->announce_to_game(@_) }

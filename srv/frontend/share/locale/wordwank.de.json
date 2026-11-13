@@ -1,0 +1,26 @@
+{
+    "app": {
+        "title": "wordwank",
+        "help_label": "WAS ZUM WICHS‽",
+        "error_word_not_found": "Auf '{{word}}' wichsen wir nicht.",
+        "donate_footer": "Vielen Dank, dass du deine Wörter bei uns wichst.",
+        "played_word": "{{player}} hat ein {{tile_count}}-Buchstaben-Wort für mindestens {{raw_points}} Punkte gewichst.",
+        "invite_notify": "{{name}} wichst jetzt Wörter auf {{lang}}! Mach mit unter {{url}}",
+        "players_starting": "{{players}} und du fangt an, Wörter zu wichsen.",
+        "players_starting_you": "Du fängst an, Wörter zu wichsen.",
+        "rules_summary": "Wordwank ist ein rasantes Vokabelduell! Nutze deine Steine, um das am höchsten gewertete (oder schrägste) Wort zu bilden, bevor die Zeit abläuft. Die Buchstabenwerte basieren auf ihrer Häufigkeit in der Wichssocke: Häufige Buchstaben sind 1 Punkt wert, seltenere bis zu 9 Punkte. Die zwei seltensten Einhorn-Buchstaben sind 10 Punkte wert! Ein Buchstabe ist jeden Tag 7 Punkte wert. Die Wertung ist dynamisch: Finde ein Einzigartiges Wort oder ziele auf Längenboni (+5 für 6 Buchstaben, Verdopplung für jeden weiteren). Achtung: Ein dupliziertes Wort bringt dir 0 Punkte, aber wenn jemand DICH kopiert, erhältst du den vollen Rohwert dieses Wortes pro Kopie. In jeder Runde mutiert ein Stein zum Mutantenbuchstaben: Er leuchtet grün und ist 10 Punkte wert. Schnell sein lohnt sich.",
+        "you_are_daedalus": "Du bist der Oberwichser!"
+    },
+    "auth": {
+        "anonymous_disclaimer": "Wir sagen nie, wer spielt, aber wenn du deinen Wichs-Rang behalten willst, melde dich mit einem der folgenden an."
+    },
+    "results": {
+        "solo_wonk": "Leider bekommt ein einsamer Wichser keine Punkte.",
+        "suggested_missed": "Ich hätte {{word}} gewichst.",
+        "suggested_nobody": "Niemand hat {{word}} gewichst.",
+        "title_premature": "VORZEITIGER HÖHEPUNKT"
+    },
+    "stats": {
+        "the_daedalus_is": "Der Oberwichser ist..."
+    }
+}
