@@ -13,11 +13,11 @@
 }
 
 .loading-card {
-    background: linear-gradient(135deg, #2a1c0c 0%, #1e1208 100%);
+    background: linear-gradient(135deg, var(--panel-2) 0%, var(--panel) 100%);
     padding: 3rem;
     border-radius: 8px;
-    border: 1px solid rgba(201, 168, 76, 0.25);
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 40px rgba(201, 168, 76, 0.06);
+    border: 1px solid rgba(var(--accent-rgb), 0.25);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 40px rgba(var(--accent-rgb), 0.06);
     text-align: center;
     min-width: 400px;
 }
@@ -25,8 +25,8 @@
 .loading-spinner {
     width: 60px;
     height: 60px;
-    border: 5px solid rgba(232, 216, 192, 0.08);
-    border-top-color: #c9a84c;
+    border: 5px solid rgba(var(--text-rgb), 0.08);
+    border-top-color: var(--accent);
     border-radius: 50%;
     animation: spin 1s linear infinite;
     margin: 0 auto 30px;
@@ -41,28 +41,28 @@
     margin-top: 2rem;
     padding: 1rem 2rem;
     font-size: 1rem;
-    font-family: 'Cinzel', Georgia, serif;
+    font-family: var(--font-display);
     font-weight: 700;
     letter-spacing: 1.5px;
     text-transform: uppercase;
-    color: #e8d8c0;
-    background: #8b2635;
-    border: 1px solid rgba(139, 38, 53, 0.6);
+    color: var(--text);
+    background: var(--danger);
+    border: 1px solid rgba(var(--danger-rgb), 0.6);
     border-radius: 4px;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 3px 0 #6b1a28;
+    box-shadow: 0 3px 0 var(--danger-dark);
 }
 
 .reload-btn:hover {
     background: #a03040;
     transform: translateY(-2px);
-    box-shadow: 0 5px 0 #6b1a28;
+    box-shadow: 0 5px 0 var(--danger-dark);
 }
 
 .reload-btn:active {
     transform: translateY(1px);
-    box-shadow: 0 1px 0 #6b1a28;
+    box-shadow: 0 1px 0 var(--danger-dark);
 }
 
 @keyframes spin {

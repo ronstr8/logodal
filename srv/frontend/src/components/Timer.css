@@ -10,24 +10,24 @@
 .timer-bar-bg {
     height: 6px;
     flex: 1;
-    background: rgba(30, 18, 8, 0.6);
+    background: rgba(var(--panel-rgb), 0.6);
     border-radius: 3px;
     position: relative;
     overflow: hidden;
-    border: 1px solid rgba(201, 168, 76, 0.1);
+    border: 1px solid rgba(var(--accent-rgb), 0.1);
 }
 
 .timer-bar-fill {
     height: 100%;
-    background: linear-gradient(to right, #8b2635, #c9a84c);
+    background: linear-gradient(to right, var(--danger), var(--accent));
     position: absolute;
     left: 0;
     border-radius: 3px;
 }
 
 .timer-value {
-    font-family: 'Cinzel', Georgia, serif;
+    font-family: var(--font-display);
     font-weight: bold;
     font-size: 1.1rem;
-    color: #c9a84c;
+    color: var(--accent);
 }

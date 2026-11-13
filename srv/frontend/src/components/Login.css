@@ -4,7 +4,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: radial-gradient(ellipse at center, rgba(30, 18, 8, 0.97), rgba(6, 3, 2, 1));
+    background: radial-gradient(ellipse at center, rgba(var(--panel-rgb), 0.97), rgba(var(--bg-deep-rgb), 1));
     display: flex;
     align-items: center;
     justify-content: center;
@@ -13,14 +13,14 @@
 }
 
 .login-card {
-    background: rgba(201, 168, 76, 0.04);
-    border: 1px solid rgba(201, 168, 76, 0.18);
+    background: rgba(var(--accent-rgb), 0.04);
+    border: 1px solid rgba(var(--accent-rgb), 0.18);
     border-radius: 8px;
     padding: 3rem;
     width: 100%;
     max-width: 440px;
     text-align: center;
-    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6), 0 0 60px rgba(201, 168, 76, 0.05);
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6), 0 0 60px rgba(var(--accent-rgb), 0.05);
     animation: slideUp 0.6s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
@@ -38,7 +38,7 @@
 
 .splat {
     display: inline-block;
-    filter: drop-shadow(0 0 10px rgba(139, 38, 53, 0.7));
+    filter: drop-shadow(0 0 10px rgba(var(--danger-rgb), 0.7));
     animation: pulse 2s infinite;
 }
 
@@ -55,22 +55,22 @@
 }
 
 .login-subtitle {
-    color: rgba(232, 216, 192, 0.55);
+    color: rgba(var(--text-rgb), 0.55);
     margin-bottom: 2rem;
     font-size: 1rem;
-    font-family: 'IM Fell English', Georgia, serif;
+    font-family: var(--font-flavor);
     font-style: italic;
 }
 
 .last-login-hint {
-    background: rgba(107, 143, 181, 0.1);
-    color: #6b8fb5;
+    background: rgba(var(--info-rgb), 0.1);
+    color: var(--info);
     padding: 0.5rem 1rem;
     border-radius: 99px;
     font-size: 0.85rem;
     margin-bottom: 2rem;
     display: inline-block;
-    font-family: 'IM Fell English', Georgia, serif;
+    font-family: var(--font-flavor);
     font-style: italic;
 }
 
@@ -138,19 +138,19 @@
 
 .auth-error {
     margin-top: 1.5rem;
-    color: #8b2635;
+    color: var(--danger);
     font-size: 0.9rem;
-    background: rgba(139, 38, 53, 0.1);
+    background: rgba(var(--danger-rgb), 0.1);
     padding: 0.75rem;
     border-radius: 4px;
-    font-family: 'IM Fell English', Georgia, serif;
+    font-family: var(--font-flavor);
     font-style: italic;
 }
 
 .auth-footer {
     margin-top: 2rem;
     font-size: 0.8rem;
-    color: rgba(232, 216, 192, 0.35);
-    font-family: 'IM Fell English', Georgia, serif;
+    color: rgba(var(--text-rgb), 0.35);
+    font-family: var(--font-flavor);
     font-style: italic;
 }

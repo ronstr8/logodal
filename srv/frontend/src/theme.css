@@ -1,0 +1,60 @@
+/*
+ * Brand theme tokens.
+ *
+ * Every brand-visible color and font in the app resolves through these custom
+ * properties. The active brand is chosen by <html data-brand="..."> and falls
+ * back to Logodal when unset. Colors used at several opacities also expose an
+ * "-rgb" triplet, consumed as rgba(var(--accent-rgb), 0.15).
+ *
+ * To add a brand: copy the Logodal block under a new [data-brand="name"]
+ * selector and change the values. Do not hardcode palette colors in component
+ * CSS; add a token here instead.
+ */
+
+:root,
+:root[data-brand="logodal"] {
+    /* Logodal: dark "chaotic library" — antique gold on mahogany */
+    --accent:           #c9a84c;
+    --accent-rgb:       201, 168, 76;
+    --accent-shadow:    #7a5a28;
+
+    --text:             #e8d8c0;
+    --text-rgb:         232, 216, 192;
+    --text-soft:        #c0b09a;
+    --text-dim:         #8a7a64;
+    --text-muted:       #7a6a50;
+
+    --panel:            #1e1208;
+    --panel-rgb:        30, 18, 8;
+    --panel-2:          #2a1c0c;
+    --panel-deep:       #160e06;
+
+    --bg:               #0e0906;
+    --bg-rgb:           14, 9, 6;
+    --bg-deep:          #060302;
+    --bg-deep-rgb:      6, 3, 2;
+
+    --danger:           #8b2635;
+    --danger-rgb:       139, 38, 53;
+    --danger-dark:      #6b1a28;
+
+    --success:          #4a7c59;
+    --success-rgb:      74, 124, 89;
+    --success-dark:     #3d6b4a;
+    --success-deep:     #2a4d34;
+
+    --info:             #6b8fb5;
+    --info-rgb:         107, 143, 181;
+
+    --tile-face:        #d2b48c;
+    --tile-face-alt:    #c19a6b;
+    --tile-border:      #8b4513;
+    --tile-ink:         #3d1f05;
+    --tile-back-border: #5d2e0a;
+
+    --font-display:     'Cinzel', Georgia, serif;
+    --font-deco:        'Cinzel Decorative', Georgia, serif;
+    --font-body:        'Crimson Pro', Georgia, serif;
+    --font-flavor:      'IM Fell English', Georgia, serif;
+    --font-tile:        'Cinzel', Georgia, serif;
+}

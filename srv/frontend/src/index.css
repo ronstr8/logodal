@@ -1,12 +1,12 @@
 :root {
-  font-family: 'Crimson Pro', Georgia, serif;
+  font-family: var(--font-body);
   font-size: 17px;
   line-height: 1.55;
   font-weight: 400;
 
   color-scheme: dark;
-  color: #e8d8c0;
-  background-color: #0e0906;
+  color: var(--text);
+  background-color: var(--bg);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -21,7 +21,7 @@ body {
   align-items: flex-start;
   min-width: 320px;
   min-height: 100vh;
-  background: radial-gradient(ellipse at 40% 10%, #1e1208 0%, #0e0906 55%, #060302 100%);
+  background: radial-gradient(ellipse at 40% 10%, var(--panel) 0%, var(--bg) 55%, var(--bg-deep) 100%);
   overflow-x: hidden;
 }
 
@@ -34,35 +34,35 @@ body {
 }
 
 h1 {
-  font-family: 'Cinzel Decorative', Georgia, serif;
+  font-family: var(--font-deco);
   font-size: clamp(2.5rem, 8vh, 4.5rem);
   line-height: 1;
   margin: 0.5rem 0 1rem;
-  color: #c9a84c;
-  text-shadow: 2px 2px 0px #7a5a28, 0 0 40px rgba(201, 168, 76, 0.2);
+  color: var(--accent);
+  text-shadow: 2px 2px 0px var(--accent-shadow), 0 0 40px rgba(var(--accent-rgb), 0.2);
   letter-spacing: 2px;
   font-weight: 700;
 }
 
 .user-identity {
-  font-family: 'IM Fell English', Georgia, serif;
+  font-family: var(--font-flavor);
   font-style: italic;
-  color: rgba(232, 216, 192, 0.6);
+  color: rgba(var(--text-rgb), 0.6);
   font-size: 0.95rem;
   white-space: nowrap;
   letter-spacing: 0.3px;
 }
 
 .user-identity.is-logodal {
-  color: #c9a84c;
+  color: var(--accent);
   font-weight: 600;
   font-style: italic;
-  text-shadow: 0 0 8px rgba(201, 168, 76, 0.4);
+  text-shadow: 0 0 8px rgba(var(--accent-rgb), 0.4);
 }
 
 .user-nickname strong {
-  color: #c9a84c;
-  background: rgba(201, 168, 76, 0.1);
+  color: var(--accent);
+  background: rgba(var(--accent-rgb), 0.1);
   padding: 2px 8px;
   text-transform: none;
   border-radius: 2px;
@@ -72,8 +72,8 @@ h1 {
   display: inline-block;
   transform: rotate(-10deg) scale(1.2);
   margin: 0 -0.1em 0 -0.15em;
-  color: #8b2635;
-  filter: drop-shadow(2px 2px 0px #6b1a28);
+  color: var(--danger);
+  filter: drop-shadow(2px 2px 0px var(--danger-dark));
   vertical-align: middle;
 }
 

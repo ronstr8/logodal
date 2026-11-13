@@ -11,12 +11,12 @@
 .clear-btn {
     padding: 0.6rem 2rem;
     font-size: 0.85rem;
-    font-family: 'Cinzel', Georgia, serif;
+    font-family: var(--font-display);
     font-weight: 700;
     letter-spacing: 1px;
     text-transform: uppercase;
-    color: #e8d8c0;
-    border: 1px solid rgba(201, 168, 76, 0.2);
+    color: var(--text);
+    border: 1px solid rgba(var(--accent-rgb), 0.2);
     border-radius: 4px;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -25,7 +25,7 @@
 
 .jumble-btn {
     background: linear-gradient(135deg, #4a6a8a 0%, #3a5470 100%);
-    border-color: rgba(107, 143, 181, 0.3);
+    border-color: rgba(var(--info-rgb), 0.3);
 }
 
 .clear-btn {
