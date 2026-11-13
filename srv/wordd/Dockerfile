@@ -1,5 +1,8 @@
 # Build Stage
-FROM rust:latest AS builder
+# Pinned: `latest` drifts (toolchain and Debian release). Keep the builder's
+# Debian release in step with the runtime stage below, or the binary may link
+# against a newer glibc than bookworm-slim provides.
+FROM rust:1.100.0-bookworm AS builder
 
 WORKDIR /usr/src/wordd
 
