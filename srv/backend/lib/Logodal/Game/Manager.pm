@@ -104,7 +104,7 @@ sub join_player ($self, $controller, $player, $payload = undef) {
         $app->notify_admin($controller->t('app.invite_notify', $game_lang, { 
             name => $player->nickname, 
             lang => $full_lang,
-            url  => 'https://logodal.com'
+            url  => $app->brands->url_for($controller->brand) // 'https://logodal.com'
         }));
     }
 

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import LogodalLogo from './LogodalLogo';
+import BrandLogo from './BrandLogo';
 import './Login.css';
 
 const Login = ({ onLoginSuccess }) => {
@@ -38,7 +38,7 @@ const Login = ({ onLoginSuccess }) => {
     return (
         <div className="login-overlay">
             <div className="login-card">
-                <LogodalLogo height={68} style={{ margin: '0 auto 0.75rem' }} />
+                <BrandLogo height={68} style={{ margin: '0 auto 0.75rem' }} />
                 <p className="login-subtitle">{t('auth.welcome_back')}</p>
 
                 {lastMethod && (

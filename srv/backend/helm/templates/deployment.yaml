@@ -87,6 +87,17 @@ spec:
               value: {{ .Values.global.defaultLanguage | default "en" | quote }}
             - name: SHARE_DIR
               value: "/app/share"
+            {{- /* Brand resolution: BRAND_HOSTS is a JSON {host: brand} map built
+                   from global.brands.sites; unknown hosts get DEFAULT_BRAND. */}}
+            {{- $brands := .Values.global.brands | default dict }}
+            {{- $brandHosts := dict }}
+            {{- range ($brands.sites | default list) }}
+            {{- $_ := set $brandHosts .host .brand }}
+            {{- end }}
+            - name: DEFAULT_BRAND
+              value: {{ $brands.default | default "logodal" | quote }}
+            - name: BRAND_HOSTS
+              value: {{ $brandHosts | toJson | quote }}
             - name: CHAT_HISTORY_SIZE
               value: {{ .Values.global.chatHistorySize | default .Values.env.CHAT_HISTORY_SIZE | default 50 | quote }}
             - name: WORDD_HOST

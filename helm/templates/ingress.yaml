@@ -1,3 +1,15 @@
+{{- /*
+  One ingress rule (and TLS entry) per brand site from global.brands.sites.
+  All sites route to the same backend/frontend services; the apps pick the
+  brand from the Host header. Falls back to the single ingress.host when no
+  brands are configured.
+*/}}
+{{- $sites := list }}
+{{- if and .Values.global.brands .Values.global.brands.sites }}
+{{- $sites = .Values.global.brands.sites }}
+{{- else }}
+{{- $sites = list (dict "host" .Values.ingress.host "tlsSecret" .Values.ingress.tls.secretName) }}
+{{- end }}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -11,39 +23,31 @@ spec:
 {{- end }}
 {{- if .Values.ingress.tls.enabled }}
   tls:
+{{- range $sites }}
     - hosts:
-        - {{ .Values.ingress.host }}
-      secretName: {{ .Values.ingress.tls.secretName }}
+        - {{ .host }}
+      secretName: {{ .tlsSecret | default (printf "%s-tls" (.brand | default "logodal")) }}
+{{- end }}
 {{- end }}
   rules:
-    - host: {{ .Values.ingress.host }}
+{{- range $sites }}
+    - host: {{ .host }}
       http:
         paths:
-          - path: /ws
+{{- range list "/ws" "/players" "/auth" }}
+          - path: {{ . }}
             pathType: Prefix
             backend:
               service:
                 name: backend
                 port:
                   number: 3000
-          - path: /players
-            pathType: Prefix
-            backend:
-              service:
-                name: backend
-                port:
-                  number: 3000
-          - path: /auth
-            pathType: Prefix
-            backend:
-              service:
-                name: backend
-                port:
-                  number: 3000
+{{- end }}
           - path: /
             pathType: Prefix
             backend:
               service:
                 name: frontend
                 port:
-                  number: {{ .Values.frontend.service.port }}
+                  number: {{ $.Values.frontend.service.port }}
+{{- end }}

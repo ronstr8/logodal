@@ -1,6 +1,18 @@
 # Global settings shared across all microservices
 global:
   domain: logodal.com
+  # Brands ("skins") served by this one deployment, sharing one database and
+  # one player pool. Each site gets its own ingress host + TLS secret; the
+  # frontend and backend pick the brand from the request's Host header.
+  brands:
+    default: logodal
+    sites:
+      - host: logodal.com
+        brand: logodal
+        tlsSecret: logodal-tls
+      - host: wordwank.com
+        brand: wordwank
+        tlsSecret: wordwank-tls
   # The single port for all traffic (Frontend, API, WS)
   externalPort: 80
   registry: localhost:5000

@@ -38,6 +38,9 @@ has schema => sub {
 
 has scorer => sub { Logodal::Game::Scorer->new };
 
+# Host <-> brand mapping (logodal.com, wordwank.com, ...). See Logodal::Brand.
+has brands => sub { require Logodal::Brand; Logodal::Brand->from_env };
+
 has broadcaster => sub ($self) { Logodal::Game::Broadcaster->new(app => $self) };
 
 # Track connected clients by Game UUID
@@ -88,6 +91,12 @@ sub startup ($self) {
 
     # Helpers
     $self->helper(schema => sub ($c) { $c->app->schema });
+
+    # The brand this request arrived on, from its Host header. Presentation only:
+    # all brands share one game pool, so never branch game logic on it.
+    $self->helper(brand => sub ($c) {
+        $c->stash->{'logodal.brand'} //= $c->app->brands->for_host($c->req->headers->host);
+    });
 
     # Re-seed PRNG helper
     $self->helper(reseed_prng => sub ($c) {

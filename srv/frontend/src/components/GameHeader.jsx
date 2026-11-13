@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import LogodalLogo from './LogodalLogo';
+import BrandLogo from './BrandLogo';
 
 const GameHeader = ({
     nickname,
@@ -35,7 +35,7 @@ const GameHeader = ({
         <header>
             <div className="header-left">
                 <button className="mobile-menu-btn" onClick={onOpenSidebar}>☰</button>
-                <LogodalLogo height={44} className="logodal-logo" />
+                <BrandLogo height={44} className="logodal-logo" />
             </div>
 
             <div className="header-actions desktop-only">

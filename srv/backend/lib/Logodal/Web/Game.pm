@@ -44,6 +44,7 @@ sub websocket ($self) {
             id       => $player->id, 
             name     => $player->nickname,
             language => $player->language,
+            brand    => $self->brand,
             config   => {
                 tiles       => $app->scorer->tile_counts($player->language // $DEFAULT_LANG),
                 unicorns    => $app->scorer->unicorns($player->language // $DEFAULT_LANG),

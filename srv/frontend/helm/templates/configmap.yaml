@@ -11,6 +11,13 @@ data:
       KOFI_ENABLED: {{ .Values.global.kofiEnabled | default .Values.kofiEnabled | default true }},
       PAYPAL_ENABLED: {{ .Values.global.paypalEnabled | default .Values.paypalEnabled | default true }},
       PAYPAL_EMAIL: {{ .Values.global.paypalEmail | default .Values.paypalEmail | quote }},
-      PROJECT_CODE_LINK: {{ .Values.global.projectCodeLink | default .Values.projectCodeLink | default "https://github.com/ronstr8/Logodal" | quote }}
+      PROJECT_CODE_LINK: {{ .Values.global.projectCodeLink | default .Values.projectCodeLink | default "https://github.com/ronstr8/Logodal" | quote }},
+      {{- $brands := .Values.global.brands | default dict }}
+      {{- $brandHosts := dict }}
+      {{- range ($brands.sites | default list) }}
+      {{- $_ := set $brandHosts .host .brand }}
+      {{- end }}
+      DEFAULT_BRAND: {{ $brands.default | default "logodal" | quote }},
+      BRAND_HOSTS: {{ $brandHosts | toJson }}
     };
 
