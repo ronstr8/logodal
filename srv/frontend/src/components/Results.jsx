@@ -2,8 +2,9 @@ import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { useTranslation } from 'react-i18next'
 import './Results.css'
+import BrandBadge from './BrandBadge'
 
-const Results = ({ results = [], summary = "", is_solo = false, is_early_end = false, definition, onClose, playerNames = {}, isFocusMode = false }) => {
+const Results = ({ results = [], summary = "", is_solo = false, is_early_end = false, definition, onClose, playerNames = {}, playerBrands = {}, isFocusMode = false }) => {
     const { t } = useTranslation();
     const safeResults = Array.isArray(results) ? results : [];
     const [activeWord, setActiveWord] = useState(null);
@@ -65,7 +66,7 @@ const Results = ({ results = [], summary = "", is_solo = false, is_early_end = f
                             <div key={i} className={`player-result-bubble ${i === 0 ? 'winner' : ''}`}>
                                 <div className="bubble-header">
                                     <span className="rank">{i + 1}</span>
-                                    <span className="player-id">{playerNames[res.player] || res.player}</span>
+                                    <span className="player-id"><BrandBadge brand={playerBrands[res.player]} />{playerNames[res.player] || res.player}</span>
                                     <span className="player-word">{res.word}</span>
                                     <span className="player-score">{res.is_dupe ? '🦜' : res.score}</span>
                                 </div>

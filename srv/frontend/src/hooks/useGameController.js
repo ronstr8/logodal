@@ -11,16 +11,24 @@ export default function useGameController({
     const {
         setRack, setTimeLeft, setTotalTime, setResults, setIsLocked,
         setGameId, setFeedback, setGuess, setLetterValue, setTileConfig,
-        setPlayerNames, playerNamesRef, setSupportedLangs,
+        setPlayerNames, playerNamesRef, setPlayerBrands, setSupportedLangs,
         setMessages, logSystemMessage, showChatToast, playerId, setNickname,
         setMutantLetter, setRackSize
     } = state;
+
+    // Remember which brand (site) each player came from, for BrandBadge.
+    const noteBrand = useCallback((id, brand) => {
+        if (!id || !brand) return;
+        setPlayerBrands(prev => (prev[id] === brand ? prev : { ...prev, [id]: brand }));
+    }, [setPlayerBrands]);
 
     const onChatMessage = useCallback((data) => {
         const text = typeof data.payload === 'string' ? data.payload : data.payload.text;
         const senderName = typeof data.payload === 'object' ? data.payload.senderName : playerNamesRef.current[data.sender];
         const isSystem = !!(data.payload && (data.payload.isSystem || data.sender === 'SYSTEM'));
-        
+        const senderBrand = isSystem ? null : (data.payload && data.payload.senderBrand) || null;
+        if (senderBrand) noteBrand(data.sender, senderBrand);
+
         let translatedText = text;
         if (typeof text === 'string' && text.includes('ai.')) {
             translatedText = t(text, { player: senderName || data.sender });
@@ -32,12 +40,13 @@ export default function useGameController({
         }
 
         if (data.payload && !data.payload.isSeparator && !data.payload.skipToast) {
-            showChatToast(senderName, translatedText);
+            showChatToast(senderName, translatedText, senderBrand);
         }
 
         const msgObj = {
             sender: data.sender,
             senderName: senderName || data.sender,
+            senderBrand,
             text: translatedText,
             isSystem: isSystem,
             isSeparator: !!(data.payload && data.payload.isSeparator),
@@ -45,23 +54,27 @@ export default function useGameController({
         };
 
         setMessages(prev => [...prev, msgObj]);
-    }, [t, logSystemMessage, showChatToast, setMessages, playerNamesRef]);
+    }, [t, logSystemMessage, showChatToast, setMessages, playerNamesRef, noteBrand]);
 
     const onChatHistory = useCallback((data) => {
         const history = data.payload.map(msg => {
             const payload = msg.payload || {};
             const isObject = typeof payload === 'object';
+            const isSystem = !!(isObject && (payload.isSystem || msg.sender === 'SYSTEM'));
+            const senderBrand = !isSystem && isObject ? payload.senderBrand || null : null;
+            if (senderBrand) noteBrand(msg.sender, senderBrand);
             return {
                 sender: msg.sender,
                 senderName: (isObject ? payload.senderName : null) || msg.sender,
+                senderBrand,
                 text: isObject ? payload.text : (typeof payload === 'string' ? payload : ''),
-                isSystem: !!(isObject && (payload.isSystem || msg.sender === 'SYSTEM')),
+                isSystem,
                 isSeparator: !!(isObject && payload.isSeparator),
                 timestamp: new Date(msg.timestamp * 1000).toLocaleTimeString()
             };
         });
         setMessages(prev => (prev.length > history.length ? prev : history));
-    }, [setMessages]);
+    }, [setMessages, noteBrand]);
 
     const onIdentity = useCallback((data) => {
         if (data.payload.id === playerId) {
@@ -77,7 +90,8 @@ export default function useGameController({
             }
         }
         setPlayerNames(prev => ({ ...prev, [data.payload.id]: data.payload.name }));
-    }, [playerId, setNickname, i18n, setTileConfig, setLetterValue, setSupportedLangs, setPlayerNames]);
+        noteBrand(data.payload.id, data.payload.brand);
+    }, [playerId, setNickname, i18n, setTileConfig, setLetterValue, setSupportedLangs, setPlayerNames, noteBrand]);
 
     const onGameStart = useCallback((data) => {
         const { uuid, rack: newRackLetters, rack_size, tile_values, time_left, tile_counts, unicorns, mutant_letter } = data.payload;
@@ -111,6 +125,7 @@ export default function useGameController({
     }, [setTimeLeft]);
 
     const onPlay = useCallback((data) => {
+        noteBrand(data.sender, data.payload && data.payload.playerBrand);
         if (data.sender === playerId) {
             setFeedback({ text: t('app.accepted'), type: 'success' });
             setIsLocked(true);
@@ -118,13 +133,14 @@ export default function useGameController({
             fetchLeaderboard();
         }
         if (data.payload.score >= 40) play('bigsplat');
-    }, [playerId, setFeedback, setIsLocked, t, play, fetchLeaderboard]);
+    }, [playerId, setFeedback, setIsLocked, t, play, fetchLeaderboard, noteBrand]);
 
     const onPlayerJoined = useCallback((data) => {
+        noteBrand(data.payload.id, data.payload.brand);
         if (data.payload.id !== playerId) {
             logSystemMessage(t('app.player_joined', { name: data.payload.name }));
         }
-    }, [playerId, logSystemMessage, t]);
+    }, [playerId, logSystemMessage, t, noteBrand]);
 
     const onPlayerQuit = useCallback((data) => {
         if (data.payload.id !== playerId) {

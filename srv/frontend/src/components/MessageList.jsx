@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation, Trans } from 'react-i18next'
 import './Panel.css'
+import BrandBadge from './BrandBadge'
 
 const MessageList = ({ messages }) => {
     const { t } = useTranslation();
@@ -95,12 +96,15 @@ const MessageList = ({ messages }) => {
                                     </div>
                                 </>
                             ) : (
+                                <>
+                                <BrandBadge brand={msg.senderBrand} />
                                 <Trans
                                     t={t}
                                     i18nKey="app.chat_format"
                                     values={{ player: msg.senderName || msg.sender, text: msg.text }}
                                     components={{ v: <span className="chat-sender" /> }}
                                 />
+                                </>
                             )}
                         </div>
                     );

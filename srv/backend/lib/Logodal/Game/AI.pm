@@ -264,8 +264,9 @@ sub _broadcast_chat ($self, $text) {
         type    => 'chat',
         sender  => $self->player_id,
         payload => {
-            text       => $text,
-            senderName => $self->nickname,
+            text        => $text,
+            senderName  => $self->nickname,
+            senderBrand => $self->brand,
         }
     };
     $self->app->broadcast_to_game($msg, $self->game_id);
@@ -342,7 +343,8 @@ sub _execute_play ($self, $word, $score, $game_record) {
         sender    => $self->player_id,
         timestamp => $timestamp,
         payload   => {
-            playerName => $self->nickname,
+            playerName  => $self->nickname,
+            playerBrand => $self->brand,
             word       => undef,
             score      => $score,
             msg        => $self->nickname . " played a word for $score pts!",
@@ -413,7 +415,7 @@ sub _deliver_social ($self, $gid, $kind, $ctx, $text) {
     my $msg = {
         type    => 'chat',
         sender  => $self->player_id,
-        payload => { text => $text, senderName => $self->nickname },
+        payload => { text => $text, senderName => $self->nickname, senderBrand => $self->brand },
     };
     if ($kind eq 'congrat') {
         # The game is already torn down by now; reach the players on their

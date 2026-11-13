@@ -14,6 +14,7 @@ import Login from './components/Login'
 import Sidebar from './components/Sidebar'
 import GameHeader from './components/GameHeader'
 import GameArea from './components/GameArea'
+import BrandBadge from './components/BrandBadge'
 import { CONFIG } from './config'
 import './App.css'
 import './LoadingModal.css'
@@ -273,14 +274,14 @@ function App() {
                 </DraggablePanel>
             )}
 
-            {state.results && <Results {...state.results} onClose={joinGame} playerNames={state.playerNames} isFocusMode={isFocusMode} />}
+            {state.results && <Results {...state.results} onClose={joinGame} playerNames={state.playerNames} playerBrands={state.playerBrands} isFocusMode={isFocusMode} />}
 
             <div className="toast-container">
                 {state.toasts.map(toast => <div key={toast.id} className={`toast ${toast.isSplat ? 'splat' : ''}`}>{toast.message}</div>)}
             </div>
 
             <div className="chat-toast-container">
-                {state.chatToasts.map(toast => <div key={toast.id} className="chat-toast"><div className="chat-toast-sender">{toast.senderName}</div><div className="chat-toast-text">{toast.text}</div></div>)}
+                {state.chatToasts.map(toast => <div key={toast.id} className="chat-toast"><div className="chat-toast-sender"><BrandBadge brand={toast.senderBrand} />{toast.senderName}</div><div className="chat-toast-text">{toast.text}</div></div>)}
             </div>
 
             {(isConnecting || connectionError || (state.rack.length === 0 && !state.results)) && (

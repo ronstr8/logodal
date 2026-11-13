@@ -13,6 +13,7 @@ export default function useGameState(t) {
     const [letterValue, setLetterValue] = useState({});
     const [tileConfig, setTileConfig] = useState({ tiles: {}, unicorns: {} });
     const [playerNames, setPlayerNames] = useState({});
+    const [playerBrands, setPlayerBrands] = useState({}); // player id -> brand, learned from messages
     const [supportedLangs, setSupportedLangs] = useState({ en: { name: 'English', word_count: 0 } });
     const [messages, setMessages] = useState([]);
     const [toasts, setToasts] = useState([]);
@@ -36,9 +37,9 @@ export default function useGameState(t) {
         }, 2000);
     }, []);
 
-    const showChatToast = useCallback((senderName, text) => {
+    const showChatToast = useCallback((senderName, text, senderBrand = null) => {
         const id = Date.now();
-        setChatToasts(prev => [...prev, { id, senderName, text }]);
+        setChatToasts(prev => [...prev, { id, senderName, text, senderBrand }]);
         setTimeout(() => {
             setChatToasts(prev => prev.filter(t => t.id !== id));
         }, 3000);
@@ -74,6 +75,7 @@ export default function useGameState(t) {
         letterValue, setLetterValue,
         tileConfig, setTileConfig,
         playerNames, setPlayerNames, playerNamesRef,
+        playerBrands, setPlayerBrands,
         supportedLangs, setSupportedLangs,
         messages, setMessages,
         toasts, setToasts, showToast,

@@ -14,12 +14,14 @@
 export const BRANDS = {
     logodal: {
         name: 'Logodal',
+        badge: '/.well-known/favicon/favicon.svg', // shown beside player names
         themeColor: '#0e0906',
         favicon: null, // index.html defaults are Logodal's
         fonts: null,   // index.html already loads Logodal's fonts
     },
     wordwank: {
         name: 'Wordwank',
+        badge: '/brands/wordwank/favicon/favicon.svg',
         themeColor: '#2c3e50',
         favicon: '/brands/wordwank/favicon',
         manifest: '/brands/wordwank/site.webmanifest',

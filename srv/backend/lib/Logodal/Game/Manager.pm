@@ -117,8 +117,9 @@ sub join_player ($self, $controller, $player, $payload = undef) {
                 $c->send({json => {
                     type    => 'player_joined',
                     payload => {
-                        id   => $player->id,
-                        name => $player->nickname
+                        id    => $player->id,
+                        name  => $player->nickname,
+                        brand => $controller->brand,
                     }
                 }});
             }
@@ -128,9 +129,10 @@ sub join_player ($self, $controller, $player, $payload = undef) {
     # Also broadcast identity
     $app->broadcaster->announce_to_game({
         type    => 'identity',
-        payload => { 
-            id   => $player->id, 
-            name => $player->nickname
+        payload => {
+            id    => $player->id,
+            name  => $player->nickname,
+            brand => $controller->brand,
         }
     }, $gid, [$player->id]);
 
@@ -159,8 +161,9 @@ sub handle_chat ($self, $controller, $player, $payload) {
             type    => 'chat',
             sender  => $player->id,
             payload => {
-                text       => $text,
-                senderName => $player->nickname,
+                text        => $text,
+                senderName  => $player->nickname,
+                senderBrand => $controller->brand,
             }
         }, $game_data->{state}->id);
     }
@@ -273,6 +276,7 @@ sub _perform_play ($self, $controller, $player, $payload, $word, $game_data, $ga
                     timestamp => $timestamp,
                     payload   => {
                         playerName   => $player->nickname,
+                        playerBrand  => $controller->brand,
                         word         => $is_sender ? $word : undef,
                         score        => $total_points,
                         raw_points   => $score,
@@ -289,6 +293,7 @@ sub _perform_play ($self, $controller, $player, $payload, $word, $game_data, $ga
                 timestamp => $timestamp,
                 payload   => {
                     playerName   => $player->nickname,
+                    playerBrand  => $controller->brand,
                     word         => undef,
                     score        => $total_points,
                     raw_points   => $score,
