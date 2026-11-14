@@ -27,6 +27,9 @@ global:
   quickBonusSeconds: 10
   uniqueWordBonus: 1
   rackSize: 7
+  # Length bonus: lengthBonusBase points at lengthBonusStart letters, doubling per letter after.
+  lengthBonusStart: 5
+  lengthBonusBase: 10
   minVowels: 2
   minConsonants: 2
   logLevel: info

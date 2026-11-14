@@ -8,6 +8,7 @@ use Logodal::Schema;
 # Mock environment
 $ENV{DATABASE_URL} = 'dbi:SQLite:dbname=:memory:';
 $ENV{QUICK_BONUS_SECONDS} = 5;
+$ENV{LENGTH_BONUS_START} = 99; # keep length bonuses out of these totals
 
 my $t = Test::Mojo->new('Logodal');
 my $app = $t->app;

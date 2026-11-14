@@ -226,8 +226,7 @@ sub _perform_play ($self, $controller, $player, $payload, $word, $game_data, $ga
             my $score = $app->scorer->calculate_score($word, $game_record->letter_values);
 
             # Calculate length bonus before persisting so we can store a provisional final_score
-            my $actual_rack_size = (ref($game_record->rack) eq 'ARRAY' ? scalar(@{$game_record->rack}) : 0);
-            my $len_bonus = $app->scorer->get_length_bonus($word, $actual_rack_size);
+            my $len_bonus = $app->scorer->get_length_bonus($word);
             my $total_points = $score + $len_bonus;
 
             # Persist the play; final_score is provisional (raw + len_bonus) and overwritten at game end

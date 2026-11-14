@@ -353,8 +353,7 @@ sub _execute_play ($self, $word, $score, $game_record) {
     $app->broadcaster->announce_to_game($msg, $self->game_id);
 
     # Calculate achievement emojis
-    my $actual_rack_size = (ref($game_record->rack) eq 'ARRAY' ? scalar(@{$game_record->rack}) : 0);
-    my $len_bonus = $app->scorer->get_length_bonus($word, $actual_rack_size);
+    my $len_bonus = $app->scorer->get_length_bonus($word);
     my $emoji_prefix = $app->game_manager->_get_achievement_emojis($game_record, $word, $len_bonus);
 
     # Global Chat Broadcast

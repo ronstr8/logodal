@@ -220,14 +220,20 @@ sub get_random_rack ($self, $lang, $size = 7, $depth = 0) {
     return \@rack;
 }
 
-sub get_min_bonus_len ($self, $rack_size) {
-    return int($rack_size / 2) + 1;
+# Shortest word that earns a length bonus (helm: global.lengthBonusStart).
+sub length_bonus_start ($self) {
+    return $ENV{LENGTH_BONUS_START} || 5;
 }
 
-sub get_length_bonus ($self, $word, $rack_size = $ENV{RACK_SIZE}) {
-    my $len = length($word);
-    my $bonuses = $len - $self->get_min_bonus_len($rack_size);
-    return $bonuses < 1 ? 0 : 5 * (2 ** $bonuses);
+# Bonus at exactly length_bonus_start letters (helm: global.lengthBonusBase).
+sub length_bonus_base ($self) {
+    return $ENV{LENGTH_BONUS_BASE} || 10;
+}
+
+# length_bonus_base at length_bonus_start letters, doubling for every letter after.
+sub get_length_bonus ($self, $word) {
+    my $extra = length($word) - $self->length_bonus_start;
+    return $extra < 0 ? 0 : $self->length_bonus_base * (2 ** $extra);
 }
 
 sub calculate_score {

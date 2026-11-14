@@ -19,7 +19,10 @@ export default function useGameState(t) {
     const [toasts, setToasts] = useState([]);
     const [chatToasts, setChatToasts] = useState([]);
     const [mutantLetter, setMutantLetter] = useState(null);
-    const [rackSize, setRackSize] = useState(8);
+    // Server defaults; the identity message replaces both on connect.
+    const [rackSize, setRackSize] = useState(7);
+    const [lengthBonusStart, setLengthBonusStart] = useState(5);
+    const [lengthBonusBase, setLengthBonusBase] = useState(10);
 
     const rackRef = useRef([]);
     const guessRef = useRef([]);
@@ -83,6 +86,8 @@ export default function useGameState(t) {
         logSystemMessage,
         handleTimerTick,
         mutantLetter, setMutantLetter,
-        rackSize, setRackSize
+        rackSize, setRackSize,
+        lengthBonusStart, setLengthBonusStart,
+        lengthBonusBase, setLengthBonusBase
     };
 }

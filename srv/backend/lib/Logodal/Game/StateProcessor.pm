@@ -30,8 +30,7 @@ sub calculate_results ($self, $plays, $game_lang, $game_started_at = undef, $rac
         # Initialize bonus tracking for this player
         $player_bonuses{$player_id} //= { duplicates => 0, unique => 0, length_bonus => 0, quick_bonus => 0, duped_by => [] };
         
-        # Calculate length bonus (using game rack size)
-        my $bonus = $scorer->get_length_bonus($word, $rack_size);
+        my $bonus = $scorer->get_length_bonus($word);
         if ($bonus > 0) {
             $player_bonuses{$player_id}{length_bonus} = $bonus;
         }

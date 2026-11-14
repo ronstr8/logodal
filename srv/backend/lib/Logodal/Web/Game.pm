@@ -50,6 +50,10 @@ sub websocket ($self) {
                 unicorns    => $app->scorer->unicorns($player->language // $DEFAULT_LANG),
                 tile_values => $app->scorer->generate_tile_values($player->language // $DEFAULT_LANG),
                 languages   => $app->languages,
+                # For the rules text, before the first game_start arrives.
+                rack_size          => ($ENV{RACK_SIZE} || 8) + 0,
+                length_bonus_start => $app->scorer->length_bonus_start + 0,
+                length_bonus_base  => $app->scorer->length_bonus_base + 0,
             }
         }
     }});
