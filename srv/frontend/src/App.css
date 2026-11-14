@@ -979,6 +979,7 @@ header {
 
     header .logodal-logo {
         height: 32px;
+        font-size: 25.6px; /* WordwankLogo sizes by font-size (0.8 x height) */
     }
 
     .main-game-layout {
@@ -1035,5 +1036,6 @@ header {
 
     header .logodal-logo {
         height: 28px;
+        font-size: 22.4px; /* WordwankLogo sizes by font-size (0.8 x height) */
     }
 }

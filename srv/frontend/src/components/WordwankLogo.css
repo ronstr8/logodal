@@ -1,7 +1,25 @@
 .wordwank-logo {
-    display: block;
+    display: flex;
+    align-items: center;
+    gap: 0.15em;
     flex-shrink: 0;
     width: max-content;
+    font-size: var(--wordwank-logo-size, 40px);
+    user-select: none;
+}
+
+.wordwank-logo__tile {
+    display: block;
+    flex-shrink: 0;
+    /* font-size is 0.8 x height, so 1.25em == height. Sizing in em lets
+       App.css's mobile breakpoints shrink the whole logo via font-size. */
+    width: 1.25em;
+    height: 1.25em;
+    /* The tile art is drawn tilted; a touch of shadow seats it on the panel. */
+    filter: drop-shadow(0 0.04em 0.06em rgba(0, 0, 0, 0.45));
+}
+
+.wordwank-logo__text {
     font-family: var(--font-display);
     line-height: 1;
     letter-spacing: -0.04em;
@@ -10,5 +28,4 @@
     /* Shadow offsets scale with the font size (set inline from `height`). */
     text-shadow: 0.06em 0.06em 0 var(--accent-shadow), 0.12em 0.12em 0 #d35400;
     padding: 0 0.14em 0.14em 0;
-    user-select: none;
 }
