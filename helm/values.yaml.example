@@ -26,7 +26,7 @@ global:
   gameDuration: 30
   quickBonusSeconds: 10
   uniqueWordBonus: 1
-  rackSize: 8
+  rackSize: 7
   minVowels: 2
   minConsonants: 2
   logLevel: info

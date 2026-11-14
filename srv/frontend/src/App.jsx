@@ -21,6 +21,17 @@ import './LoadingModal.css'
 import './JumbleButton.css'
 import './components/Toast.css'
 
+// Length-bonus numbers for the rules text. Mirrors Scorer::get_length_bonus:
+// words longer than int(rack/2)+1 letters earn 5 * 2^(extra letters).
+function rulesNumbers(rackSize) {
+    const minLen = Math.floor(rackSize / 2) + 1;
+    return {
+        rack_size: rackSize,
+        bonus_len: minLen + 1,              // first length that earns +10
+        full_bonus: 5 * 2 ** (rackSize - minLen), // using every tile
+    };
+}
+
 function App() {
     const { t, i18n } = useTranslation()
     const { play, startAmbience, isMuted, toggleMute, isAmbienceEnabled, toggleAmbience } = useSound()
@@ -236,7 +247,7 @@ function App() {
             {showRules && (
                 <DraggablePanel id="rules" title="WTF?!" icon="❓" onClose={() => setShowRules(false)} initialPos={{ x: window.innerWidth / 2 - 200, y: 150 }} initialSize={{ width: 400, height: 450 }}>
                     <div className="rules-panel">
-                        <p className="rules-text">{t('app.rules_summary')}</p>
+                        <p className="rules-text">{t('app.rules_summary', rulesNumbers(state.rackSize))}</p>
                         <div className="rules-legend">
                             <div className="legend-item"><span className="legend-icon">🦄</span><div><strong>Unicorns</strong>: Two tiles worth 10 pts. Very rare.</div></div>
                             <div className="legend-item"><span className="legend-icon">⭐</span><div><strong>Unique Word Bonus</strong>: find a word no one else did for +2 pts.</div></div>

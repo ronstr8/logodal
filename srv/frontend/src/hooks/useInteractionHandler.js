@@ -72,13 +72,15 @@ export default function useInteractionHandler({
         const word = guess.map(g => g ? g.char : '').join('').trim();
         if (word.length === 0) return;
 
-        const len = word.length;
-        if (len === 6) play('placement');
-        else if (len === 7) { play('placement'); setTimeout(() => play('placement'), 150); }
-        else if (len >= 8) play('bigsplat');
+        // Relative to the rack: splat for using every tile, a double blip one
+        // short of that, a single blip two short.
+        const short = rackSize - word.length;
+        if (short <= 0) play('bigsplat');
+        else if (short === 1) { play('placement'); setTimeout(() => play('placement'), 150); }
+        else if (short === 2) play('placement');
 
         sendMessage('play', { word });
-    }, [guess, sendMessage, play]);
+    }, [guess, sendMessage, play, rackSize]);
 
     const jumbleRack = useCallback(() => {
         if (isLocked || timeLeft === 0) return;
