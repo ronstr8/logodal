@@ -20,4 +20,18 @@ data:
       DEFAULT_BRAND: {{ $brands.default | default "logodal" | quote }},
       BRAND_HOSTS: {{ $brandHosts | toJson }}
     };
+  # Included by nginx.conf's `map $host $brand` (hostnames mode). A leading dot
+  # matches the host and its subdomains (www.); the regexes mirror brand.js's
+  # "brand as a DNS label" fallback (wordwank.localhost, ...).
+  brand-hosts.conf: |
+    {{- $brands := .Values.global.brands | default dict }}
+    default {{ $brands.default | default "logodal" }};
+    {{- $names := dict }}
+    {{- range ($brands.sites | default list) }}
+    .{{ .host }} {{ .brand }};
+    {{- $_ := set $names .brand true }}
+    {{- end }}
+    {{- range (keys $names | sortAlpha) }}
+    ~(^|\.){{ . }}(\.|$) {{ . }};
+    {{- end }}
 

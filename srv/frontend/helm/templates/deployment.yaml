@@ -23,6 +23,9 @@ spec:
             - name: config-volume
               mountPath: /usr/share/nginx/html/runtime-config.js
               subPath: runtime-config.js
+            - name: config-volume
+              mountPath: /etc/nginx/brand-hosts.conf
+              subPath: brand-hosts.conf
             - name: locales-volume
               mountPath: /usr/share/nginx/html/locales
       volumes:
