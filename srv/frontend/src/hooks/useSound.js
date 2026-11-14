@@ -20,7 +20,7 @@ const useSound = () => {
             buzzer: new Audio('/sounds/buzzer.mp3'),
             bigsplat: new Audio('/sounds/bigsplat.mp3'),
             ambience: new Audio('/sounds/ambience.mp3'),
-            game_over: new Audio('/sounds/game_over.mp3') // Added game_over
+            squawk: new Audio('/sounds/squawk.mp3') // Round had a duplicated word (🦜)
         };
 
         // Configure ambience for looping
@@ -31,7 +31,7 @@ const useSound = () => {
         soundsRef.current.placement.volume = 0.4;
         soundsRef.current.buzzer.volume = 0.5;
         soundsRef.current.bigsplat.volume = 1.0; // REALLY LOUD as requested
-        if (soundsRef.current.game_over) soundsRef.current.game_over.volume = 0.6;
+        soundsRef.current.squawk.volume = 0.6;
 
         // Auto-start ambience if conditions met
         if (!isMuted && isAmbienceEnabled) {

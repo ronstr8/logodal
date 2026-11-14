@@ -164,7 +164,9 @@ export default function useGameController({
         }
         setResults(resultsData);
         setIsLocked(true);
-        play('game_over');
+        // Words are hidden until the round ends, so this is the first moment
+        // anyone (including the duper) learns a word was duplicated.
+        if (resultsData.results.some(r => r.is_dupe)) play('squawk');
         fetchLeaderboard();
 
         setMessages(prev => [
