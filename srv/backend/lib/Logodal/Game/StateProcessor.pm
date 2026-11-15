@@ -5,7 +5,7 @@ use utf8;
 
 has 'app' => ( is => 'ro', required => 1 );
 has 'quick_bonus_seconds' => ( is => 'ro', default => sub { $ENV{QUICK_BONUS_SECONDS} || 5 } );
-has 'unique_word_bonus'   => ( is => 'ro', default => sub { $ENV{UNIQUE_WORD_BONUS} // 1 } );
+has 'unique_word_bonus'   => ( is => 'ro', default => sub { $ENV{UNIQUE_WORD_BONUS} // 2 } );
 has 'score_against_ai'     => ( is => 'ro', default => sub { $ENV{SCORE_AGAINST_AI} // 'true' } );
 
 sub calculate_results ($self, $plays, $game_lang, $game_started_at = undef, $rack_size = 8) {

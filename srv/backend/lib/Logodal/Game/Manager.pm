@@ -86,6 +86,8 @@ sub join_player ($self, $controller, $player, $payload = undef) {
             rack          => $active_game->rack,
             rack_size     => (ref($active_game->rack) eq 'ARRAY' ? scalar(@{$active_game->rack}) : 0),
             tile_values   => $active_game->letter_values,
+            # Today's values before the mutant letter's 10, for the help grid.
+            base_tile_values => $app->scorer->generate_tile_values($game_lang),
             tile_counts   => $app->scorer->tile_counts($game_lang),
             unicorns      => $app->scorer->unicorns($game_lang),
             time_left     => $app->games->{$gid}{time_left},

@@ -13,7 +13,8 @@ export default function useGameController({
         setGameId, setFeedback, setGuess, setLetterValue, setTileConfig,
         setPlayerNames, playerNamesRef, setPlayerBrands, setSupportedLangs,
         setMessages, logSystemMessage, showChatToast, playerId, setNickname,
-        setMutantLetter, setRackSize, setLengthBonusStart, setLengthBonusBase
+        setMutantLetter, setRackSize, setLengthBonusStart, setLengthBonusBase,
+        setUniqueWordBonus, setBaseLetterValue
     } = state;
 
     // Remember which brand (site) each player came from, for BrandBadge.
@@ -86,19 +87,21 @@ export default function useGameController({
                     unicorns: data.payload.config.unicorns || {}
                 });
                 setLetterValue(data.payload.config.tile_values || {});
+                setBaseLetterValue(data.payload.config.tile_values || {});
                 if (data.payload.config.languages) setSupportedLangs(data.payload.config.languages);
                 // Shown in the rules before any game starts (game_start sets the real rack).
                 if (data.payload.config.rack_size) setRackSize(data.payload.config.rack_size);
                 if (data.payload.config.length_bonus_start) setLengthBonusStart(data.payload.config.length_bonus_start);
                 if (data.payload.config.length_bonus_base) setLengthBonusBase(data.payload.config.length_bonus_base);
+                if (data.payload.config.unique_word_bonus) setUniqueWordBonus(data.payload.config.unique_word_bonus);
             }
         }
         setPlayerNames(prev => ({ ...prev, [data.payload.id]: data.payload.name }));
         noteBrand(data.payload.id, data.payload.brand);
-    }, [playerId, setNickname, i18n, setTileConfig, setLetterValue, setSupportedLangs, setPlayerNames, noteBrand, setRackSize, setLengthBonusStart, setLengthBonusBase]);
+    }, [playerId, setNickname, i18n, setTileConfig, setLetterValue, setSupportedLangs, setPlayerNames, noteBrand, setRackSize, setLengthBonusStart, setLengthBonusBase, setUniqueWordBonus, setBaseLetterValue]);
 
     const onGameStart = useCallback((data) => {
-        const { uuid, rack: newRackLetters, rack_size, tile_values, time_left, tile_counts, unicorns, mutant_letter } = data.payload;
+        const { uuid, rack: newRackLetters, rack_size, tile_values, base_tile_values, time_left, tile_counts, unicorns, mutant_letter } = data.payload;
         const newRack = newRackLetters.map((letter, idx) => ({
             id: `tile-${idx}-${Date.now()}`,
             letter,
@@ -110,6 +113,7 @@ export default function useGameController({
         setTimeLeft(time_left);
         setTotalTime(time_left || 30);
         setLetterValue(tile_values || {});
+        setBaseLetterValue(base_tile_values || tile_values || {});
         setTileConfig({ tiles: tile_counts || {}, unicorns: unicorns || {} });
         setResults(null);
         const resolvedRackSize = rack_size || newRackLetters.length;
@@ -120,7 +124,7 @@ export default function useGameController({
         setMutantLetter(mutant_letter || null);
         startAmbience();
         fetchLeaderboard();
-    }, [setGameId, setRack, setTimeLeft, setTotalTime, setLetterValue, setTileConfig, setResults, setGuess, setIsLocked, setFeedback, setMutantLetter, setRackSize, startAmbience, fetchLeaderboard]);
+    }, [setGameId, setRack, setTimeLeft, setTotalTime, setLetterValue, setTileConfig, setResults, setGuess, setIsLocked, setFeedback, setMutantLetter, setRackSize, startAmbience, fetchLeaderboard, setBaseLetterValue]);
 
     const onTimer = useCallback((data) => {
         if (data.payload && data.payload.time_left !== undefined) {

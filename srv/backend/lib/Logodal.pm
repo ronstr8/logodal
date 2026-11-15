@@ -71,7 +71,7 @@ has state_processor => sub ($self) {
     Logodal::Game::StateProcessor->new(
         app                 => $self,
         quick_bonus_seconds => $self->config->{quick_bonus_seconds} // $ENV{QUICK_BONUS_SECONDS} // 5,
-        unique_word_bonus   => $self->config->{unique_word_bonus}   // $ENV{UNIQUE_WORD_BONUS}   // 1,
+        unique_word_bonus   => $self->config->{unique_word_bonus}   // $ENV{UNIQUE_WORD_BONUS}   // 2,
         score_against_ai    => $self->config->{score_against_ai}    // $ENV{SCORE_AGAINST_AI}    // 'true',
     ) 
 };

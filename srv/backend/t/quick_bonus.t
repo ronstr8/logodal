@@ -9,6 +9,7 @@ use Logodal::Schema;
 $ENV{DATABASE_URL} = 'dbi:SQLite:dbname=:memory:';
 $ENV{QUICK_BONUS_SECONDS} = 5;
 $ENV{LENGTH_BONUS_START} = 99; # keep length bonuses out of these totals
+$ENV{UNIQUE_WORD_BONUS} = 1;   # totals below assume +1 for a unique word
 
 my $t = Test::Mojo->new('Logodal');
 my $app = $t->app;

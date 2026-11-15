@@ -25,7 +25,7 @@ global:
   randomLetterScoreMode: "true"
   gameDuration: 30
   quickBonusSeconds: 10
-  uniqueWordBonus: 1
+  uniqueWordBonus: 2
   rackSize: 7
   # Length bonus: lengthBonusBase points at lengthBonusStart letters, doubling per letter after.
   lengthBonusStart: 5

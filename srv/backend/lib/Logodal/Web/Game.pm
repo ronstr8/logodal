@@ -54,6 +54,7 @@ sub websocket ($self) {
                 rack_size          => ($ENV{RACK_SIZE} || 8) + 0,
                 length_bonus_start => $app->scorer->length_bonus_start + 0,
                 length_bonus_base  => $app->scorer->length_bonus_base + 0,
+                unique_word_bonus  => $app->state_processor->unique_word_bonus + 0,
             }
         }
     }});

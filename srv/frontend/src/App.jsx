@@ -250,8 +250,8 @@ function App() {
                         <p className="rules-text">{t('app.rules_summary', rulesNumbers(state.rackSize, state.lengthBonusStart, state.lengthBonusBase))}</p>
                         <div className="rules-legend">
                             <div className="legend-item"><span className="legend-icon">🦄</span><div><strong>Unicorns</strong>: Two tiles worth 10 pts. Very rare.</div></div>
-                            <div className="legend-item"><span className="legend-icon">⭐</span><div><strong>Unique Word Bonus</strong>: find a word no one else did for +2 pts.</div></div>
-                            <div className="legend-item"><span className="legend-icon">🚀</span><div><strong>Length Bonus</strong>: starts at 6 letters (+5) and doubles every letter after.</div></div>
+                            <div className="legend-item"><span className="legend-icon">⭐</span><div><strong>Unique Word Bonus</strong>: find a word no one else did for +{state.uniqueWordBonus} pts.</div></div>
+                            <div className="legend-item"><span className="legend-icon">🚀</span><div><strong>Length Bonus</strong>: starts at {state.lengthBonusStart} letters (+{state.lengthBonusBase}) and doubles every letter after.</div></div>
                         </div>
                         <div className="tile-stats-section">
                             <h3>{t('app.tile_frequencies')}</h3>
@@ -260,7 +260,7 @@ function App() {
                                     <div key={char} className={`tile-stat-item ${state.tileConfig.unicorns[char] ? 'unicorn-gem' : ''}`}>
                                         <span className="tile-count nw">{count}x</span>
                                         <span className="tile-char">{char}</span>
-                                        {state.letterValue[char] > 0 && <span className="tile-score se">+{state.letterValue[char]}</span>}
+                                        {state.baseLetterValue[char] > 0 && <span className="tile-score se">+{state.baseLetterValue[char]}</span>}
                                     </div>
                                 ))}
                             </div>
