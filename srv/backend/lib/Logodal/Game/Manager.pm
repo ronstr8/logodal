@@ -100,8 +100,15 @@ sub join_player ($self, $controller, $player, $payload = undef) {
         $app->log->error("Game " . $active_game->id . " has NO letter_values in database!");
     }
 
-    # If this is the first player joining a game, notify admin
-    if (scalar(keys %$game_clients) == 1) {
+    # Tell the admin someone started playing, but only after a quiet spell:
+    # every round is a new game, so "first player in the game" alone fired
+    # each round. Anyone still playing re-joins each round, which keeps the
+    # timestamp fresh. Per-replica memory; NOTIFY_QUIET_SECONDS tunes it.
+    my $now        = time;
+    my $last_human = $self->{last_human_join} // 0;
+    $self->{last_human_join} = $now unless $player->brain;
+    if (scalar(keys %$game_clients) == 1 && !$player->brain
+        && $now - $last_human >= ($ENV{NOTIFY_QUIET_SECONDS} // 300)) {
         my $full_lang = $controller->t("app.lang_$game_lang", $game_lang);
         $app->notify_admin($controller->t('app.invite_notify', $game_lang, { 
             name => $player->nickname, 

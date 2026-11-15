@@ -26,6 +26,8 @@ global:
   gameDuration: 30
   quickBonusSeconds: 10
   uniqueWordBonus: 2
+  # Skip the Discord/SMS "started playing" alert if a human joined within this many seconds.
+  adminNotifyQuietSeconds: 300
   rackSize: 7
   # Length bonus: lengthBonusBase points at lengthBonusStart letters, doubling per letter after.
   lengthBonusStart: 5

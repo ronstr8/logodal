@@ -75,6 +75,8 @@ spec:
               value: {{ .Values.global.gameDuration | quote }}
             - name: QUICK_BONUS_SECONDS
               value: {{ .Values.global.quickBonusSeconds | default 5 | quote }}
+            - name: NOTIFY_QUIET_SECONDS
+              value: {{ .Values.global.adminNotifyQuietSeconds | default 300 | quote }}
             - name: UNIQUE_WORD_BONUS
               value: {{ .Values.global.uniqueWordBonus | default 2 | quote }}
             - name: RACK_SIZE
