@@ -8,6 +8,13 @@
     user-select: none;
 }
 
+/* The login card's content box is min(440px, 100vw) minus 3rem padding each
+   side; the whole logo is ~6.7em wide, so shrink it to fit (never larger
+   than the size BrandLogo asked for). */
+.login-card .wordwank-logo {
+    font-size: min(var(--wordwank-logo-size, 40px), calc((min(440px, 100vw) - 6rem) / 6.9));
+}
+
 .wordwank-logo__tile {
     display: block;
     flex-shrink: 0;
@@ -27,5 +34,11 @@
     color: var(--accent);
     /* Shadow offsets scale with the font size (set inline from `height`). */
     text-shadow: 0.06em 0.06em 0 var(--accent-shadow), 0.12em 0.12em 0 #d35400;
-    padding: 0 0.14em 0.14em 0;
+    /* Right padding keeps the shadow off whatever follows. No bottom padding:
+       it would push the letters above the tile's centre line. */
+    padding: 0 0.14em 0 0;
+    /* Trim the line box to cap height..baseline (Luckiest Guy is all caps) so
+       flex centring aligns the letters with the tile rather than the font's
+       ascender/descender space. Browsers without text-box ignore it. */
+    text-box: trim-both cap alphabetic;
 }

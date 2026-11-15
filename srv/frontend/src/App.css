@@ -979,7 +979,14 @@ header {
 
     header .logodal-logo {
         height: 32px;
-        font-size: 25.6px; /* WordwankLogo sizes by font-size (0.8 x height) */
+    }
+
+    /* WordwankLogo sizes by font-size (tile = 1.25em), not height. The mobile
+       header holds only the menu and invite buttons beside it, so it can stay
+       close to its desktop size (35px) instead of shrinking with Logodal's. */
+    header .logodal-logo.wordwank-logo {
+        height: auto;
+        font-size: 34px;
     }
 
     .main-game-layout {
@@ -1036,6 +1043,11 @@ header {
 
     header .logodal-logo {
         height: 28px;
-        font-size: 22.4px; /* WordwankLogo sizes by font-size (0.8 x height) */
+    }
+
+    /* ~6.1em wide in total: 8vw keeps it inside a 320px screen beside the
+       buttons, and it tops out at 32px from ~400px up. */
+    header .logodal-logo.wordwank-logo {
+        font-size: clamp(24px, 8vw, 32px);
     }
 }
