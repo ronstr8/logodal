@@ -178,7 +178,9 @@ sub startup ($self) {
                 word_count => $c->app->scorer->word_count($code),
             };
         }
-        $c->app->_languages_cache(\%langs);
+        # Leave uncached while any language has no words yet (wordd may
+        # still be loading), so the counts fill in once it is ready.
+        $c->app->_languages_cache(\%langs) unless grep { !$_->{word_count} } values %langs;
         return \%langs;
     });
 

@@ -28,7 +28,9 @@ sub _get_tile_config ($self, $lang) {
     }
     
     my $config = $self->_load_tile_config($lang);
-    $self->_tile_config_cache->{$lang} = $config;
+    # A fallback means wordd was unreachable or had no words for $lang
+    # (e.g. still loading at startup); retry next time instead of pinning it.
+    $self->_tile_config_cache->{$lang} = $config unless $config->{fallback};
     return $config;
 }
 
@@ -53,6 +55,7 @@ sub _load_tile_config ($self, $lang) {
         },
         unicorns => { J => 10, Q => 10 },
         vowels => ['A', 'E', 'I', 'O', 'U'],
+        fallback => 1,
     };
 }
 
