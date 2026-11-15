@@ -31,7 +31,10 @@ sub calculate_prefix {
 subtest 'Emoji Prefix Logic' => sub {
     my $quick_bonus_seconds = 5;
 
-    # Tuesday = 'T' is the bonus char
+    # The real bonus char follows today's weekday in New York, so pin it to
+    # Tuesday's 'T' (the words below were chosen around that: no S, no W...).
+    no warnings 'redefine';
+    local *Logodal::Game::Scorer::get_daily_bonus_char = sub { 'T' };
     is(calculate_prefix('CAT', 1, $quick_bonus_seconds, 7), '⚡📅 ', 'Quick play on standard 7 with T gets lightning + calendar');
     is(calculate_prefix('LOGODALS', 6, $quick_bonus_seconds, 8), '💯✨ ', 'Full rack (8) no T gets 100 + sparkles');
     
