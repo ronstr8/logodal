@@ -9,7 +9,6 @@ use Logodal::Schema;
 $ENV{DATABASE_URL} = 'dbi:SQLite:dbname=:memory:';
 $ENV{QUICK_BONUS_SECONDS} = 5;
 $ENV{LENGTH_BONUS_START} = 99; # keep length bonuses out of these totals
-$ENV{UNIQUE_WORD_BONUS} = 1;   # totals below assume +1 for a unique word
 
 my $t = Test::Mojo->new('Logodal');
 my $app = $t->app;
@@ -76,19 +75,16 @@ ok($flash_res, "Found result for Flash");
 my ($quick_bonus) = grep { exists $_->{"Quick Bonus"} } @{$fazigu_res->{bonuses}};
 ok($quick_bonus, "Fazigu got Quick Bonus itemized") or diag(Dumper($fazigu_res->{bonuses}));
 is($quick_bonus->{"Quick Bonus"}, 5, "Fazigu got 5 pts for Quick Bonus");
-# Fazigu is the winner, and calculate_results strips the unique-word bonus from the
-# winner ("no need to rub it in"), so the +1 unique is awarded and then taken back.
-is($fazigu_res->{score}, 5 + 5, "Fazigu total: 5 (base) + 5 (quick), unique forfeited as winner");
-
-# ...and the itemized bonus list is stripped to match the adjusted score.
-my ($fazigu_unique) = grep { exists $_->{"Unique Word"} } @{$fazigu_res->{bonuses}};
-ok(!$fazigu_unique, "Winner's Unique Word bonus is not itemized");
+is($fazigu_res->{score}, 5 + 5, "Fazigu total: 5 (base) + 5 (quick)");
 
 # Check Flash's Quick Bonus (should be 0/missing)
 my ($flash_quick) = grep { exists $_->{"Quick Bonus"} } @{$flash_res->{bonuses}};
 ok(!$flash_quick, "Flash did NOT get Quick Bonus");
-# Flash is not the winner, so the unique-word bonus (UNIQUE_WORD_BONUS, default 1) stands.
-is($flash_res->{score}, 4 + 1, "Flash total: 4 (base) + 1 (unique)");
+is($flash_res->{score}, 4, "Flash total: 4 (base), no bonus for a word nobody else played");
+
+# No one gets a Unique Word bonus any more, winner or not.
+my @unique = grep { exists $_->{"Unique Word"} } map { @{$_->{bonuses}} } @$results;
+ok(!@unique, "No Unique Word bonus is itemized for anyone");
 
 diag("Test complete.");
 done_testing();

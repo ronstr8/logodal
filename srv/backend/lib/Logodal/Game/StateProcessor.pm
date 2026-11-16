@@ -5,17 +5,15 @@ use utf8;
 
 has 'app' => ( is => 'ro', required => 1 );
 has 'quick_bonus_seconds' => ( is => 'ro', default => sub { $ENV{QUICK_BONUS_SECONDS} || 5 } );
-has 'unique_word_bonus'   => ( is => 'ro', default => sub { $ENV{UNIQUE_WORD_BONUS} // 2 } );
 has 'score_against_ai'     => ( is => 'ro', default => sub { $ENV{SCORE_AGAINST_AI} // 'true' } );
 
 sub calculate_results ($self, $plays, $game_lang, $game_started_at = undef, $rack_size = 8) {
     my $scorer = $self->app->scorer;
     my $quick_bonus_seconds = $self->quick_bonus_seconds;
-    my $unique_word_bonus = $self->unique_word_bonus;
     
     my %word_to_players;
     my %word_to_score;   # word => base score of the first (original) player
-    my %player_bonuses;  # player_id -> { duplicates => count, length_bonus => count, unique => count, quick_bonus => count, duped_by => [ { name => nickname, bonus => N } ] }
+    my %player_bonuses;  # player_id -> { duplicates => count, length_bonus => count, quick_bonus => count, duped_by => [ { name => nickname, bonus => N } ] }
     my %is_duper;  # player_id -> 1 if they duplicated someone
     my %player_id_to_nickname;
 
@@ -28,7 +26,7 @@ sub calculate_results ($self, $plays, $game_lang, $game_started_at = undef, $rac
         $player_id_to_nickname{$player_id} = $play->player->nickname;
         
         # Initialize bonus tracking for this player
-        $player_bonuses{$player_id} //= { duplicates => 0, unique => 0, length_bonus => 0, quick_bonus => 0, duped_by => [] };
+        $player_bonuses{$player_id} //= { duplicates => 0, length_bonus => 0, quick_bonus => 0, duped_by => [] };
         
         my $bonus = $scorer->get_length_bonus($word);
         if ($bonus > 0) {
@@ -66,10 +64,6 @@ sub calculate_results ($self, $plays, $game_lang, $game_started_at = undef, $rac
                     bonus => $word_score,
                 };
             }
-        } else {
-            # Unique word bonus
-            my $player_id = $players->[0];
-            $player_bonuses{$player_id}{unique} = $unique_word_bonus;
         }
     }
     
@@ -83,7 +77,6 @@ sub calculate_results ($self, $plays, $game_lang, $game_started_at = undef, $rac
         my $bonuses = $player_bonuses{$player_id};
         
         my $duplicate_bonus = $bonuses->{duplicates} || 0;
-        my $unique_bonus = $bonuses->{unique} || 0;
         my $length_bonus = $bonuses->{length_bonus} || 0;
         my $quick_bonus = $bonuses->{quick_bonus} || 0;
         
@@ -91,13 +84,12 @@ sub calculate_results ($self, $plays, $game_lang, $game_started_at = undef, $rac
         if ($is_duper{$player_id}) {
             $total_score = 0;
         } else {
-            $total_score = $base_score + $duplicate_bonus + $unique_bonus + $length_bonus + $quick_bonus;
+            $total_score = $base_score + $duplicate_bonus + $length_bonus + $quick_bonus;
         }
         
         # Package bonuses for Results.jsx
         my @bonus_list;
         push @bonus_list, { "Length Bonus" => $length_bonus } if $length_bonus > 0;
-        push @bonus_list, { "Unique Word"  => $unique_bonus } if $unique_bonus > 0;
         push @bonus_list, { "Quick Bonus"  => $quick_bonus } if $quick_bonus > 0;
         push @bonus_list, { "Duplicate Bonus" => $duplicate_bonus } if $duplicate_bonus > 0;
 
@@ -122,17 +114,6 @@ sub calculate_results ($self, $plays, $game_lang, $game_started_at = undef, $rac
         $b->{score} <=> $a->{score}
         || $a->{created_at} cmp $b->{created_at}
     } values %player_total_scores;
-
-    # Winner doesn't get the unique word bonus — no need to rub it in
-    if (@results > 1) {
-        my $winner = $results[0];
-        my $unique = $player_bonuses{ $winner->{player_id} }{unique} || 0;
-        if ($unique > 0) {
-            $winner->{score} -= $unique;
-            $winner->{bonuses} = [ grep { !exists $_->{'Unique Word'} } @{$winner->{bonuses}} ];
-            @results = sort { $b->{score} <=> $a->{score} || $a->{created_at} cmp $b->{created_at} } @results;
-        }
-    }
 
     return \@results;
 }

@@ -26,10 +26,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - **Wordwank Logo**: The tile now appears before the wordmark, the logo is bigger on phones, and the letters are centred on the tile. On the login screen it shrinks to fit the card.
 - **Rack of 7**: Racks have 7 tiles instead of 8. The full-rack bonus, submit sounds and rules text all follow the configured rack size.
 - **Length Bonus**: Words of 5 letters or more earn a length bonus of +10, doubling with each extra letter (+20 for 6, +40 for 7). The starting length and base amount are configurable, and the rules and help panel show the live values.
-- **Unique Word Bonus**: Back to +2 (was +1). The help panel shows the live value.
 - **Help Panel Tile Values**: The tile grid shows each letter's normal value, so the mutant letter no longer appears as 10.
 - **Mutant Letter Every Game**: A rack tile mutates in every game, with no conditions to earn it. The rules text in all six languages says so.
-- **Winner Forfeits the Unique Bonus**: In multiplayer games the round's winner doesn't also get the unique-word bonus.
 - **Leader Title**: The leader is now "the apex logodal" (was "the Daedalus").
 - **AI Players Join by Schedule**: Each AI joins on its schedule (75% of games) or by its own join chance, then sits out for a cooldown, instead of every AI joining every game.
 - **Tiles**: Tile letters and values use Cinzel to match the library theme, scale down on small screens so they don't overlap, and the mutant tile pulses. The tile look was refined and all favicons now show the lambda tile.
@@ -42,6 +40,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 - **Passkeys**: Passkey (WebAuthn) sign-in, added in 3.0.0, has been removed; sign in with Google or Discord, or play as a guest.
 - **Game Over Sound**: The sound at the end of every round is gone; only the duplicate squawk remains.
+- **Unique Word Bonus**: Playing a word nobody else played no longer earns a bonus. It was applied unevenly (the winner forfeited it) and rarely changed the outcome. The rules text and help panel no longer mention it.
 
 ### Fixed
 

@@ -14,7 +14,7 @@ export default function useGameController({
         setPlayerNames, playerNamesRef, setPlayerBrands, setSupportedLangs,
         setMessages, logSystemMessage, showChatToast, playerId, setNickname,
         setMutantLetter, setRackSize, setLengthBonusStart, setLengthBonusBase,
-        setUniqueWordBonus, setBaseLetterValue
+        setBaseLetterValue
     } = state;
 
     // Remember which brand (site) each player came from, for BrandBadge.
@@ -93,12 +93,11 @@ export default function useGameController({
                 if (data.payload.config.rack_size) setRackSize(data.payload.config.rack_size);
                 if (data.payload.config.length_bonus_start) setLengthBonusStart(data.payload.config.length_bonus_start);
                 if (data.payload.config.length_bonus_base) setLengthBonusBase(data.payload.config.length_bonus_base);
-                if (data.payload.config.unique_word_bonus) setUniqueWordBonus(data.payload.config.unique_word_bonus);
             }
         }
         setPlayerNames(prev => ({ ...prev, [data.payload.id]: data.payload.name }));
         noteBrand(data.payload.id, data.payload.brand);
-    }, [playerId, setNickname, i18n, setTileConfig, setLetterValue, setSupportedLangs, setPlayerNames, noteBrand, setRackSize, setLengthBonusStart, setLengthBonusBase, setUniqueWordBonus, setBaseLetterValue]);
+    }, [playerId, setNickname, i18n, setTileConfig, setLetterValue, setSupportedLangs, setPlayerNames, noteBrand, setRackSize, setLengthBonusStart, setLengthBonusBase, setBaseLetterValue]);
 
     const onGameStart = useCallback((data) => {
         const { uuid, rack: newRackLetters, rack_size, tile_values, base_tile_values, time_left, tile_counts, unicorns, mutant_letter } = data.payload;

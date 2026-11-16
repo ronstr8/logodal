@@ -25,7 +25,6 @@ global:
   randomLetterScoreMode: "true"
   gameDuration: 30
   quickBonusSeconds: 10
-  uniqueWordBonus: 2
   # Skip the Discord/SMS "started playing" alert if a human joined within this many seconds.
   adminNotifyQuietSeconds: 300
   rackSize: 7

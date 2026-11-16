@@ -23,7 +23,6 @@ export default function useGameState(t) {
     const [rackSize, setRackSize] = useState(7);
     const [lengthBonusStart, setLengthBonusStart] = useState(5);
     const [lengthBonusBase, setLengthBonusBase] = useState(10);
-    const [uniqueWordBonus, setUniqueWordBonus] = useState(2);
     // Tile values without the mutant letter's 10, for the help panel.
     const [baseLetterValue, setBaseLetterValue] = useState({});
 
@@ -92,7 +91,6 @@ export default function useGameState(t) {
         rackSize, setRackSize,
         lengthBonusStart, setLengthBonusStart,
         lengthBonusBase, setLengthBonusBase,
-        uniqueWordBonus, setUniqueWordBonus,
         baseLetterValue, setBaseLetterValue
     };
 }

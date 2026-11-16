@@ -161,7 +161,6 @@ make down
 
 - **Letter values** are frequency-based (1–9 pts), with two Unicorn letters at 10 pts and one daily bonus letter at 7 pts.
 - **Length bonuses**: +5 for words using more than half the rack, doubling for each tile beyond that.
-- **Unique word bonus**: +1 pt for playing a word nobody else played.
 - **Quick bonus**: +5 pts for playing within the first 5 seconds.
 - **Duplicate penalty**: copying another player's word scores you 0 pts — but the original player earns the full raw letter value of that word for each copy made.
 - **Mutant Letter**: Each game, tiles associated with a randomly chosen letter mutate, changing their score to 10.
