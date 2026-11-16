@@ -2,6 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import Tile from './Tile';
 import Timer from './Timer';
+import { lengthBonus } from '../scoring';
 
 const GameArea = ({ 
     state, 
@@ -10,7 +11,8 @@ const GameArea = ({
 }) => {
     const { t } = useTranslation();
     const {
-        rack, letterValue, timeLeft, totalTime, isLocked, guess, feedback, mutantLetter
+        rack, letterValue, timeLeft, totalTime, isLocked, guess, feedback, mutantLetter,
+        lengthBonusStart, lengthBonusBase
     } = state;
 
     return (
@@ -45,8 +47,9 @@ const GameArea = ({
                         <div className="word-board">
                             {guess.map((slot, i) => {
                                 const isFirstEmpty = guess.findIndex(g => g === null) === i;
-                                const isBonusSlot = i >= 5;
-                                const bonusPoints = isBonusSlot ? 5 * Math.pow(2, i - 5) : 0;
+                                // Filling slot i makes an (i+1)-letter word; the badge shows that word's length bonus.
+                                const bonusPoints = lengthBonus(i + 1, lengthBonusStart, lengthBonusBase);
+                                const isBonusSlot = bonusPoints > 0;
                                 return (
                                     <div key={i} className={`board-slot ${slot ? 'filled' : 'empty'} ${isFirstEmpty && !isLocked && timeLeft > 0 ? 'focused' : ''} ${isBonusSlot ? 'bonus' : ''}`} onClick={() => slot && interaction.returnToRack(i)}>
                                         {isBonusSlot && slot && <div className="slot-badge">+{bonusPoints}</div>}

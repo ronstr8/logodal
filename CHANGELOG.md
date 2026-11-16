@@ -46,6 +46,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Fixed
 
+- **Word Slot Bonus Badges**: The glowing bonus slots and their "+N" badges now match the real length bonus. They used to start one slot late and show half the points (+5 from the 6th letter instead of +10 from the 5th).
 - **Games Across Replicas**: With several backend replicas, a game is no longer ended twice or timed by more than one replica; the replica that started a game runs its timer and AIs.
 - **Perdix and Daedalus**: Only Icarus ever joined games because of a misnamed setting; Perdix now joins about 35% of games and Daedalus about 10%.
 - **Missing-Letters Error**: Playing a word with letters not on your rack showed a raw `error.missing_letters` key; it now shows a real message in every language.

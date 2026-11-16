@@ -17,19 +17,19 @@ import GameArea from './components/GameArea'
 import PlayFeed from './feed/PlayFeed'
 import usePlayFeed from './feed/usePlayFeed'
 import { CONFIG } from './config'
+import { lengthBonus } from './scoring'
 import './App.css'
 import './LoadingModal.css'
 import './JumbleButton.css'
 import './components/Toast.css'
 
-// Length-bonus numbers for the rules text. Mirrors Scorer::get_length_bonus:
-// lengthBonusBase at lengthBonusStart letters, doubling for every letter after.
+// Length-bonus numbers for the rules text.
 function rulesNumbers(rackSize, lengthBonusStart, lengthBonusBase) {
     return {
         rack_size: rackSize,
         bonus_len: lengthBonusStart,
         bonus_base: lengthBonusBase,
-        full_bonus: lengthBonusBase * 2 ** Math.max(0, rackSize - lengthBonusStart), // using every tile
+        full_bonus: lengthBonus(rackSize, lengthBonusStart, lengthBonusBase), // using every tile
     };
 }
 
