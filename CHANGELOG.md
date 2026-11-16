@@ -7,9 +7,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Added
+
+- **Wordwank Icons**: Wordwank has its own favicon, Apple touch icon and installable app icons (including maskable ones), generated from the logo tile by `assets/logo/generate.sh`.
+- **Per-Site Branding**: nginx serves each site's own page title, theme colour, icons, web manifest and link-preview (og:) tags based on the host name, so logodal.com and wordwank.com look like separate sites when shared or installed.
+- **Duplicate Squawk**: A squawk plays at the end of a round when anyone played a duplicated word.
+
 ### Changed
 
 - **Bigger Logodal Logo**: The LOGODAL wordmark is larger beside its tile, and on phones the logo grows with the screen width (up to 48px tall) to fill the header.
+- **Wordwank Logo**: The tile now appears before the wordmark, the logo is bigger on phones, and the letters are centred on the tile. On the login screen it shrinks to fit the card.
+- **Rack of 7**: Racks have 7 tiles instead of 8. The full-rack bonus, submit sounds and rules text all follow the configured rack size.
+- **Length Bonus**: Words of 5 letters or more earn a length bonus of +10, doubling with each extra letter (+20 for 6, +40 for 7). The starting length and base amount are configurable, and the rules and help panel show the live values.
+- **Unique Word Bonus**: Back to +2 (was +1). The help panel shows the live value.
+- **Help Panel Tile Values**: The tile grid shows each letter's normal value, so the mutant letter no longer appears as 10.
+- **Fewer Admin Alerts**: The Discord/SMS "started playing" alert is only sent when no one has joined for the past 5 minutes, instead of every time someone joins.
+
+### Removed
+
+- **Game Over Sound**: The sound at the end of every round is gone; only the duplicate squawk remains.
+
+### Fixed
+
+- **Russian Games**: The Russian word list had been emptied by a filter that kept only Latin letters, so Russian showed no word count and couldn't deal Cyrillic tiles. It is restored (about 150,000 playable words), and a temporary failure to reach the word service is no longer remembered until the next restart.
 
 ## [3.0.0] - 2026-05-11
 
