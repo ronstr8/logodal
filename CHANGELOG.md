@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Added
 
+- **Guest Play**: Players can start without signing in and get a generated nickname.
+- **AI Small Talk**: AI players greet newcomers, compliment strong plays and congratulate the winner, using the language model. When the model is unavailable they stay quiet (canned filler only with `IDLE_CHATTER`), and their output is trimmed to one short line so a weak model can't leak its prompt into chat.
+- **Multiple Backend Replicas**: Redis carries game events between backend instances, so the backend can run with more than one replica.
 - **Wordwank Brand**: The game now also runs as Wordwank on wordwank.com, the original whimsical look (sunflower on midnight blue, Luckiest Guy lettering, its own logo and "W" tile icons). Both sites share one game pool, so Logodal and Wordwank players meet at the same tables.
 - **Wordwank Wording**: Wordwank has its own cruder wording in all six languages, using native slang rather than literal translations, layered over the shared text.
 - **Wordwank Bots**: Wanko, Fapsworth and Tugz play on Wordwank, each with that brand's voice. A bot speaks in its own brand's voice to everyone at a mixed table.
@@ -25,15 +28,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - **Length Bonus**: Words of 5 letters or more earn a length bonus of +10, doubling with each extra letter (+20 for 6, +40 for 7). The starting length and base amount are configurable, and the rules and help panel show the live values.
 - **Unique Word Bonus**: Back to +2 (was +1). The help panel shows the live value.
 - **Help Panel Tile Values**: The tile grid shows each letter's normal value, so the mutant letter no longer appears as 10.
+- **Mutant Letter Every Game**: A rack tile mutates in every game, with no conditions to earn it. The rules text in all six languages says so.
+- **Winner Forfeits the Unique Bonus**: In multiplayer games the round's winner doesn't also get the unique-word bonus.
+- **Leader Title**: The leader is now "the apex logodal" (was "the Daedalus").
+- **AI Players Join by Schedule**: Each AI joins on its schedule (75% of games) or by its own join chance, then sits out for a cooldown, instead of every AI joining every game.
+- **Tiles**: Tile letters and values use Cinzel to match the library theme, scale down on small screens so they don't overlap, and the mutant tile pulses. The tile look was refined and all favicons now show the lambda tile.
+- **Results Panel**: The end-of-round results panel was redesigned.
+- **External Ollama**: The Helm chart no longer bundles Ollama; AI chat uses a separate shared Ollama server.
 - **AI Chat Model**: AI players chat using gemma3:12b (was llama3.1:8b).
 - **Fewer Admin Alerts**: The Discord/SMS "started playing" alert is only sent when no one has joined for the past 5 minutes, instead of every time someone joins.
 
 ### Removed
 
+- **Passkeys**: Passkey (WebAuthn) sign-in, added in 3.0.0, has been removed; sign in with Google or Discord, or play as a guest.
 - **Game Over Sound**: The sound at the end of every round is gone; only the duplicate squawk remains.
 
 ### Fixed
 
+- **Games Across Replicas**: With several backend replicas, a game is no longer ended twice or timed by more than one replica; the replica that started a game runs its timer and AIs.
 - **Perdix and Daedalus**: Only Icarus ever joined games because of a misnamed setting; Perdix now joins about 35% of games and Daedalus about 10%.
 - **Missing-Letters Error**: Playing a word with letters not on your rack showed a raw `error.missing_letters` key; it now shows a real message in every language.
 - **AI Chat Off Switch**: Leaving the Ollama address unset now really turns AI chat off.
