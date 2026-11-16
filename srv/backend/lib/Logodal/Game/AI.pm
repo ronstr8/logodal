@@ -368,6 +368,8 @@ sub _execute_play ($self, $word, $score, $game_record) {
         payload => {
             text       => $emoji_prefix . $chat_msg,
             senderName => $self->nickname,
+            isSystem   => 1,
+            kind       => 'play',   # routes it to the client's play feed
         },
         timestamp => $timestamp,
     }, $self->game_id);

@@ -1,5 +1,11 @@
 {
     "app": {
+        "feed_label": "Лента ходов",
+        "feed_mode_off": "Выкл",
+        "feed_mode_on": "Вкл",
+        "feed_mode_fade": "Плавно",
+        "feed_mode_scroll": "Бегущая строка",
+        "feed_played_many": "{{names}} сыграли слова",
         "title": "logodal",
         "you_are": "Вы",
         "you_are_daedalus": "Ты — вершина logodal!",

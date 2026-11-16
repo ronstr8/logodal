@@ -1,0 +1,13 @@
+{
+    "scrollPxPerSec": 70,
+    "catchUpBoostPerItem": 0.35,
+    "maxSpeedFactor": 3,
+    "collapseAt": 4,
+    "maxNames": 3,
+    "fadeDwellMs": 3500,
+    "fadeMinDwellMs": 1200,
+    "fadeDwellStepMs": 600,
+    "fadeLingerMs": 8000,
+    "popupMs": 3000,
+    "historyLimit": 50
+}

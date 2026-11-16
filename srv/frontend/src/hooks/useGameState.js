@@ -17,7 +17,6 @@ export default function useGameState(t) {
     const [supportedLangs, setSupportedLangs] = useState({ en: { name: 'English', word_count: 0 } });
     const [messages, setMessages] = useState([]);
     const [toasts, setToasts] = useState([]);
-    const [chatToasts, setChatToasts] = useState([]);
     const [mutantLetter, setMutantLetter] = useState(null);
     // Server defaults; the identity message replaces both on connect.
     const [rackSize, setRackSize] = useState(7);
@@ -29,25 +28,18 @@ export default function useGameState(t) {
     const rackRef = useRef([]);
     const guessRef = useRef([]);
     const playerNamesRef = useRef({});
+    const toastSeq = useRef(0); // Date.now() collides when two toasts land in the same ms
 
     useEffect(() => { rackRef.current = rack; }, [rack]);
     useEffect(() => { guessRef.current = guess; }, [guess]);
     useEffect(() => { playerNamesRef.current = playerNames; }, [playerNames]);
 
     const showToast = useCallback((message, isSplat = false) => {
-        const id = Date.now();
+        const id = ++toastSeq.current;
         setToasts(prev => [...prev, { id, message, isSplat }]);
         setTimeout(() => {
             setToasts(prev => prev.filter(t => t.id !== id));
         }, 2000);
-    }, []);
-
-    const showChatToast = useCallback((senderName, text, senderBrand = null) => {
-        const id = Date.now();
-        setChatToasts(prev => [...prev, { id, senderName, text, senderBrand }]);
-        setTimeout(() => {
-            setChatToasts(prev => prev.filter(t => t.id !== id));
-        }, 3000);
     }, []);
 
     const logSystemMessage = useCallback((text, type = 'system', data = null) => {
@@ -84,7 +76,6 @@ export default function useGameState(t) {
         supportedLangs, setSupportedLangs,
         messages, setMessages,
         toasts, setToasts, showToast,
-        chatToasts, setChatToasts, showChatToast,
         logSystemMessage,
         handleTimerTick,
         mutantLetter, setMutantLetter,

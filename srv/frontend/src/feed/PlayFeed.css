@@ -1,0 +1,57 @@
+/* One-line play feed strip. It sits in the page flow under the header, so it
+   takes its own row instead of floating over the rack. */
+.feed-strip {
+    position: relative;
+    width: 100%;
+    height: 1.9rem;
+    margin: 0.35rem 0;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(var(--bg-deep-rgb), 0.55);
+    border-top: 1px solid rgba(var(--accent-rgb), 0.12);
+    border-bottom: 1px solid rgba(var(--accent-rgb), 0.12);
+    color: var(--text-soft);
+    font-size: 0.85rem;
+    white-space: nowrap;
+}
+
+.feed-scroll {
+    position: absolute;
+    inset: 0;
+    cursor: default;
+}
+
+/* Starts off to the right; JS takes over the transform once it's measured. */
+.feed-scroll-item {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateX(100vw);
+    margin-top: -0.65em;
+    line-height: 1.3;
+    will-change: transform;
+}
+
+.feed-sep {
+    color: var(--accent);
+    padding: 0 0.6rem;
+}
+
+.feed-fade-item {
+    max-width: 100%;
+    padding: 0 1rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    animation: feed-fade-in 0.35s ease-out;
+}
+
+@keyframes feed-fade-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .feed-fade-item { animation: none; }
+}

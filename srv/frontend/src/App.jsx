@@ -14,7 +14,8 @@ import Login from './components/Login'
 import Sidebar from './components/Sidebar'
 import GameHeader from './components/GameHeader'
 import GameArea from './components/GameArea'
-import BrandBadge from './components/BrandBadge'
+import PlayFeed from './feed/PlayFeed'
+import usePlayFeed from './feed/usePlayFeed'
 import { CONFIG } from './config'
 import './App.css'
 import './LoadingModal.css'
@@ -74,9 +75,11 @@ function App() {
     }, [])
 
     // 4. Game Controller (Event Dispatcher)
+    const feed = usePlayFeed()
     const controller = useGameController({
         state: { ...state, playerId: auth.playerId, setNickname: auth.setNickname },
-        t, i18n, play, startAmbience, fetchLeaderboard
+        t, i18n, play, startAmbience, fetchLeaderboard,
+        pushFeed: feed.push
     })
 
     // 5. Socket Hook
@@ -182,6 +185,8 @@ function App() {
                 showToast={state.showToast}
                 handleInvite={handleInvite}
                 supportedLangs={state.supportedLangs}
+                feedMode={feed.mode}
+                setFeedMode={feed.setMode}
             />
 
             {!isFocusMode && (
@@ -205,8 +210,12 @@ function App() {
                     language={i18n.language}
                     supportedLangs={state.supportedLangs}
                     onLanguageChange={handleLanguageChange}
+                    feedMode={feed.mode}
+                    cycleFeedMode={feed.cycleMode}
                 />
             )}
+
+            <PlayFeed mode={feed.mode} items={feed.items} />
 
             {isFocusMode && (
                 <button className="focus-exit-btn" onClick={() => setIsFocusMode(false)} title={t('app.exit_focus')}>✕</button>
@@ -288,10 +297,6 @@ function App() {
 
             <div className="toast-container">
                 {state.toasts.map(toast => <div key={toast.id} className={`toast ${toast.isSplat ? 'splat' : ''}`}>{toast.message}</div>)}
-            </div>
-
-            <div className="chat-toast-container">
-                {state.chatToasts.map(toast => <div key={toast.id} className="chat-toast"><div className="chat-toast-sender"><BrandBadge brand={toast.senderBrand} />{toast.senderName}</div><div className="chat-toast-text">{toast.text}</div></div>)}
             </div>
 
             {(isConnecting || connectionError || (state.rack.length === 0 && !state.results)) && (

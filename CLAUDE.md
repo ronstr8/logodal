@@ -31,6 +31,7 @@ make migrate     # Run pending DB migrations
 ```bash
 npm run dev      # Dev server on :3000, proxies /auth /ws /players to :8080
 npm run build    # Production build
+npm test         # Unit tests for pure modules (node --test, no extra deps)
 ```
 
 ### Root-level (Kubernetes/Helm)

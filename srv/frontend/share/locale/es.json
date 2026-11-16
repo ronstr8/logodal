@@ -1,5 +1,11 @@
 {
     "app": {
+        "feed_label": "Avisos de jugadas",
+        "feed_mode_off": "Apagado",
+        "feed_mode_on": "Encendido",
+        "feed_mode_fade": "Fundido",
+        "feed_mode_scroll": "Desplazar",
+        "feed_played_many": "{{names}} jugaron palabras",
         "title": "logodal",
         "you_are": "Eres",
         "you_are_daedalus": "¡Eres el logodal cumbre!",

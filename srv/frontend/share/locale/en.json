@@ -1,5 +1,11 @@
 {
     "app": {
+        "feed_label": "Play feed",
+        "feed_mode_off": "Off",
+        "feed_mode_on": "On",
+        "feed_mode_fade": "Fade",
+        "feed_mode_scroll": "Scroll",
+        "feed_played_many": "{{names}} played words",
         "title": "logodal",
         "you_are": "You are",
         "you_are_daedalus": "You are the apex logodal!",

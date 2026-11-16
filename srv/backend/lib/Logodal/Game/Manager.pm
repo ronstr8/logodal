@@ -268,6 +268,7 @@ sub _perform_play ($self, $controller, $player, $payload, $word, $game_data, $ga
                     text       => $emoji_prefix . $chat_msg,
                     senderName => $player->nickname,
                     isSystem   => 1,
+                    kind       => 'play',   # routes it to the client's play feed
                 },
                 timestamp => $timestamp,
             }, $game_record->id);

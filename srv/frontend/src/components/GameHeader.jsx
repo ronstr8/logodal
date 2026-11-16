@@ -1,6 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import BrandLogo from './BrandLogo';
+import { FeedModeButton } from '../feed/FeedModeControls';
 
 const GameHeader = ({
     nickname,
@@ -21,7 +22,9 @@ const GameHeader = ({
     toggleAmbience,
     language,
     supportedLangs,
-    onLanguageChange
+    onLanguageChange,
+    feedMode,
+    cycleFeedMode
 }) => {
     const { t } = useTranslation();
 
@@ -55,6 +58,7 @@ const GameHeader = ({
                 <div className="button-group">
                     <button className="header-btn" onClick={toggleAmbience} title={isAmbienceEnabled ? t('app.music_off') : t('app.music_on')}>{isAmbienceEnabled ? '🎵' : '🔇'}</button>
                     <button className="header-btn" onClick={toggleMute} title={isMuted ? t('app.mute_off') : t('app.mute_on')}>{isMuted ? '🔈' : '🔊'}</button>
+                    <FeedModeButton mode={feedMode} onCycle={cycleFeedMode} />
                 </div>
 
                 <div className="button-group">

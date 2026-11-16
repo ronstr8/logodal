@@ -6,13 +6,14 @@ export default function useGameController({
     i18n,
     play,
     startAmbience,
-    fetchLeaderboard
+    fetchLeaderboard,
+    pushFeed
 }) {
     const {
         setRack, setTimeLeft, setTotalTime, setResults, setIsLocked,
         setGameId, setFeedback, setGuess, setLetterValue, setTileConfig,
         setPlayerNames, playerNamesRef, setPlayerBrands, setSupportedLangs,
-        setMessages, logSystemMessage, showChatToast, playerId, setNickname,
+        setMessages, logSystemMessage, playerId, setNickname,
         setMutantLetter, setRackSize, setLengthBonusStart, setLengthBonusBase,
         setBaseLetterValue
     } = state;
@@ -40,8 +41,9 @@ export default function useGameController({
             return;
         }
 
-        if (data.payload && !data.payload.isSeparator && !data.payload.skipToast) {
-            showChatToast(senderName, translatedText, senderBrand);
+        // Plays go to the play feed; ordinary chat stays in the Messages panel.
+        if (data.payload && data.payload.kind === 'play') {
+            pushFeed({ kind: 'play', text: translatedText, player: senderName });
         }
 
         const msgObj = {
@@ -55,7 +57,7 @@ export default function useGameController({
         };
 
         setMessages(prev => [...prev, msgObj]);
-    }, [t, logSystemMessage, showChatToast, setMessages, playerNamesRef, noteBrand]);
+    }, [t, logSystemMessage, pushFeed, setMessages, playerNamesRef, noteBrand]);
 
     const onChatHistory = useCallback((data) => {
         const history = data.payload.map(msg => {
@@ -171,6 +173,7 @@ export default function useGameController({
         }
         setResults(resultsData);
         setIsLocked(true);
+        pushFeed({ kind: 'end', text: resultsData.summary });
         // Words are hidden until the round ends, so this is the first moment
         // anyone (including the duper) learns a word was duplicated.
         if (resultsData.results.some(r => r.is_dupe)) play('squawk');
@@ -181,7 +184,7 @@ export default function useGameController({
             { sender: 'SYSTEM', text: resultsData.summary, isSystem: true, type: 'results_table', data: resultsData.results, timestamp: new Date(data.timestamp * 1000).toLocaleTimeString() },
             { isSeparator: true }
         ]);
-    }, [setResults, setIsLocked, play, fetchLeaderboard, setMessages, t]);
+    }, [setResults, setIsLocked, play, fetchLeaderboard, setMessages, t, pushFeed]);
 
     return {
         onChatMessage, onChatHistory, onIdentity,

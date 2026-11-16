@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import './Sidebar.css';
+import { FeedModePicker } from '../feed/FeedModeControls';
 
 const Sidebar = ({
     isOpen,
@@ -26,7 +27,9 @@ const Sidebar = ({
     gameId,
     showToast,
     handleInvite,
-    supportedLangs
+    supportedLangs,
+    feedMode,
+    setFeedMode
 }) => {
     const { t } = useTranslation();
 
@@ -93,6 +96,8 @@ const Sidebar = ({
                             {t('app.master_sound_label')}: {isMuted ? t('app.off') : t('app.on')}
                         </button>
                     </div>
+
+                    <FeedModePicker mode={feedMode} onChange={setFeedMode} />
 
                     <div className="sidebar-section">
                         <h3>{t('app.language_title')}</h3>
