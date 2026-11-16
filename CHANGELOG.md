@@ -7,7 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
-### Added
+## [3.1.0] - 2026-11-16
+
+### Added (3.1.0)
 
 - **Guest Play**: Players can start without signing in and get a generated nickname.
 - **AI Small Talk**: AI players greet newcomers, compliment strong plays and congratulate the winner, using the language model. When the model is unavailable they stay quiet (canned filler only with `IDLE_CHATTER`), and their output is trimmed to one short line so a weak model can't leak its prompt into chat.
@@ -21,7 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - **Duplicate Squawk**: A squawk plays at the end of a round when anyone played a duplicated word.
 - **Play Feed**: Plays now appear in a one-line strip across the top of the page instead of slide-outs over the rack, with an ellipsis between plays and a centre dot after the end-of-round notice. Choose Off, Fade (one still line that fades to the next play) or Scroll (a ticker that pauses on hover or tap) from the header button or the menu. Scroll is the default, or Fade if your device asks for reduced motion. When plays pile up at the end of a round, the feed speeds up and folds them into "Wanko, Tugz +3 played words" so it doesn't fall behind.
 
-### Changed
+### Changed (3.1.0)
 
 - **No Chat Pop-ups**: Chat messages no longer slide out over the game; read them in the Messages panel.
 - **Bigger Logodal Logo**: The LOGODAL wordmark is larger beside its tile, and on phones the logo grows with the screen width (up to 48px tall) to fill the header.
@@ -38,13 +40,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - **AI Chat Model**: AI players chat using gemma3:12b (was llama3.1:8b).
 - **Fewer Admin Alerts**: The Discord/SMS "started playing" alert is only sent when no one has joined for the past 5 minutes, instead of every time someone joins.
 
-### Removed
+### Removed (3.1.0)
 
-- **Passkeys**: Passkey (WebAuthn) sign-in, added in 3.0.0, has been removed; sign in with Google or Discord, or play as a guest.
+- **Passkeys**: The unfinished passkey sign-in from 3.0.0 is gone; sign in with Google or Discord, or play as a guest.
 - **Game Over Sound**: The sound at the end of every round is gone; only the duplicate squawk remains.
 - **Unique Word Bonus**: Playing a word nobody else played no longer earns a bonus. It was applied unevenly (the winner forfeited it) and rarely changed the outcome. The rules text and help panel no longer mention it.
 
-### Fixed
+### Fixed (3.1.0)
 
 - **Word Slot Bonus Badges**: The glowing bonus slots and their "+N" badges now match the real length bonus. They used to start one slot late and show half the points (+5 from the 6th letter instead of +10 from the 5th).
 - **Games Across Replicas**: With several backend replicas, a game is no longer ended twice or timed by more than one replica; the replica that started a game runs its timer and AIs.
@@ -746,3 +748,5 @@ transition to a microservices pattern with Go, Rust, Java, and React.
 
 _Remember: If you find a bug, it's a surprise mechanic. If you like a feature, it was intentional all along._
 
+[Unreleased]: https://github.com/ronstr8/logodal/compare/v3.1.0...HEAD
+[3.1.0]: https://github.com/ronstr8/logodal/releases/tag/v3.1.0
