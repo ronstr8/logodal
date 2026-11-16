@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Added
 
+- **Wordwank Brand**: The game now also runs as Wordwank on wordwank.com, the original whimsical look (sunflower on midnight blue, Luckiest Guy lettering, its own logo and "W" tile icons). Both sites share one game pool, so Logodal and Wordwank players meet at the same tables.
+- **Wordwank Wording**: Wordwank has its own cruder wording in all six languages, using native slang rather than literal translations, layered over the shared text.
+- **Wordwank Bots**: Wanko, Fapsworth and Tugz play on Wordwank, each with that brand's voice. A bot speaks in its own brand's voice to everyone at a mixed table.
+- **Brand Badges**: A small brand icon beside each player's name in chat, pop-up messages and results shows which site they're playing from.
 - **Wordwank Icons**: Wordwank has its own favicon, Apple touch icon and installable app icons (including maskable ones), generated from the logo tile by `assets/logo/generate.sh`.
 - **Per-Site Branding**: nginx serves each site's own page title, theme colour, icons, web manifest and link-preview (og:) tags based on the host name, so logodal.com and wordwank.com look like separate sites when shared or installed.
 - **Duplicate Squawk**: A squawk plays at the end of a round when anyone played a duplicated word.
@@ -21,6 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - **Length Bonus**: Words of 5 letters or more earn a length bonus of +10, doubling with each extra letter (+20 for 6, +40 for 7). The starting length and base amount are configurable, and the rules and help panel show the live values.
 - **Unique Word Bonus**: Back to +2 (was +1). The help panel shows the live value.
 - **Help Panel Tile Values**: The tile grid shows each letter's normal value, so the mutant letter no longer appears as 10.
+- **AI Chat Model**: AI players chat using gemma3:12b (was llama3.1:8b).
 - **Fewer Admin Alerts**: The Discord/SMS "started playing" alert is only sent when no one has joined for the past 5 minutes, instead of every time someone joins.
 
 ### Removed
@@ -29,6 +34,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Fixed
 
+- **Perdix and Daedalus**: Only Icarus ever joined games because of a misnamed setting; Perdix now joins about 35% of games and Daedalus about 10%.
+- **Missing-Letters Error**: Playing a word with letters not on your rack showed a raw `error.missing_letters` key; it now shows a real message in every language.
+- **AI Chat Off Switch**: Leaving the Ollama address unset now really turns AI chat off.
+- **Word Service Crash Loop**: A build caching problem could ship a wordd image that exited immediately on start.
 - **Russian Games**: The Russian word list had been emptied by a filter that kept only Latin letters, so Russian showed no word count and couldn't deal Cyrillic tiles. It is restored (about 150,000 playable words), and a temporary failure to reach the word service is no longer remembered until the next restart.
 
 ## [3.0.0] - 2026-05-11
