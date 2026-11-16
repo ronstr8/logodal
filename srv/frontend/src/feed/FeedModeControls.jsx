@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { FEED_MODES } from './playFeed';
 
-const ICONS = { off: '🚫', on: '💬', fade: '🌫️', scroll: '📜' };
+const ICONS = { off: '🚫', fade: '🌫️', scroll: '📜' };
 
 function useModeLabel() {
     const { t } = useTranslation();
@@ -19,7 +19,7 @@ export function FeedModeButton({ mode, onCycle }) {
     );
 }
 
-// Sidebar control: all four modes side by side.
+// Sidebar control: every mode side by side.
 export function FeedModePicker({ mode, onChange }) {
     const { t } = useTranslation();
     const label = useModeLabel();

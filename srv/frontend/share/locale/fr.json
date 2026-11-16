@@ -2,7 +2,6 @@
     "app": {
         "feed_label": "Fil des coups",
         "feed_mode_off": "Désactivé",
-        "feed_mode_on": "Activé",
         "feed_mode_fade": "Fondu",
         "feed_mode_scroll": "Défilement",
         "feed_played_many": "{{names}} ont joué des mots",

@@ -2,7 +2,6 @@
     "app": {
         "feed_label": "Ροή κινήσεων",
         "feed_mode_off": "Ανενεργό",
-        "feed_mode_on": "Ενεργό",
         "feed_mode_fade": "Σβήσιμο",
         "feed_mode_scroll": "Κύλιση",
         "feed_played_many": "{{names}} έπαιξαν λέξεις",

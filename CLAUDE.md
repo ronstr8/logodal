@@ -39,6 +39,9 @@ npm test         # Unit tests for pure modules (node --test, no extra deps)
 make build       # Build and push all Docker images (frontend, backend, wordd)
 make deploy      # Install/upgrade Helm umbrella chart
 make <service>   # Build, push, and restart a single service (e.g. make backend)
+                 #   NOTE: locale text is NOT in the frontend image. nginx serves it from the
+                 #   logodal-locales ConfigMap, which only `make deploy` refreshes from
+                 #   srv/frontend/share/locale/. Any locale change needs `make deploy`.
 make migrate     # Run DB migrations inside the cluster
 make backup      # Create timestamped SQL backup
 make lexicons    # Regenerate word lexicons from Hunspell dictionaries

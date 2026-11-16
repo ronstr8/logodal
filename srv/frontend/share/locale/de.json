@@ -2,7 +2,6 @@
     "app": {
         "feed_label": "Spielticker",
         "feed_mode_off": "Aus",
-        "feed_mode_on": "An",
         "feed_mode_fade": "Einblenden",
         "feed_mode_scroll": "Laufschrift",
         "feed_played_many": "{{names}} haben Wörter gelegt",

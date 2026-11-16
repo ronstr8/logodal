@@ -8,6 +8,5 @@
     "fadeMinDwellMs": 1200,
     "fadeDwellStepMs": 600,
     "fadeLingerMs": 8000,
-    "popupMs": 3000,
     "historyLimit": 50
 }

@@ -12,11 +12,9 @@ function useItemText() {
         : item.text), [t]);
 }
 
-// Shows the play feed in the viewer's chosen mode. 'on' is the classic
-// slide-out pop-ups; 'fade' and 'scroll' are a one-line strip at the top
-// that sits in the page flow, so it can never cover the rack.
+// Shows the play feed in the viewer's chosen mode, as a one-line strip at the
+// top that sits in the page flow, so it can never cover the rack.
 export default function PlayFeed({ mode, items }) {
-    if (mode === 'on') return <FeedPopups items={items} />;
     if (mode === 'fade') return <FeedStrip><FadeLine items={items} /></FeedStrip>;
     if (mode === 'scroll') return <FeedStrip><ScrollLine items={items} /></FeedStrip>;
     return null;
@@ -24,21 +22,6 @@ export default function PlayFeed({ mode, items }) {
 
 function FeedStrip({ children }) {
     return <div className="feed-strip" role="log">{children}</div>;
-}
-
-function FeedPopups({ items }) {
-    const text = useItemText();
-    const [shown, setShown] = useState([]);
-    useFeedSubscription(items, (fresh) => {
-        setShown(prev => [...prev, ...fresh]);
-        const ids = new Set(fresh.map(i => i.id));
-        setTimeout(() => setShown(prev => prev.filter(i => !ids.has(i.id))), tuning.popupMs);
-    });
-    return (
-        <div className="chat-toast-container">
-            {shown.map(item => <div key={item.id} className="chat-toast"><div className="chat-toast-text">{text(item)}</div></div>)}
-        </div>
-    );
 }
 
 // One still line that crossfades to the next item, dwelling less the more

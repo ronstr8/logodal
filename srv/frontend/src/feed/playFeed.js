@@ -3,7 +3,7 @@
 // components only animate and draw. Tuning numbers come in as `cfg`
 // (see feedTuning.json).
 
-export const FEED_MODES = ['off', 'on', 'fade', 'scroll'];
+export const FEED_MODES = ['off', 'fade', 'scroll'];
 
 export function nextMode(mode) {
     return FEED_MODES[(FEED_MODES.indexOf(mode) + 1) % FEED_MODES.length];

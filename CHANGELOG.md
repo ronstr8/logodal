@@ -19,7 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - **Wordwank Icons**: Wordwank has its own favicon, Apple touch icon and installable app icons (including maskable ones), generated from the logo tile by `assets/logo/generate.sh`.
 - **Per-Site Branding**: nginx serves each site's own page title, theme colour, icons, web manifest and link-preview (og:) tags based on the host name, so logodal.com and wordwank.com look like separate sites when shared or installed.
 - **Duplicate Squawk**: A squawk plays at the end of a round when anyone played a duplicated word.
-- **Play Feed**: Plays now appear in a one-line strip across the top of the page instead of slide-outs over the rack, with an ellipsis between plays and a centre dot after the end-of-round notice. Choose Off, On (the old slide-outs), Fade (one still line that fades to the next play) or Scroll (a ticker that pauses on hover or tap) from the header button or the menu. Scroll is the default, or Fade if your device asks for reduced motion. When plays pile up at the end of a round, the feed speeds up and folds them into "Wanko, Tugz +3 played words" so it doesn't fall behind.
+- **Play Feed**: Plays now appear in a one-line strip across the top of the page instead of slide-outs over the rack, with an ellipsis between plays and a centre dot after the end-of-round notice. Choose Off, Fade (one still line that fades to the next play) or Scroll (a ticker that pauses on hover or tap) from the header button or the menu. Scroll is the default, or Fade if your device asks for reduced motion. When plays pile up at the end of a round, the feed speeds up and folds them into "Wanko, Tugz +3 played words" so it doesn't fall behind.
 
 ### Changed
 

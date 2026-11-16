@@ -13,18 +13,23 @@ const cfg = {
 const play = (id, player) => ({ id, kind: 'play', player, text: `${player} played` });
 const end = (id) => ({ id, kind: 'end', text: 'Round over' });
 
-test('modes cycle off → on → fade → scroll → off', () => {
-    assert.deepEqual(FEED_MODES, ['off', 'on', 'fade', 'scroll']);
-    assert.equal(nextMode('off'), 'on');
+test('modes cycle off → fade → scroll → off', () => {
+    assert.deepEqual(FEED_MODES, ['off', 'fade', 'scroll']);
+    assert.equal(nextMode('off'), 'fade');
     assert.equal(nextMode('scroll'), 'off');
 });
 
 test('a saved mode wins; otherwise reduced motion picks fade over scroll', () => {
-    assert.equal(resolveMode('on', true), 'on');
+    assert.equal(resolveMode('off', true), 'off');
     assert.equal(resolveMode('scroll', true), 'scroll');
     assert.equal(resolveMode(null, true), 'fade');
     assert.equal(resolveMode(null, false), 'scroll');
     assert.equal(resolveMode('bogus', false), 'scroll');
+});
+
+test('the retired pop-up mode falls back to the default', () => {
+    assert.equal(resolveMode('on', false), 'scroll');
+    assert.equal(resolveMode('on', true), 'fade');
 });
 
 test('plays are followed by an ellipsis, the game-end notice by a centre dot', () => {
