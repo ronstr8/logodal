@@ -3,12 +3,12 @@ const FONT = "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
 const LogodalLogo = ({ height = 50, className, style }) => (
     <svg
         xmlns="http://www.w3.org/2000/svg"
-        viewBox="90 14 570 122"
+        viewBox="90 14 675 122"
         height={height}
         role="img"
         aria-label="Logodal"
         className={className}
-        style={{ display: 'block', flexShrink: 0, ...style }}
+        style={{ display: 'block', flexShrink: 0, maxWidth: '100%', ...style }}
     >
         <defs>
             <clipPath id="logo-tile-clip">
@@ -40,8 +40,8 @@ const LogodalLogo = ({ height = 50, className, style }) => (
         <text x="197" y="116" fontSize="26" fontWeight="700" textAnchor="end"
               fill="#2C1000" fontFamily={FONT}>?</text>
 
-        {/* Wordmark */}
-        <text x="214" y="104" fontSize="82" fontWeight="700" fill="#CC904C"
+        {/* Wordmark: caps (~0.71em) centred on the tile (y 24..124) */}
+        <text x="214" y="112" fontSize="106" fontWeight="700" fill="#CC904C"
               fontFamily={FONT}>LOGODAL</text>
     </svg>
 );

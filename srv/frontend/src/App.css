@@ -977,8 +977,10 @@ header {
         padding: 0.5rem 1rem;
     }
 
+    /* Only the menu and invite buttons share the mobile header, so let the
+       logo (5.5x as wide as tall) take most of the width, up to 48px tall. */
     header .logodal-logo {
-        height: 32px;
+        height: clamp(26px, calc((100vw - 8rem) / 5.6), 48px);
     }
 
     /* WordwankLogo sizes by font-size (tile = 1.25em), not height. The mobile
@@ -1039,10 +1041,6 @@ header {
     :root {
         --tile-w: clamp(28px, 9.5vw, 40px);
         --tile-h: clamp(38px, 12.5vw, 55px);
-    }
-
-    header .logodal-logo {
-        height: 28px;
     }
 
     /* ~6.1em wide in total: 8vw keeps it inside a 320px screen beside the
