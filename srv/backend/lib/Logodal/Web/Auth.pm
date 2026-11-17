@@ -191,7 +191,6 @@ sub me ($self) {
         nickname      => $player->nickname,
         language      => $player->language,
         is_anonymous  => $player->is_anonymous ? 1 : 0,
-        has_passkey   => 0,
     });
 }
 

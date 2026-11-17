@@ -3,7 +3,6 @@ import { useState, useRef, useEffect, useCallback } from 'react';
 export default function usePlayerAuth(i18n) {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [isAuthChecking, setIsAuthChecking] = useState(true);
-    const [hasPasskey, setHasPasskey] = useState(false);
     const [nickname, setNickname] = useState("");
     const [playerId, setPlayerId] = useState(null);
     const playerIdRef = useRef(null);
@@ -16,7 +15,6 @@ export default function usePlayerAuth(i18n) {
                 setPlayerId(data.id);
                 playerIdRef.current = data.id;
                 setNickname(data.nickname);
-                setHasPasskey(!!data.has_passkey);
                 if (data.language) i18n.changeLanguage(data.language);
                 setIsAuthenticated(true);
                 return data.id;
@@ -48,8 +46,6 @@ export default function usePlayerAuth(i18n) {
     return {
         isAuthenticated,
         isAuthChecking,
-        hasPasskey,
-        setHasPasskey,
         nickname,
         setNickname,
         playerId,

@@ -77,11 +77,6 @@ __PACKAGE__->has_many(
 );
 
 __PACKAGE__->has_many(
-    passkeys => 'Logodal::Schema::Result::PlayerPasskey',
-    'player_id'
-);
-
-__PACKAGE__->has_many(
     sessions => 'Logodal::Schema::Result::Session',
     'player_id'
 );

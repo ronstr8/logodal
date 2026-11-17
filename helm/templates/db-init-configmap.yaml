@@ -35,7 +35,8 @@ data:
         UNIQUE(provider, provider_id)
     );
 
-    -- Passkey Credentials (WebAuthn)
+    -- Passkey Credentials (WebAuthn). Unused since 3.1.0 (passkeys were never finished);
+    -- kept because migration 007 alters this table and would fail without it.
     CREATE TABLE IF NOT EXISTS player_passkeys (
         id BIGSERIAL PRIMARY KEY,
         player_id UUID NOT NULL REFERENCES players(id) ON DELETE CASCADE,

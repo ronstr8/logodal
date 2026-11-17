@@ -13,7 +13,6 @@ requires 'Config::JSON';
 requires 'Mojolicious::Plugin::NotYAMLConfig';
 requires 'YAML::XS';
 requires 'Mojolicious::Plugin::OAuth2', '2.0';
-requires 'Authen::WebAuthn', '0.005';
 requires 'Crypt::URandom';
 requires 'Crypt::JWT';
 requires 'DBIx::Class::TimeStamp';

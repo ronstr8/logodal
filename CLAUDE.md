@@ -15,7 +15,7 @@ A multiplayer word game platform. Players connect via WebSocket and compete to f
 | Word Validation | Rust (2021 edition), Actix-web 4, Tokio |
 | Database | PostgreSQL 16 |
 | Orchestration | Kubernetes (Kind for local), Helm 3 |
-| Auth | OAuth2 (Google, Discord), WebAuthn/Passkeys |
+| Auth | OAuth2 (Google, Discord), guest play |
 
 ## Common Commands
 
